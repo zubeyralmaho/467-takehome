@@ -254,7 +254,7 @@ def render_agent_log(agent: dict[str, Any]) -> str:
     lines = [
         f"# Agent: {agent['name']}",
         "",
-        f"Last updated: {today_date()}",
+        f"Last updated: {now_timestamp()}",
         "",
         "This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.",
         "",

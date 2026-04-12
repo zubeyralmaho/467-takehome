@@ -9,9 +9,14 @@ Its purpose is different from the numbered architecture documents:
 
 The single source of truth is `status.json`. Markdown files in this folder should be treated as generated views.
 
+For parallel work, use the short operating protocol in `protocol.md`.
+For a copy-pasteable agent instruction, use `system-prompt.md`.
+
 ---
 
 ## Recommended Workflow
+
+For multi-agent parallel execution, follow `protocol.md` first and use the workflow below as the mechanical update sequence.
 
 When an agent starts work:
 
@@ -28,6 +33,8 @@ When an agent starts work:
 ```text
 docs/agents/
 |-- README.md                # Operational rules for agent collaboration
+|-- protocol.md             # Short rules for safe multi-agent parallel work
+|-- system-prompt.md        # Very short copy-paste prompt for parallel agents
 |-- status.json             # Canonical machine-readable state
 |-- status-board.md          # Canonical high-level project snapshot
 |-- handoff.md               # Shared blockers, next actions, ownership handoff
@@ -103,3 +110,5 @@ This structure is more reliable because:
 - The numbered docs stay clean and stable instead of becoming a work log.
 
 This is the better method than raw notes because updates become structured and scriptable without adding a heavy database or external service.
+
+If you later run multiple agents truly in parallel, the next scaling step is splitting the machine-readable state into one file per agent plus one project-level summary file. For the current repo size, the single JSON plus generated views approach is still the simpler trade-off.

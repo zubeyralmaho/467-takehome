@@ -135,6 +135,7 @@ CENG467_Midterm/
 |   |-- 11-report-structure.md
 |   +-- agents/                    # Live AI agent tracking workspace
 |       |-- README.md              # Rules and workflow for agent updates
+|       |-- protocol.md            # Short multi-agent parallel work protocol
 |       |-- status.json            # Canonical machine-readable project state
 |       |-- status-board.md        # Project-level status snapshot
 |       |-- handoff.md             # Cross-agent blockers and next actions
