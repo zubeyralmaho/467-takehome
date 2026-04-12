@@ -108,11 +108,16 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
     analysis_output: dict[str, dict] = {}
 
     for model_name, model in models.items():
-        model.fit(
-            datasets["train"]["texts"],
-            datasets["train"]["labels"],
-            validation_data=datasets["validation"],
-        )
+        is_bilstm = BiLSTMClassifier is not None and isinstance(model, BiLSTMClassifier)
+        if is_bilstm:
+            model.fit(
+                datasets["train"]["texts"],
+                datasets["train"]["labels"],
+                validation_data=datasets["validation"],
+            )
+        else:
+            model.fit(datasets["train"]["texts"], datasets["train"]["labels"])
+
         metrics_output[model_name] = {}
         analysis_output[model_name] = {}
 
