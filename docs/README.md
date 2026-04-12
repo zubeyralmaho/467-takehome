@@ -24,6 +24,16 @@ This documentation comprehensively defines the technical architecture, data flow
 
 ---
 
+## Operational Tracking
+
+For live AI agent coordination, use the `agents/` subfolder:
+
+- [Agent Workspace](agents/README.md) - Collaboration rules and workflow
+- [Status Board](agents/status-board.md) - High-level project snapshot
+- [Handoff](agents/handoff.md) - Shared blockers and next actions
+
+---
+
 ## Dependency Graph (Documentation)
 
 ```
@@ -45,6 +55,8 @@ README.md (this file)
     |       +-- 08-q5-language-modeling.md -----+
     |
     +-- 11-report-structure.md (covers all questions)
+    |
+    +-- agents/ (live agent coordination and status tracking)
 ```
 
 ---

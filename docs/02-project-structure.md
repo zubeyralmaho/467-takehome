@@ -130,6 +130,15 @@ CENG467_Midterm/
 |   +-- references.bib
 |
 |-- docs/                           # This documentation directory
+|   |-- 01-project-overview.md
+|   |-- ...
+|   |-- 11-report-structure.md
+|   +-- agents/                    # Live AI agent tracking workspace
+|       |-- README.md              # Rules and workflow for agent updates
+|       |-- status-board.md        # Project-level status snapshot
+|       |-- handoff.md             # Cross-agent blockers and next actions
+|       |-- agent-template.md      # Template for per-agent logs
+|       +-- active/                # One file per active agent
 |
 |-- requirements.txt                # pip dependencies
 |-- environment.yml                 # conda environment (alternative)
