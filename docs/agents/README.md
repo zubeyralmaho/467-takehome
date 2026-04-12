@@ -7,6 +7,8 @@ Its purpose is different from the numbered architecture documents:
 - `docs/01-11`: stable design, implementation, and report documentation
 - `docs/agents/`: live execution state, handoff notes, and agent-specific progress
 
+The single source of truth is `status.json`. Markdown files in this folder should be treated as generated views.
+
 ---
 
 ## Recommended Workflow
@@ -14,10 +16,10 @@ Its purpose is different from the numbered architecture documents:
 When an agent starts work:
 
 1. Read `status-board.md` for the current project snapshot.
-2. Claim or create an agent file under `active/` using the template.
-3. Update the relevant task status before and after meaningful work.
-4. Record blockers, decisions, and next actions in the same agent file.
-5. Reflect project-level changes in `status-board.md` when the global state changes.
+2. Create or update the agent state via `scripts/agent_status.py set-agent ...`.
+3. Append progress as work advances with `append-agent`.
+4. Update the relevant project area with `set-area` when ownership or status changes.
+5. Add a handoff entry when work is paused or transferred.
 
 ---
 
@@ -26,6 +28,7 @@ When an agent starts work:
 ```text
 docs/agents/
 |-- README.md                # Operational rules for agent collaboration
+|-- status.json             # Canonical machine-readable state
 |-- status-board.md          # Canonical high-level project snapshot
 |-- handoff.md               # Shared blockers, next actions, ownership handoff
 |-- agent-template.md        # Template for new agent work logs
@@ -47,15 +50,56 @@ Use the same status vocabulary everywhere:
 
 ---
 
+## CLI Usage
+
+Common commands:
+
+```bash
+# Regenerate markdown views from the JSON state
+python scripts/agent_status.py sync
+
+# Claim an area and mark it in progress
+python scripts/agent_status.py set-area \
+    --key q1_text_classification \
+    --owner agent-q1 \
+    --status in_progress \
+    --notes "TF-IDF baseline implementation in progress"
+
+# Create or update an agent record
+python scripts/agent_status.py set-agent \
+    --name agent-q1 \
+    --scope "Q1 baseline training pipeline" \
+    --status in_progress \
+    --area q1_text_classification \
+    --started "Reviewed existing Q1 module" \
+    --next-action "Implement baseline trainer"
+
+# Append progress incrementally
+python scripts/agent_status.py append-agent \
+    --name agent-q1 \
+    --section completed \
+    --item "Implemented TF-IDF data flow"
+
+# Add a handoff entry
+python scripts/agent_status.py add-handoff \
+    --agent agent-q1 \
+    --scope "Q1 baseline setup" \
+    --outcome "Data flow and baseline scaffolding completed" \
+    --next "Run validation experiment"
+```
+
+---
+
 ## Why This Is Better Than A Single Notes File
 
 A single markdown file becomes noisy quickly and creates edit conflicts when multiple agents write to it.
 
 This structure is more reliable because:
 
+- `status.json` gives one canonical machine-readable state.
 - `status-board.md` stays short and human-readable.
-- Each agent can update its own file under `active/` with less risk of conflicts.
-- `handoff.md` gives one place for blockers and next actions.
+- Each agent gets a rendered file under `active/` with less risk of conflicts.
+- `handoff.md` stays focused on coordination instead of becoming a scratchpad.
 - The numbered docs stay clean and stable instead of becoming a work log.
 
-If you later want stricter automation, the next step would be adding a machine-readable `status.json` file as the single source of truth and generating the markdown board from it. For the current project size, the markdown-first structure is simpler and sufficient.
+This is the better method than raw notes because updates become structured and scriptable without adding a heavy database or external service.

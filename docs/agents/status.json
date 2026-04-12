@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "last_updated": "2026-04-13 01:19"
+  },
+  "areas": [
+    {
+      "key": "shared_infrastructure",
+      "label": "Shared infrastructure",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "Config, metrics, training utilities"
+    },
+    {
+      "key": "q1_text_classification",
+      "label": "Q1 Text Classification",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "Baseline + neural + transformer"
+    },
+    {
+      "key": "q2_named_entity_recognition",
+      "label": "Q2 Named Entity Recognition",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "CRF, BiLSTM-CRF, BERT-NER"
+    },
+    {
+      "key": "q3_summarization",
+      "label": "Q3 Summarization",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "TextRank + BART/T5"
+    },
+    {
+      "key": "q4_machine_translation",
+      "label": "Q4 Machine Translation",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "Seq2Seq + Transformer"
+    },
+    {
+      "key": "q5_language_modeling",
+      "label": "Q5 Language Modeling",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "N-gram + LSTM + optional GPT-2"
+    },
+    {
+      "key": "evaluation_and_analysis",
+      "label": "Evaluation and analysis",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "Shared metrics, plots, error analysis"
+    },
+    {
+      "key": "report_preparation",
+      "label": "Report preparation",
+      "owner": "unassigned",
+      "status": "todo",
+      "notes": "LaTeX report structure and results write-up"
+    }
+  ],
+  "priorities": [
+    "Finalize shared project skeleton and reusable utilities.",
+    "Implement Q1 first to validate the end-to-end pipeline.",
+    "Use the validated infrastructure to accelerate Q2-Q5."
+  ],
+  "handoff": {
+    "current_blockers": [],
+    "pending_decisions": [
+      "Dataset finalization for each question.",
+      "Exact experiment budget per task.",
+      "Whether optional GPT-2 fine-tuning will be included in Q5."
+    ],
+    "next_recommended_actions": [
+      "Build shared infrastructure under src/common/.",
+      "Implement the Q1 baseline and establish the output format.",
+      "Freeze evaluation and export conventions before Q2-Q5 scale out."
+    ],
+    "entries": []
+  },
+  "agents": []
+}

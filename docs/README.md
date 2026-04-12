@@ -29,6 +29,7 @@ This documentation comprehensively defines the technical architecture, data flow
 For live AI agent coordination, use the `agents/` subfolder:
 
 - [Agent Workspace](agents/README.md) - Collaboration rules and workflow
+- [Agent State](agents/status.json) - Machine-readable single source of truth
 - [Status Board](agents/status-board.md) - High-level project snapshot
 - [Handoff](agents/handoff.md) - Shared blockers and next actions
 

@@ -1,8 +1,8 @@
 # Agent Status Board
 
-Last updated: 2026-04-13
+Last updated: 2026-04-13 01:19
 
-This file is the canonical project snapshot. Keep it short and current.
+This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
 ---
 
@@ -37,6 +37,6 @@ This file is the canonical project snapshot. Keep it short and current.
 
 ## Update Rules
 
-- Only reflect project-level state here.
-- Detailed notes belong in `active/*.md`.
-- When a task changes owner or status, update this board immediately.
+- Use `status.json` as the single source of truth.
+- Regenerate this board with `python scripts/agent_status.py sync` after manual JSON edits.
+- Detailed agent notes are rendered into `active/*.md`.

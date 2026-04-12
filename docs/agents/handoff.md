@@ -1,8 +1,8 @@
 # Handoff
 
-Last updated: 2026-04-13
+Last updated: 2026-04-13 01:19
 
-Use this file for short cross-agent coordination.
+This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
 ---
 
@@ -22,21 +22,12 @@ Use this file for short cross-agent coordination.
 
 ## Next Recommended Actions
 
-1. Build shared infrastructure under `src/common/`.
+1. Build shared infrastructure under src/common/.
 2. Implement the Q1 baseline and establish the output format.
 3. Freeze evaluation and export conventions before Q2-Q5 scale out.
 
 ---
 
-## Handoff Format
+## Entries
 
-Use short entries like this:
-
-```text
-- Agent: agent-name
-  Date: YYYY-MM-DD
-  Scope: what was worked on
-  Outcome: what changed
-  Next: immediate next action
-  Blocker: optional
-```
+- None.
