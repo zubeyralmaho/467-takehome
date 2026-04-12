@@ -30,7 +30,7 @@ def set_global_seed(seed: int = 42) -> None:
 
 
 def worker_init_fn(worker_id: int) -> None:
-    del worker_id
-    seed = random.randint(0, 2**32 - 1)
+    base_seed = int(os.environ.get("PYTHONHASHSEED", "42"))
+    seed = (base_seed + worker_id) % (2**32)
     np.random.seed(seed)
     random.seed(seed)

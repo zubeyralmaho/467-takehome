@@ -29,7 +29,7 @@ def materialize_split(split, text_column: str, label_column: str, preprocessor: 
 
 
 def prepare_datasets(config) -> dict[str, dict[str, list]]:
-    preprocessor = TextPreprocessor(config)
+    preprocessor = TextPreprocessor(config, max_length=None)
     raw_splits = load_q1_splits(config)
     return {
         split_name: materialize_split(

@@ -11,12 +11,12 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 class TextPreprocessor:
     """Simple configurable text normalization pipeline."""
 
-    def __init__(self, config):
+    def __init__(self, config, max_length: int | None = None):
         self.lowercase = config.preprocess.lowercase
         self.remove_html = config.preprocess.remove_html
         self.remove_special = config.preprocess.remove_special
         self.remove_stopwords = config.preprocess.remove_stopwords
-        self.max_length = config.preprocess.max_length
+        self.max_length = config.preprocess.max_length if max_length is None else max_length
 
     def __call__(self, text: str) -> str:
         cleaned = unescape(text or "")

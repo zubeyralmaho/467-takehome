@@ -9,9 +9,24 @@ import sys
 from datetime import datetime
 from importlib import metadata
 from pathlib import Path
-from typing import Iterable, Mapping
+from typing import Any, Iterable, Mapping
 
 from src.common.config import Config
+
+
+def _to_jsonable(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(key): _to_jsonable(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_to_jsonable(item) for item in value]
+    if isinstance(value, tuple):
+        return [_to_jsonable(item) for item in value]
+    if hasattr(value, "item"):
+        try:
+            return value.item()
+        except (TypeError, ValueError):
+            pass
+    return value
 
 
 def create_run_dir(base_dir: str, question: str) -> str:
@@ -25,7 +40,7 @@ def save_metrics(metrics: Mapping, path: str | Path) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("w", encoding="utf-8") as handle:
-        json.dump(metrics, handle, ensure_ascii=False, indent=2)
+        json.dump(_to_jsonable(metrics), handle, ensure_ascii=False, indent=2)
 
 
 def save_predictions(rows: Iterable[Mapping[str, object]], path: str | Path) -> None:
