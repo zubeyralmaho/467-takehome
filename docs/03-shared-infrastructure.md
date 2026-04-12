@@ -1,73 +1,73 @@
-# 03 - Ortak Altyapi (`src/common/`)
+# 03 - Shared Infrastructure (`src/common/`)
 
-> [Ana Sayfa](README.md) | Onceki: [Dizin Yapisi](02-project-structure.md) | Sonraki: [Q1 - Text Classification](04-q1-text-classification.md)
+> [Home](README.md) | Previous: [Directory Structure](02-project-structure.md) | Next: [Q1 - Text Classification](04-q1-text-classification.md)
 
 ---
 
-## Genel Bakis
+## Overview
 
-`src/common/` modulu, bes sorunun hepsinin paylastigi temel islev birimlerini icerir. Amac: kod tekrarini onlemek, tutarli evaluation saglamak ve reproducibility'yi garanti etmek.
+The `src/common/` module contains the core utility components shared by all five questions. Purpose: prevent code duplication, ensure consistent evaluation, and guarantee reproducibility.
 
 ```
 src/common/
 |-- __init__.py
-|-- config.py           # Config yukleyici
-|-- seed.py             # Global seed yonetimi
-|-- data_utils.py       # Veri yukleme / bolme yardimcilari
+|-- config.py           # Config loader
+|-- seed.py             # Global seed management
+|-- data_utils.py       # Data loading / splitting helpers
 |-- vocab.py            # Vocabulary builder
-|-- metrics.py          # Metrik hesaplama fonksiyonlari
+|-- metrics.py          # Metric computation functions
 |-- evaluation.py       # Evaluation orchestrator
 |-- trainer.py          # Generic PyTorch training loop
-|-- visualization.py    # Plot fonksiyonlari
-+-- export.py           # Sonuc kaydetme
+|-- visualization.py    # Plot functions
++-- export.py           # Result saving
 ```
 
 ---
 
-## config.py - Konfigurasyon Yonetimi
+## config.py - Configuration Management
 
-### Sorumluluk
-YAML dosyalarindan konfigurasyonu okur, `base.yaml` ile soru-ozel config'i birlestirir, CLI override destegi saglar.
+### Responsibility
+Reads configuration from YAML files, merges `base.yaml` with question-specific config, provides CLI override support.
 
 ### API
 
 ```python
 class Config:
-    """Nested dot-access config objesi."""
+    """Nested dot-access config object."""
 
     @staticmethod
     def from_yaml(path: str) -> "Config":
-        """YAML dosyasindan config yukler."""
+        """Loads config from a YAML file."""
 
     def merge(self, override: dict) -> "Config":
-        """Ustune yazma ile birlestirme (deep merge)."""
+        """Merges with override (deep merge)."""
 
     def to_dict(self) -> dict:
-        """Serializasyon icin dict'e cevirir."""
+        """Converts to dict for serialization."""
 
     def save(self, path: str) -> None:
-        """Config'i YAML olarak kaydeder (reproducibility icin)."""
+        """Saves config as YAML (for reproducibility)."""
 
 
 def load_config(config_path: str, cli_overrides: dict = None) -> Config:
     """
-    1. base.yaml yukle
-    2. config_path yukle
-    3. deep merge (config_path, base uzerine)
-    4. cli_overrides uygula
-    5. Config objesi dondur
+    1. Load base.yaml
+    2. Load config_path
+    3. Deep merge (config_path on top of base)
+    4. Apply cli_overrides
+    5. Return Config object
     """
 ```
 
-### Config Merge Sirasi
+### Config Merge Order
 ```
-base.yaml (defaults) -> q{n}.yaml (soru ozel) -> CLI args (en yuksek oncelik)
+base.yaml (defaults) -> q{n}.yaml (question-specific) -> CLI args (highest priority)
 ```
 
-### Ornek base.yaml
+### Example base.yaml
 ```yaml
 seed: 42
-device: "cuda"     # auto-detect ile degistirilebilir
+device: "cuda"     # Can be overridden with auto-detect
 output_dir: "outputs"
 logging:
   level: "INFO"
@@ -84,15 +84,15 @@ training:
 
 ## seed.py - Reproducibility
 
-### Sorumluluk
-Tum random kaynaklarini tek bir seed ile kontrol altina alir.
+### Responsibility
+Controls all random sources with a single seed.
 
 ### API
 
 ```python
 def set_global_seed(seed: int = 42) -> None:
     """
-    Asagidaki kaynaklari seed'ler:
+    Seeds the following sources:
     - random.seed(seed)
     - numpy.random.seed(seed)
     - torch.manual_seed(seed)
@@ -103,54 +103,54 @@ def set_global_seed(seed: int = 42) -> None:
     """
 
 def worker_init_fn(worker_id: int) -> None:
-    """DataLoader worker'lari icin seed fonksiyonu.
-    Her worker farkli ama deterministik seed alir."""
+    """Seed function for DataLoader workers.
+    Each worker gets a different but deterministic seed."""
 ```
 
-### Kullanim
+### Usage
 ```python
-# Her main.py'nin ilk satiri
+# First line of every main.py
 from src.common.seed import set_global_seed
 set_global_seed(config.seed)
 ```
 
-Detaylar icin: [Experiment Config](10-experiment-config.md)
+For details see: [Experiment Config](10-experiment-config.md)
 
 ---
 
-## data_utils.py - Veri Yardimcilari
+## data_utils.py - Data Helpers
 
-### Sorumluluk
-HuggingFace Datasets uzerinden veri yukleme, train/val/test split yonetimi, caching.
+### Responsibility
+Data loading via HuggingFace Datasets, train/val/test split management, caching.
 
 ### API
 
 ```python
 def load_hf_dataset(name: str, subset: str = None,
                     cache_dir: str = None) -> DatasetDict:
-    """HuggingFace dataset yukler, cache'e kaydeder."""
+    """Loads a HuggingFace dataset and saves to cache."""
 
 def create_splits(dataset, train_ratio=0.8, val_ratio=0.1,
                   test_ratio=0.1, seed=42) -> dict:
-    """Eger dataset'te val/test yoksa olusturur.
-    Stratified split uygulanir (classification icin)."""
+    """Creates val/test splits if they don't exist in the dataset.
+    Applies stratified split (for classification)."""
 
 def get_dataloaders(train_ds, val_ds, test_ds,
                     batch_size: int, collate_fn=None,
                     num_workers: int = 4) -> tuple:
-    """PyTorch DataLoader'lari olusturur.
-    worker_init_fn otomatik atanir."""
+    """Creates PyTorch DataLoaders.
+    worker_init_fn is automatically assigned."""
 
 def subsample(dataset, n: int, seed: int = 42):
-    """Buyuk datasetlerden subset alir (hizli deney icin)."""
+    """Takes a subset from large datasets (for quick experiments)."""
 ```
 
 ---
 
 ## vocab.py - Vocabulary Builder
 
-### Sorumluluk
-Neural modeller (BiLSTM, Seq2Seq, LSTM-LM) icin token -> index mapping olusturur.
+### Responsibility
+Creates token -> index mapping for neural models (BiLSTM, Seq2Seq, LSTM-LM).
 
 ### API
 
@@ -158,21 +158,21 @@ Neural modeller (BiLSTM, Seq2Seq, LSTM-LM) icin token -> index mapping olusturur
 class Vocabulary:
     PAD_TOKEN = "<PAD>"   # index 0
     UNK_TOKEN = "<UNK>"   # index 1
-    BOS_TOKEN = "<BOS>"   # index 2 (seq2seq icin)
-    EOS_TOKEN = "<EOS>"   # index 3 (seq2seq icin)
+    BOS_TOKEN = "<BOS>"   # index 2 (for seq2seq)
+    EOS_TOKEN = "<EOS>"   # index 3 (for seq2seq)
 
     def __init__(self, min_freq: int = 2, max_size: int = None):
-        """min_freq: minimum frekans esigi
-           max_size: maksimum vocab boyutu"""
+        """min_freq: minimum frequency threshold
+           max_size: maximum vocabulary size"""
 
     def build(self, token_lists: list[list[str]]) -> "Vocabulary":
-        """Token listelerinden vocab olusturur."""
+        """Builds vocabulary from token lists."""
 
     def encode(self, tokens: list[str]) -> list[int]:
-        """Token listesini index listesine cevirir."""
+        """Converts a token list to an index list."""
 
     def decode(self, indices: list[int]) -> list[str]:
-        """Index listesini token listesine cevirir."""
+        """Converts an index list to a token list."""
 
     def __len__(self) -> int: ...
 
@@ -182,70 +182,70 @@ class Vocabulary:
     def load(cls, path: str) -> "Vocabulary": ...
 ```
 
-### Kullanildigi Sorular
-- **Q1**: BiLSTM icin word vocabulary
-- **Q4**: Seq2Seq icin source/target vocabulary
-- **Q5**: LSTM LM icin corpus vocabulary
+### Questions Where Used
+- **Q1**: Word vocabulary for BiLSTM
+- **Q4**: Source/target vocabulary for Seq2Seq
+- **Q5**: Corpus vocabulary for LSTM LM
 
-> Not: Transformer-based modeller (BERT, BART, T5) kendi tokenizer'larini kullanir; bu sinifi kullanmazlar.
+> Note: Transformer-based models (BERT, BART, T5) use their own tokenizers; they do not use this class.
 
 ---
 
-## metrics.py - Metrik Hesaplama
+## metrics.py - Metric Computation
 
-### Sorumluluk
-Tum sorularin ihtiyac duydugu metrikleri merkezi olarak hesaplar.
+### Responsibility
+Centrally computes all metrics needed by all questions.
 
 ### API
 
 ```python
-# --- Classification Metrikleri (Q1) ---
+# --- Classification Metrics (Q1) ---
 def compute_accuracy(y_true, y_pred) -> float: ...
 def compute_macro_f1(y_true, y_pred) -> float: ...
 def compute_classification_report(y_true, y_pred, labels=None) -> dict: ...
 def compute_confusion_matrix(y_true, y_pred, labels=None) -> np.ndarray: ...
 
-# --- Sequence Labeling Metrikleri (Q2) ---
+# --- Sequence Labeling Metrics (Q2) ---
 def compute_entity_metrics(y_true_bio, y_pred_bio) -> dict:
-    """seqeval kutuphanesi kullanir. Entity-level P/R/F1 dondurur."""
+    """Uses the seqeval library. Returns entity-level P/R/F1."""
 
-# --- Summarization Metrikleri (Q3) ---
+# --- Summarization Metrics (Q3) ---
 def compute_rouge(predictions, references) -> dict:
-    """ROUGE-1, ROUGE-2, ROUGE-L hesaplar."""
+    """Computes ROUGE-1, ROUGE-2, ROUGE-L."""
 
 def compute_bleu(predictions, references) -> float:
-    """Corpus-level BLEU hesaplar."""
+    """Computes corpus-level BLEU."""
 
 def compute_meteor(predictions, references) -> float:
-    """METEOR score hesaplar."""
+    """Computes METEOR score."""
 
 def compute_bertscore(predictions, references,
                       lang: str = "en") -> dict:
-    """BERTScore (P, R, F1) hesaplar."""
+    """Computes BERTScore (P, R, F1)."""
 
-# --- Translation Metrikleri (Q4) ---
+# --- Translation Metrics (Q4) ---
 def compute_chrf(predictions, references) -> float:
-    """ChrF score hesaplar."""
-# (BLEU, METEOR, BERTScore yukariyla paylasir)
+    """Computes ChrF score."""
+# (BLEU, METEOR, BERTScore are shared with above)
 
-# --- Language Modeling Metrikleri (Q5) ---
+# --- Language Modeling Metrics (Q5) ---
 def compute_perplexity(loss: float) -> float:
-    """Cross-entropy loss'tan perplexity: exp(loss)"""
+    """Perplexity from cross-entropy loss: exp(loss)"""
 
-# --- Genel ---
+# --- General ---
 def compute_metrics(task: str, predictions, references,
                     **kwargs) -> dict:
     """
     Unified entry point.
     task: "classification" | "ner" | "summarization" |
           "translation" | "language_model"
-    Ilgili metrikleri hesaplayip dict olarak dondurur.
+    Computes the relevant metrics and returns them as a dict.
     """
 ```
 
-### Metrik-Soru Matrisi
+### Metric-Question Matrix
 
-| Metrik | Q1 | Q2 | Q3 | Q4 | Q5 |
+| Metric | Q1 | Q2 | Q3 | Q4 | Q5 |
 |--------|----|----|----|----|-----|
 | Accuracy | x | | | | |
 | Macro-F1 | x | | | | |
@@ -259,43 +259,43 @@ def compute_metrics(task: str, predictions, references,
 | ChrF | | | | x | |
 | Perplexity | | | | | x |
 
-Detaylar icin: [Evaluation Framework](09-evaluation-framework.md)
+For details see: [Evaluation Framework](09-evaluation-framework.md)
 
 ---
 
 ## evaluation.py - Evaluation Orchestrator
 
-### Sorumluluk
-Model ciktilari uzerinde evaluation pipeline'ini calistirir, sonuclari toplar ve formatlar.
+### Responsibility
+Runs the evaluation pipeline on model outputs, collects and formats results.
 
 ### API
 
 ```python
 class Evaluator:
     def __init__(self, task: str, config: Config):
-        """task: Q'nun gorevi, config: metrik ayarlari"""
+        """task: the question's task, config: metric settings"""
 
     def evaluate(self, model, dataloader, **kwargs) -> dict:
         """
-        1. Model inference (batch'ler uzerinde)
-        2. Predictions toplama
-        3. compute_metrics cagirma
-        4. Sonuclari dict olarak dondurme
+        1. Model inference (over batches)
+        2. Collect predictions
+        3. Call compute_metrics
+        4. Return results as dict
         """
 
     def compare_models(self, results: dict[str, dict]) -> pd.DataFrame:
-        """Birden fazla modelin sonuclarini karsilastirma tablosuna cevirir."""
+        """Converts multiple model results into a comparison table."""
 
     def save_results(self, results: dict, output_dir: str) -> None:
-        """JSON + CSV olarak kaydeder."""
+        """Saves as JSON + CSV."""
 ```
 
 ---
 
 ## trainer.py - Generic Training Loop
 
-### Sorumluluk
-PyTorch modelleri icin standart training loop. Early stopping, checkpoint, logging dahil.
+### Responsibility
+Standard training loop for PyTorch models. Includes early stopping, checkpointing, and logging.
 
 ### API
 
@@ -314,86 +314,86 @@ class Trainer:
               num_epochs: int) -> dict:
         """
         Training loop:
-        1. Her epoch icin:
+        1. For each epoch:
            a. train_one_epoch()
            b. validate()
-           c. Early stopping kontrolu
+           c. Early stopping check
            d. Best model checkpoint
-        2. Training history dondurme
+        2. Return training history
         """
 
     def train_one_epoch(self, loader) -> float:
-        """Tek epoch train, ortalama loss dondurur."""
+        """Single epoch train, returns average loss."""
 
     def validate(self, loader) -> dict:
-        """Validation metrics hesaplar."""
+        """Computes validation metrics."""
 
     def save_checkpoint(self, path: str) -> None: ...
     def load_checkpoint(self, path: str) -> None: ...
 ```
 
-### Kullanildigi Sorular
+### Questions Where Used
 - **Q1**: BiLSTM, DistilBERT training
 - **Q2**: BiLSTM-CRF, BERT-NER training
 - **Q3**: BART fine-tuning
 - **Q4**: Seq2Seq, Transformer training
 - **Q5**: LSTM training
 
-> Not: scikit-learn modelleri (TF-IDF+LR/SVM, CRF) kendi `.fit()` metodlarini kullanir; Trainer'a ihtiyac duymaz.
+> Note: scikit-learn models (TF-IDF+LR/SVM, CRF) use their own `.fit()` methods; they do not need the Trainer.
 
 ---
 
-## visualization.py - Gorsellestirme
+## visualization.py - Visualization
 
 ### API
 
 ```python
 def plot_training_curves(history: dict, output_path: str) -> None:
-    """Loss ve metrik egrileri (train vs val)."""
+    """Loss and metric curves (train vs val)."""
 
 def plot_confusion_matrix(cm, labels, output_path: str) -> None:
-    """Confusion matrix heatmap (Q1 icin)."""
+    """Confusion matrix heatmap (for Q1)."""
 
 def plot_metric_comparison(results_df: pd.DataFrame,
                            metric: str, output_path: str) -> None:
-    """Modeller arasi bar chart karsilastirma."""
+    """Bar chart comparison across models."""
 
 def plot_attention_weights(attention, src_tokens, tgt_tokens,
                            output_path: str) -> None:
-    """Attention heatmap (Q4 icin)."""
+    """Attention heatmap (for Q4)."""
 
 def plot_entity_distribution(entities: dict,
                              output_path: str) -> None:
-    """Entity type dagalimi (Q2 icin)."""
+    """Entity type distribution (for Q2)."""
 ```
 
 ---
 
-## export.py - Sonuc Kaydetme
+## export.py - Result Saving
 
 ### API
 
 ```python
 def create_run_dir(base_dir: str, question: str) -> str:
-    """Timestamped run dizini olusturur:
+    """Creates a timestamped run directory:
     outputs/q1/run_20260415_143022/"""
 
 def save_metrics(metrics: dict, path: str) -> None:
-    """Metrikleri JSON olarak kaydeder."""
+    """Saves metrics as JSON."""
 
 def save_predictions(predictions, references, path: str) -> None:
-    """Tahminleri CSV olarak kaydeder."""
+    """Saves predictions as CSV."""
 
 def save_config_copy(config: Config, run_dir: str) -> None:
-    """Kullanilan config'in kopyasini run dizinine kaydeder."""
+    """Saves a copy of the used config to the run directory."""
 
 def generate_latex_table(results_df: pd.DataFrame) -> str:
-    """DataFrame'i LaTeX tablo formatina cevirir."""
+    """Converts a DataFrame to LaTeX table format."""
 ```
 
 ---
 
-## Veri Akis Diyagrami (Tum Sorular icin Genel)
+## Data Flow Diagram (General for All Questions)
 
 ```
 [configs/q{n}.yaml] + [configs/base.yaml]
@@ -422,8 +422,8 @@ def generate_latex_table(results_df: pd.DataFrame) -> str:
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Dizin Yapisi](02-project-structure.md) - Dosya organizasyonu
-- [Evaluation Framework](09-evaluation-framework.md) - Metrik detaylari
-- [Experiment Config](10-experiment-config.md) - Config sema ve ornekleri
+- [Directory Structure](02-project-structure.md) - File organization
+- [Evaluation Framework](09-evaluation-framework.md) - Metric details
+- [Experiment Config](10-experiment-config.md) - Config schema and examples

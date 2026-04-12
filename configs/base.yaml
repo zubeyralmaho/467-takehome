@@ -1,0 +1,12 @@
+seed: 42
+device: auto
+output_dir: outputs
+
+logging:
+  level: INFO
+
+data:
+  cache_dir: data/cache
+
+training:
+  early_stopping_patience: 3

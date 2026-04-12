@@ -1,42 +1,42 @@
-# 11 - LaTeX Rapor Yapisi
+# 11 - LaTeX Report Structure
 
-> [Ana Sayfa](README.md) | Onceki: [Experiment Config](10-experiment-config.md)
-
----
-
-## Genel Bakis
-
-Raporun LaTeX ile yazilmasi zorunludur. Bu dokuman rapor sablonunu, section yapisini, tablo/sekil standartlarini ve her sorunun rapordaki karsiligini tanimlar.
+> [Home](README.md) | Previous: [Experiment Config](10-experiment-config.md)
 
 ---
 
-## Rapor Dizin Yapisi
+## Overview
+
+The report must be written in LaTeX. This document defines the report template, section structure, table/figure standards, and the mapping of each question to its report counterpart.
+
+---
+
+## Report Directory Structure
 
 ```
 report/
-|-- main.tex                   # Ana dosya (tum section'lari include eder)
-|-- preamble.tex               # Paketler, ayarlar, makrolar
+|-- main.tex                   # Main file (includes all sections)
+|-- preamble.tex               # Packages, settings, macros
 |-- sections/
-|   |-- introduction.tex       # Giris, genel yaklasim
-|   |-- q1.tex                 # Soru 1
-|   |-- q2.tex                 # Soru 2
-|   |-- q3.tex                 # Soru 3
-|   |-- q4.tex                 # Soru 4
-|   |-- q5.tex                 # Soru 5
-|   +-- conclusion.tex         # Genel sonuc ve degerledirme
-|-- figures/                   # Tum gorseller
+|   |-- introduction.tex       # Introduction, general approach
+|   |-- q1.tex                 # Question 1
+|   |-- q2.tex                 # Question 2
+|   |-- q3.tex                 # Question 3
+|   |-- q4.tex                 # Question 4
+|   |-- q5.tex                 # Question 5
+|   +-- conclusion.tex         # General conclusion and evaluation
+|-- figures/                   # All figures
 |   |-- q1/
 |   |-- q2/
 |   |-- q3/
 |   |-- q4/
 |   +-- q5/
-|-- tables/                    # Buyuk tablolar (opsiyonel ayri dosya)
-+-- references.bib             # Kaynakca
+|-- tables/                    # Large tables (optionally in separate files)
++-- references.bib             # Bibliography
 ```
 
 ---
 
-## main.tex Sablonu
+## main.tex Template
 
 ```latex
 \documentclass[12pt, a4paper]{article}
@@ -120,149 +120,149 @@ report/
 
 ---
 
-## Section Yapilari
+## Section Structures
 
 ### introduction.tex
 
 ```
 1. Introduction
    1.1 Scope and Objectives
-       - 5 NLU gorevinin tanitimi
-       - Genel yaklasim: classical vs neural vs transformer
+       - Introduction to the 5 NLU tasks
+       - General approach: classical vs neural vs transformer
    1.2 Technical Setup
-       - Ortam, kutuphaneler, reproducibility
-       - Dataset ozeti tablosu
+       - Environment, libraries, reproducibility
+       - Dataset summary table
    1.3 Report Organization
-       - Her section'in icerigi
+       - Contents of each section
 ```
 
 ---
 
 ### q1.tex - Representation Learning in Text Classification
 
-Ilgili mimari dokuman: [Q1 Architecture](04-q1-text-classification.md)
+Related architecture document: [Q1 Architecture](04-q1-text-classification.md)
 
 ```
 2. Question 1: Representation Learning in Text Classification
 
    2.1 Dataset Description
-       - IMDb dataset ozellikleri
-       - Tablo: Dataset istatistikleri (boyut, ortalama uzunluk, sinif dagalimi)
-       - Train/Val/Test split bilgileri
+       - IMDb dataset properties
+       - Table: Dataset statistics (size, average length, class distribution)
+       - Train/Val/Test split information
 
    2.2 Preprocessing Pipeline
-       - Cleaning adimlari
-       - Tokenization stratejileri karsilastirmasi
-       - Tablo: Preprocessing deneyi sonuclari
-         (stopword, lowercase, max_features etkisi)
+       - Cleaning steps
+       - Tokenization strategy comparison
+       - Table: Preprocessing experiment results
+         (effect of stopword removal, lowercasing, max_features)
 
    2.3 Models
        2.3.1 TF-IDF + Logistic Regression / SVM
-           - Representation aciklamasi
-           - Hyperparametreler
+           - Representation explanation
+           - Hyperparameters
        2.3.2 BiLSTM
-           - Mimari sekil
+           - Architecture diagram
            - GloVe embeddings
-           - Hyperparametreler
+           - Hyperparameters
        2.3.3 DistilBERT
-           - Fine-tuning stratejisi
-           - Hyperparametreler
+           - Fine-tuning strategy
+           - Hyperparameters
 
    2.4 Results
-       - Tablo: Model karsilastirmasi (Accuracy, Macro-F1)
+       - Table: Model comparison (Accuracy, Macro-F1)
        - Training curves (BiLSTM, DistilBERT)
        - Confusion matrices
 
    2.5 Error Analysis
-       - 5 misclassified ornek tablosu
-       - Ortak hata pattern'leri
-       - Neden yanlis siniflandirildi?
+       - Table of 5 misclassified examples
+       - Common error patterns
+       - Why were they misclassified?
 
    2.6 Discussion
-       - Representation turleri karsilastirmasi
+       - Comparison of representation types
          (sparse vs dense vs contextual)
-       - Performans vs interpretability trade-off
-       - Anahtar bulgular
+       - Performance vs interpretability trade-off
+       - Key findings
 ```
 
 ---
 
 ### q2.tex - Named Entity Recognition
 
-Ilgili mimari dokuman: [Q2 Architecture](05-q2-ner.md)
+Related architecture document: [Q2 Architecture](05-q2-ner.md)
 
 ```
 3. Question 2: Named Entity Recognition
 
    3.1 Dataset Description
-       - CoNLL-2003 ozellikleri
-       - BIO tagging aciklamasi
-       - Entity type dagalimi tablosu/grafik
+       - CoNLL-2003 properties
+       - BIO tagging explanation
+       - Entity type distribution table/chart
 
    3.2 Preprocessing and BIO Alignment
-       - CoNLL format aciklamasi
-       - BERT subword alignment yontemi
+       - CoNLL format explanation
+       - BERT subword alignment method
        - CRF feature engineering
 
    3.3 Models
        3.3.1 CRF (Feature-based)
            - Feature set
-           - Training yontemi
+           - Training method
        3.3.2 BiLSTM-CRF
-           - Mimari sekil
-           - CRF katmaninin rolu
+           - Architecture diagram
+           - Role of the CRF layer
        3.3.3 BERT Token Classification
            - Fine-tuning
            - Subword handling
 
    3.4 Results
-       - Tablo: Overall P/R/F1
-       - Tablo: Per-entity-type P/R/F1 (PER, ORG, LOC, MISC)
+       - Table: Overall P/R/F1
+       - Table: Per-entity-type P/R/F1 (PER, ORG, LOC, MISC)
 
    3.5 Error Analysis
-       - Boundary error ornekleri
-       - Entity confusion ornekleri
-       - Contextual embeddings'in katkisi tartismasi
+       - Boundary error examples
+       - Entity confusion examples
+       - Discussion on the contribution of contextual embeddings
 
    3.6 Discussion
        - CRF vs neural vs transformer
-       - Contextual bilginin onemi
+       - Importance of contextual information
 ```
 
 ---
 
 ### q3.tex - Text Summarization
 
-Ilgili mimari dokuman: [Q3 Architecture](06-q3-summarization.md)
+Related architecture document: [Q3 Architecture](06-q3-summarization.md)
 
 ```
 4. Question 3: Text Summarization
 
    4.1 Dataset Description
-       - CNN/DailyMail ozellikleri
-       - Subset boyutu ve secim yontemi
+       - CNN/DailyMail properties
+       - Subset size and selection method
 
    4.2 Methods
        4.2.1 TextRank (Extractive)
-           - Algoritma aciklamasi + diagram
-           - Parametreler
+           - Algorithm explanation + diagram
+           - Parameters
        4.2.2 BART (Abstractive)
-           - Model aciklamasi
-           - Generation parametreleri
+           - Model explanation
+           - Generation parameters
 
    4.3 Evaluation Metrics
-       - ROUGE-1/2/L, BLEU, METEOR, BERTScore aciklamasi
-       - Her metrigin olctugu boyut
+       - ROUGE-1/2/L, BLEU, METEOR, BERTScore explanation
+       - What each metric measures
 
    4.4 Results
-       - Tablo: Tum metrikler (TextRank vs BART)
+       - Table: All metrics (TextRank vs BART)
 
    4.5 Qualitative Analysis
-       - 3+ ornek: source, reference, TextRank output, BART output
-       - Her ornek icin: fluency, factual consistency, coverage analizi
+       - 3+ examples: source, reference, TextRank output, BART output
+       - For each example: fluency, factual consistency, coverage analysis
 
    4.6 Discussion
-       - Extractive vs abstractive trade-off'lar
+       - Extractive vs abstractive trade-offs
        - Computational cost, readability, faithfulness
 ```
 
@@ -270,73 +270,73 @@ Ilgili mimari dokuman: [Q3 Architecture](06-q3-summarization.md)
 
 ### q4.tex - Machine Translation
 
-Ilgili mimari dokuman: [Q4 Architecture](07-q4-machine-translation.md)
+Related architecture document: [Q4 Architecture](07-q4-machine-translation.md)
 
 ```
 5. Question 4: Machine Translation
 
    5.1 Dataset Description
-       - Multi30k ozellikleri
-       - Preprocessing adimlari
+       - Multi30k properties
+       - Preprocessing steps
 
    5.2 Models
        5.2.1 Seq2Seq + Attention
-           - Encoder-Decoder mimari sekil
-           - Attention mekanizmasi aciklamasi
+           - Encoder-Decoder architecture diagram
+           - Attention mechanism explanation
        5.2.2 Transformer
            - Self-attention + cross-attention
            - Positional encoding
 
    5.3 Evaluation Metrics
-       - BLEU, METEOR, ChrF, BERTScore aciklamasi
-       - Her metrigin odagi
+       - BLEU, METEOR, ChrF, BERTScore explanation
+       - Focus of each metric
 
    5.4 Results
-       - Tablo: Tum metrikler (Seq2Seq vs Transformer)
-       - Attention heatmap gorselleri
+       - Table: All metrics (Seq2Seq vs Transformer)
+       - Attention heatmap visualizations
 
    5.5 Qualitative Analysis
-       - 3+ ornek: source, reference, Seq2Seq output, Transformer output
-       - Fluency, rare word handling, long-range dependency analizi
+       - 3+ examples: source, reference, Seq2Seq output, Transformer output
+       - Fluency, rare word handling, long-range dependency analysis
 
    5.6 Discussion
-       - Metrik boyutlari analizi (her metrik neyi yakaliyor)
-       - Mimari trade-off'lar (paralelizasyon, long-range, hiz)
+       - Analysis of metric dimensions (what each metric captures)
+       - Architectural trade-offs (parallelization, long-range, speed)
 ```
 
 ---
 
 ### q5.tex - Language Modeling
 
-Ilgili mimari dokuman: [Q5 Architecture](08-q5-language-modeling.md)
+Related architecture document: [Q5 Architecture](08-q5-language-modeling.md)
 
 ```
 6. Question 5: Language Modeling
 
    6.1 Dataset Description
-       - WikiText-2 ozellikleri
+       - WikiText-2 properties
 
    6.2 Models
        6.2.1 N-gram (Trigram + Smoothing)
-           - Model aciklamasi
-           - Smoothing yontemi
+           - Model explanation
+           - Smoothing method
        6.2.2 LSTM Language Model
-           - Mimari detaylari
+           - Architecture details
            - Weight tying
-       6.2.3 (Opsiyonel) GPT-2
-           - Fine-tuning yaklasimi
+       6.2.3 (Optional) GPT-2
+           - Fine-tuning approach
 
    6.3 Results
-       - Tablo: Perplexity karsilastirmasi
+       - Table: Perplexity comparison
        - Training curves
 
    6.4 Generated Text Samples
-       - Her modelden 2-3 ornek
-       - Farkli temperature/sampling ayarlari
+       - 2-3 examples from each model
+       - Different temperature/sampling settings
 
    6.5 Discussion
-       - Fluency ve coherence analizi
-       - Model davranisi farkliliklari
+       - Fluency and coherence analysis
+       - Differences in model behavior
 ```
 
 ---
@@ -345,17 +345,17 @@ Ilgili mimari dokuman: [Q5 Architecture](08-q5-language-modeling.md)
 
 ```
 7. Conclusion
-   - 5 gorev uzerinden ogrenilenler
-   - Ortak temalar: klasik vs neural vs transformer
-   - Her gorevde en iyi yaklasimin neden ustun geldigi
-   - Limitasyonlar ve gelecek calisma
+   - Lessons learned across 5 tasks
+   - Common themes: classical vs neural vs transformer
+   - Why the best approach excelled in each task
+   - Limitations and future work
 ```
 
 ---
 
-## Tablo ve Sekil Standartlari
+## Table and Figure Standards
 
-### Tablo Ornegi
+### Table Example
 
 ```latex
 \begin{table}[H]
@@ -375,7 +375,7 @@ DistilBERT       & \textbf{0.930} & \textbf{0.930} \\
 \end{table}
 ```
 
-### Sekil Ornegi
+### Figure Example
 
 ```latex
 \begin{figure}[H]
@@ -386,7 +386,7 @@ DistilBERT       & \textbf{0.930} & \textbf{0.930} \\
 \end{figure}
 ```
 
-### Qualitative Ornek Ornegi
+### Qualitative Example
 
 ```latex
 \begin{table}[H]
@@ -409,7 +409,7 @@ BART & An American tourist was found dead in a London hotel ... \\
 
 ---
 
-## Kaynakca (references.bib) Ornekleri
+## Bibliography (references.bib) Examples
 
 ```bibtex
 @article{devlin2019bert,
@@ -450,7 +450,7 @@ BART & An American tourist was found dead in a London hotel ... \\
 
 ---
 
-## Derleme
+## Compilation
 
 ```bash
 cd report/
@@ -460,7 +460,7 @@ pdflatex main.tex
 pdflatex main.tex
 ```
 
-veya `latexmk`:
+or using `latexmk`:
 
 ```bash
 latexmk -pdf main.tex
@@ -468,11 +468,11 @@ latexmk -pdf main.tex
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Proje Genel Bakis](01-project-overview.md) - Proje scopu
-- [Evaluation Framework](09-evaluation-framework.md) - Raporda sunulacak metrikler
-- Her soru dokumani -> rapordaki karsiligi:
+- [Project Overview](01-project-overview.md) - Project scope
+- [Evaluation Framework](09-evaluation-framework.md) - Metrics to be presented in the report
+- Each question document -> its report counterpart:
   - [Q1](04-q1-text-classification.md) -> `sections/q1.tex`
   - [Q2](05-q2-ner.md) -> `sections/q2.tex`
   - [Q3](06-q3-summarization.md) -> `sections/q3.tex`

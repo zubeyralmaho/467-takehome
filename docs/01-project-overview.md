@@ -1,101 +1,101 @@
-# 01 - Proje Genel Bakis
+# 01 - Project Overview
 
-> [Ana Sayfa](README.md) | Sonraki: [Dizin Yapisi](02-project-structure.md)
-
----
-
-## Amac
-
-Bu proje, NLP'nin bes temel gorevini (text classification, NER, summarization, machine translation, language modeling) farkli mimari yaklasimlarla (klasik, neural, transformer) implement edip karsilastirmali olarak degerlendirmeyi amaclar.
+> [Home](README.md) | Next: [Directory Structure](02-project-structure.md)
 
 ---
 
-## Soru Haritas ve Gorev Ozeti
+## Objective
 
-| Soru | Gorev | Dataset | Modeller | Ana Metrikler |
-|------|-------|---------|----------|---------------|
-| Q1 | Text Classification | IMDb (veya SST-2) | TF-IDF+LR, TF-IDF+SVM, BiLSTM, DistilBERT | Accuracy, Macro-F1 |
+This project aims to implement and comparatively evaluate five fundamental NLP tasks (text classification, NER, summarization, machine translation, language modeling) using different architectural approaches (classical, neural, transformer).
+
+---
+
+## Question Map and Task Summary
+
+| Question | Task | Dataset | Models | Main Metrics |
+|----------|------|---------|--------|--------------|
+| Q1 | Text Classification | IMDb (or SST-2) | TF-IDF+LR, TF-IDF+SVM, BiLSTM, DistilBERT | Accuracy, Macro-F1 |
 | Q2 | Named Entity Recognition | CoNLL-2003 | CRF, BiLSTM-CRF, BERT-NER | Precision, Recall, F1 (entity-level) |
-| Q3 | Text Summarization | CNN/DailyMail (subset) | TextRank, BART (veya T5) | ROUGE-1/2/L, BLEU, METEOR, BERTScore |
+| Q3 | Text Summarization | CNN/DailyMail (subset) | TextRank, BART (or T5) | ROUGE-1/2/L, BLEU, METEOR, BERTScore |
 | Q4 | Machine Translation | Multi30k (EN-DE) | Seq2Seq+Attention, Transformer | BLEU, METEOR, ChrF, BERTScore |
-| Q5 | Language Modeling | WikiText-2 (veya PTB) | N-gram, LSTM, (opsiyonel: GPT-2) | Perplexity |
+| Q5 | Language Modeling | WikiText-2 (or PTB) | N-gram, LSTM, (optional: GPT-2) | Perplexity |
 
 ---
 
-## Teknoloji Stack'i
+## Technology Stack
 
 ### Core Framework
 
-| Katman | Teknoloji | Versiyon | Kullanim |
-|--------|-----------|----------|----------|
-| Deep Learning | PyTorch | >=2.0 | Tum neural modeller |
+| Layer | Technology | Version | Usage |
+|-------|------------|---------|-------|
+| Deep Learning | PyTorch | >=2.0 | All neural models |
 | Transformers | HuggingFace Transformers | >=4.35 | BERT, DistilBERT, BART, T5 |
 | Tokenization | HuggingFace Tokenizers | >=0.15 | Subword tokenization |
 | Classical ML | scikit-learn | >=1.3 | TF-IDF, LR, SVM, CRF |
-| NER CRF | sklearn-crfsuite / TorchCRF | - | CRF ve BiLSTM-CRF |
-| Data | HuggingFace Datasets | >=2.14 | Dataset yukleme/bolme |
+| NER CRF | sklearn-crfsuite / TorchCRF | - | CRF and BiLSTM-CRF |
+| Data | HuggingFace Datasets | >=2.14 | Dataset loading/splitting |
 | Metrics | evaluate + custom | - | ROUGE, BLEU, METEOR, BERTScore |
 
-### Yardimci Araclar
+### Auxiliary Tools
 
-| Arac | Kullanim |
-|------|----------|
-| PyYAML | Config yonetimi |
-| matplotlib / seaborn | Gorsellestirme |
-| pandas | Sonuc tablolari |
+| Tool | Usage |
+|------|-------|
+| PyYAML | Config management |
+| matplotlib / seaborn | Visualization |
+| pandas | Result tables |
 | tqdm | Progress bar |
-| LaTeX (texlive) | Rapor yazimi |
+| LaTeX (texlive) | Report writing |
 
-### Ortam
+### Environment
 
 - **Python**: 3.10+
-- **GPU**: CUDA destekli (Colab T4/V100 veya lokal)
-- **Reproducibility**: Her deneyde seed=42 (ayarlanabilir)
+- **GPU**: CUDA supported (Colab T4/V100 or local)
+- **Reproducibility**: seed=42 in every experiment (configurable)
 
 ---
 
-## Tasarim Ilkeleri
+## Design Principles
 
-### 1. Modularite
-Her soru kendi alt paketi (`src/q{n}_*/`) icerisinde yasayan bagimsiz bir modul olarak tasarlanir. Ortak islevler `src/common/` altinda merkezlestirilir.
+### 1. Modularity
+Each question is designed as an independent module living within its own sub-package (`src/q{n}_*/`). Shared functionalities are centralized under `src/common/`.
 
-### 2. Konfigurasyona Dayali Calistirma
-Tum hyperparameter'ler, dataset ayarlari ve model secenekleri YAML config dosyalari uzerinden yonetilir. Hardcoded deger bulunmaz.
+### 2. Configuration-Driven Execution
+All hyperparameters, dataset settings, and model options are managed through YAML config files. No hardcoded values.
 
-### 3. Tekrarlanabilirlik (Reproducibility)
-- Sabit random seed (global + per-worker)
-- Deterministic PyTorch ayarlari
-- Config dosyalari sonuc klasorleriyle birlikte saklanir
-- Her deney ciktisi timestamped klasorde tutulur
+### 3. Reproducibility
+- Fixed random seed (global + per-worker)
+- Deterministic PyTorch settings
+- Config files are stored alongside result directories
+- Each experiment output is kept in a timestamped directory
 
-### 4. Tutarli Evaluation
-Tum sorular ayni evaluation engine'i kullanir. Metrikler merkezi olarak hesaplanir, sonuclar standart formatta (JSON + CSV) kaydedilir.
+### 4. Consistent Evaluation
+All questions use the same evaluation engine. Metrics are computed centrally, and results are saved in a standard format (JSON + CSV).
 
-### 5. Incremental Gelistirme
-Her soru bagimsiz olarak gelistirilip test edilebilir. Birinin hatasi digerlerini etkilemez.
+### 5. Incremental Development
+Each question can be developed and tested independently. A failure in one does not affect the others.
 
 ---
 
-## Gelistirme Sirasi (Onerilen)
+## Development Order (Recommended)
 
 ```
-Hafta 1:  [03-shared-infrastructure.md] -> Ortak altyapi (config, data, eval)
-          [04-q1-text-classification.md] -> Q1 (en basit, altyapiyi dogrular)
+Week 1:  [03-shared-infrastructure.md] -> Shared infrastructure (config, data, eval)
+         [04-q1-text-classification.md] -> Q1 (simplest, validates the infrastructure)
 
-Hafta 2:  [05-q2-ner.md] -> Q2 NER
-          [06-q3-summarization.md] -> Q3 Summarization
+Week 2:  [05-q2-ner.md] -> Q2 NER
+         [06-q3-summarization.md] -> Q3 Summarization
 
-Hafta 3:  [07-q4-machine-translation.md] -> Q4 Translation
-          [08-q5-language-modeling.md] -> Q5 Language Modeling
+Week 3:  [07-q4-machine-translation.md] -> Q4 Translation
+         [08-q5-language-modeling.md] -> Q5 Language Modeling
 
-Hafta 4:  [09-evaluation-framework.md] -> Final evaluation, error analysis
-          [11-report-structure.md] -> LaTeX rapor yazimi
+Week 4:  [09-evaluation-framework.md] -> Final evaluation, error analysis
+         [11-report-structure.md] -> LaTeX report writing
 ```
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Dizin Yapisi](02-project-structure.md) - Dosya ve klasor organizasyonu
-- [Ortak Altyapi](03-shared-infrastructure.md) - Paylasilan kod detaylari
-- [Experiment Config](10-experiment-config.md) - Reproducibility detaylari
+- [Directory Structure](02-project-structure.md) - File and directory organization
+- [Shared Infrastructure](03-shared-infrastructure.md) - Shared code details
+- [Experiment Config](10-experiment-config.md) - Reproducibility details

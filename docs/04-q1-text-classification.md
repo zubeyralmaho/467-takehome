@@ -1,36 +1,36 @@
 # 04 - Q1: Text Classification (Representation Learning)
 
-> [Ana Sayfa](README.md) | Onceki: [Ortak Altyapi](03-shared-infrastructure.md) | Sonraki: [Q2 - NER](05-q2-ner.md)
+> [Home](README.md) | Previous: [Shared Infrastructure](03-shared-infrastructure.md) | Next: [Q2 - NER](05-q2-ner.md)
 
 ---
 
-## Hedef
+## Objective
 
-Farkli representation learning stratejilerinin (sparse/TF-IDF, dense/embedding, contextual/transformer) siniflandirma performansina ve genellestirilirlige etkisini analiz etmek.
+To analyze the effect of different representation learning strategies (sparse/TF-IDF, dense/embedding, contextual/transformer) on classification performance and generalizability.
 
 ---
 
 ## Dataset
 
 ### IMDb Movie Reviews
-- **Boyut**: 50,000 review (25K train, 25K test)
-- **Siniflar**: 2 (positive, negative) - dengeli dagilim
-- **Ortalama uzunluk**: ~230 kelime
-- **Kaynak**: `datasets.load_dataset("imdb")`
+- **Size**: 50,000 reviews (25K train, 25K test)
+- **Classes**: 2 (positive, negative) - balanced distribution
+- **Average length**: ~230 words
+- **Source**: `datasets.load_dataset("imdb")`
 
-### Split Stratejisi
+### Split Strategy
 ```
-Orijinal Train (25K) -> Train (20K) + Validation (5K)   [stratified]
-Orijinal Test  (25K) -> Test (25K)                       [degistirilmez]
+Original Train (25K) -> Train (20K) + Validation (5K)   [stratified]
+Original Test  (25K) -> Test (25K)                       [unchanged]
 ```
 
-> Test seti yalnizca **bir kez**, final evaluation icin kullanilir.
+> The test set is used only **once**, for final evaluation.
 
 ---
 
 ## Preprocessing Pipeline
 
-### preprocess.py Modulu
+### preprocess.py Module
 
 ```python
 class TextPreprocessor:
@@ -38,39 +38,39 @@ class TextPreprocessor:
         self.lowercase = config.preprocess.lowercase        # True
         self.remove_html = config.preprocess.remove_html    # True
         self.remove_special = config.preprocess.remove_special  # True
-        self.remove_stopwords = config.preprocess.remove_stopwords  # deney
+        self.remove_stopwords = config.preprocess.remove_stopwords  # experiment
         self.max_length = config.preprocess.max_length      # 256/512
 
     def __call__(self, text: str) -> str:
         """Pipeline: HTML strip -> lowercase -> special char -> stopword"""
 ```
 
-### Tokenization Stratejileri (Karsilastirma Gerekli)
+### Tokenization Strategies (Comparison Required)
 
-| Strateji | Aciklama | Kullanildigi Model |
-|----------|----------|--------------------|
+| Strategy | Description | Used In Model |
+|----------|-------------|---------------|
 | **Word-level** | Whitespace + punctuation split | TF-IDF, BiLSTM |
 | **Subword (WordPiece)** | DistilBERT tokenizer | DistilBERT |
-| (Opsiyonel) **Character n-gram** | TF-IDF icin char_wb | TF-IDF varyant |
+| (Optional) **Character n-gram** | char_wb for TF-IDF | TF-IDF variant |
 
-### Preprocessing Karsilastirma Deneyi
+### Preprocessing Comparison Experiment
 
-Asagidaki ayarlarin etkisi olculur (TF-IDF+LR uzerinde hizli sweep):
+The effect of the following settings is measured (quick sweep on TF-IDF+LR):
 
-| Deney | Stopword | Lowercase | Max Features |
-|-------|----------|-----------|--------------|
-| A     | Kaldir   | Evet      | 50,000       |
-| B     | Birak    | Evet      | 50,000       |
-| C     | Kaldir   | Evet      | 100,000      |
-| D     | Birak    | Hayir     | 50,000       |
+| Experiment | Stopword | Lowercase | Max Features |
+|------------|----------|-----------|--------------|
+| A          | Remove   | Yes       | 50,000       |
+| B          | Keep     | Yes       | 50,000       |
+| C          | Remove   | Yes       | 100,000      |
+| D          | Keep     | No        | 50,000       |
 
 ---
 
-## Model Mimarileri
+## Model Architectures
 
 ### Model 1: TF-IDF + Logistic Regression / SVM
 
-**Dosya**: `models/tfidf_classifier.py`
+**File**: `models/tfidf_classifier.py`
 
 ```python
 class TFIDFClassifier:
@@ -78,7 +78,7 @@ class TFIDFClassifier:
                  max_features: int = 50000,
                  ngram_range: tuple = (1, 2)):
         """
-        classifier_type: "lr" (LogisticRegression) veya "svm" (LinearSVC)
+        classifier_type: "lr" (LogisticRegression) or "svm" (LinearSVC)
         TfidfVectorizer + classifier pipeline
         """
 
@@ -92,8 +92,8 @@ class TFIDFClassifier:
 Raw Text -> TextPreprocessor -> TfidfVectorizer -> LR/SVM -> Label
 ```
 
-**Hyperparametreler**:
-| Parametre | Deger |
+**Hyperparameters**:
+| Parameter | Value |
 |-----------|-------|
 | max_features | 50,000 |
 | ngram_range | (1, 2) |
@@ -105,7 +105,7 @@ Raw Text -> TextPreprocessor -> TfidfVectorizer -> LR/SVM -> Label
 
 ### Model 2: BiLSTM
 
-**Dosya**: `models/bilstm.py`
+**File**: `models/bilstm.py`
 
 ```python
 class BiLSTMClassifier(nn.Module):
@@ -114,9 +114,9 @@ class BiLSTMClassifier(nn.Module):
                  dropout: float = 0.3, num_classes: int = 2,
                  pretrained_embeddings: torch.Tensor = None):
         """
-        Katmanlar:
-        1. Embedding (opsiyonel GloVe pretrained)
-        2. Bidirectional LSTM (2 katman)
+        Layers:
+        1. Embedding (optional GloVe pretrained)
+        2. Bidirectional LSTM (2 layers)
         3. Dropout
         4. Linear classification head
         """
@@ -124,14 +124,14 @@ class BiLSTMClassifier(nn.Module):
     def forward(self, x, lengths):
         """
         x: (batch, seq_len) token indices
-        lengths: (batch,) gercek uzunluklar (padding haric)
+        lengths: (batch,) actual lengths (excluding padding)
 
-        Akis:
-        embed -> pack_padded -> BiLSTM -> unpack -> son hidden concat -> dropout -> fc
+        Flow:
+        embed -> pack_padded -> BiLSTM -> unpack -> last hidden concat -> dropout -> fc
         """
 ```
 
-**Mimari Diyagrami**:
+**Architecture Diagram**:
 ```
 Input Tokens: [CLS] the movie was great [PAD] [PAD]
       |
@@ -157,8 +157,8 @@ Input Tokens: [CLS] the movie was great [PAD] [PAD]
 Prediction: positive
 ```
 
-**Hyperparametreler**:
-| Parametre | Deger |
+**Hyperparameters**:
+| Parameter | Value |
 |-----------|-------|
 | embed_dim | 300 |
 | hidden_dim | 256 |
@@ -176,7 +176,7 @@ Prediction: positive
 
 ### Model 3: DistilBERT
 
-**Dosya**: `models/distilbert.py`
+**File**: `models/distilbert.py`
 
 ```python
 class DistilBERTClassifier:
@@ -188,19 +188,19 @@ class DistilBERTClassifier:
         """
 
     def get_tokenizer(self):
-        """DistilBertTokenizer dondurur."""
+        """Returns DistilBertTokenizer."""
 
     def create_dataset(self, texts, labels, max_length=512):
         """HuggingFace Dataset + tokenization."""
 
     def train(self, train_dataset, val_dataset, config):
-        """HuggingFace Trainer veya custom loop ile fine-tuning."""
+        """Fine-tuning with HuggingFace Trainer or custom loop."""
 
     def predict(self, texts):
         """Inference."""
 ```
 
-**Fine-tuning Stratejisi**:
+**Fine-tuning Strategy**:
 ```
 [DistilBERT Pretrained Weights] (66M params)
         |
@@ -214,36 +214,36 @@ class DistilBERTClassifier:
 [AdamW + Linear Warmup + Weight Decay]
 ```
 
-**Hyperparametreler**:
-| Parametre | Deger |
+**Hyperparameters**:
+| Parameter | Value |
 |-----------|-------|
 | model_name | distilbert-base-uncased |
 | max_seq_length | 512 |
 | batch_size | 16 |
 | learning_rate | 2e-5 |
 | weight_decay | 0.01 |
-| warmup_steps | %10 of total |
+| warmup_steps | 10% of total |
 | num_epochs | 3 |
 | optimizer | AdamW |
 | scheduler | linear warmup |
 
 ---
 
-## Training Akisi
+## Training Flow
 
-**Dosya**: `train.py`
+**File**: `train.py`
 
 ```python
 def run_training(config: Config):
     """
-    1. Data yukle + preprocess
-    2. Tum modelleri sirasiyla train et:
+    1. Load data + preprocess
+    2. Train all models sequentially:
        a. TF-IDF + LR  (sklearn .fit)
        b. TF-IDF + SVM (sklearn .fit)
        c. BiLSTM        (Trainer loop)
        d. DistilBERT    (HF Trainer / custom loop)
-    3. Her model icin validation metrikleri kaydet
-    4. En iyi modellerin test evaluation'ini calistir
+    3. Save validation metrics for each model
+    4. Run test evaluation for the best models
     """
 ```
 
@@ -251,41 +251,41 @@ def run_training(config: Config):
 
 ## Analysis & Error Patterns
 
-**Dosya**: `analysis.py`
+**File**: `analysis.py`
 
 ```python
 def analyze_misclassifications(texts, y_true, y_pred,
                                 n_examples: int = 5) -> list[dict]:
     """
-    En az 5 yanlis siniflandirilmis ornegi secer.
-    Her ornek icin:
-    - Orjinal metin (truncated)
+    Selects at least 5 misclassified examples.
+    For each example:
+    - Original text (truncated)
     - True label
     - Predicted label
-    - Model confidence (varsa)
-    - Olasi hata nedeni (pattern)
+    - Model confidence (if available)
+    - Possible error reason (pattern)
     """
 
 def identify_error_patterns(misclassified: list[dict]) -> dict:
     """
-    Ortak hata pattern'leri:
-    - Ironi/sarkasm
-    - Karisik duygu (mixed sentiment)
-    - Negation handling hatalari
+    Common error patterns:
+    - Irony/sarcasm
+    - Mixed sentiment
+    - Negation handling errors
     - Domain-specific jargon
-    - Cok kisa/uzun metinler
+    - Very short/long texts
     """
 ```
 
 ---
 
-## Beklenen Ciktilar
+## Expected Outputs
 
 ```
 outputs/q1/run_{timestamp}/
-|-- config.yaml               # Kullanilan config
-|-- preprocessing_comparison.csv  # Tokenization/preprocessing etki tablosu
-|-- metrics.json               # Tum model metrikleri
+|-- config.yaml               # Config used
+|-- preprocessing_comparison.csv  # Tokenization/preprocessing impact table
+|-- metrics.json               # All model metrics
 |-- predictions/
 |   |-- tfidf_lr_preds.csv
 |   |-- tfidf_svm_preds.csv
@@ -302,7 +302,7 @@ outputs/q1/run_{timestamp}/
 
 ---
 
-## Config Ornegi (q1.yaml)
+## Config Example (q1.yaml)
 
 ```yaml
 question: "q1"
@@ -310,14 +310,14 @@ task: "classification"
 
 dataset:
   name: "imdb"
-  val_split_ratio: 0.2    # train'den ayrilacak val orani
+  val_split_ratio: 0.2    # validation ratio to split from train
 
 preprocess:
   lowercase: true
   remove_html: true
   remove_special: true
   remove_stopwords: false
-  max_length: 256          # BiLSTM icin
+  max_length: 256          # for BiLSTM
 
 models:
   tfidf_lr:
@@ -357,24 +357,24 @@ evaluation:
 
 ---
 
-## Representation Karsilastirma Cercevesi
+## Representation Comparison Framework
 
-Raporda sunulacak karsilastirma:
+Comparison to be presented in the report:
 
-| Boyut | TF-IDF (Sparse) | BiLSTM (Dense) | DistilBERT (Contextual) |
-|-------|-----------------|----------------|------------------------|
+| Dimension | TF-IDF (Sparse) | BiLSTM (Dense) | DistilBERT (Contextual) |
+|-----------|-----------------|----------------|------------------------|
 | Representation | Bag-of-words, n-gram | Static embeddings | Contextual embeddings |
-| Boyut | ~50K sparse | 300d dense | 768d contextual |
-| Baglamsal mi? | Hayir | Hayir (static) | Evet |
-| Egitim suresi | Saniyeler | Dakikalar | Dakikalar-saat |
-| Interpretability | Yuksek (feature weights) | Dusuk | Cok dusuk |
-| Performans | Iyi baseline | Orta-iyi | En yuksek |
+| Dimensionality | ~50K sparse | 300d dense | 768d contextual |
+| Context-aware? | No | No (static) | Yes |
+| Training time | Seconds | Minutes | Minutes-hours |
+| Interpretability | High (feature weights) | Low | Very low |
+| Performance | Good baseline | Medium-good | Highest |
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Ortak Altyapi](03-shared-infrastructure.md) - Trainer, Evaluator, metrics
-- [Evaluation Framework](09-evaluation-framework.md) - Accuracy, Macro-F1 detaylari
-- [Experiment Config](10-experiment-config.md) - Config yapisi
-- [LaTeX Rapor](11-report-structure.md) - Q1 section yapisi
+- [Shared Infrastructure](03-shared-infrastructure.md) - Trainer, Evaluator, metrics
+- [Evaluation Framework](09-evaluation-framework.md) - Accuracy, Macro-F1 details
+- [Experiment Config](10-experiment-config.md) - Config structure
+- [LaTeX Report](11-report-structure.md) - Q1 section structure

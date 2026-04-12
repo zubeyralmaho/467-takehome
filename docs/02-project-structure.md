@@ -1,39 +1,39 @@
-# 02 - Dizin Yapisi
+# 02 - Directory Structure
 
-> [Ana Sayfa](README.md) | Onceki: [Proje Genel Bakis](01-project-overview.md) | Sonraki: [Ortak Altyapi](03-shared-infrastructure.md)
+> [Home](README.md) | Previous: [Project Overview](01-project-overview.md) | Next: [Shared Infrastructure](03-shared-infrastructure.md)
 
 ---
 
-## Proje Kok Dizini
+## Project Root Directory
 
 ```
 CENG467_Midterm/
 |
-|-- configs/                        # YAML konfigurasyonlari
+|-- configs/                        # YAML configurations
 |   |-- q1.yaml                     # Q1 Text Classification config
 |   |-- q2.yaml                     # Q2 NER config
 |   |-- q3.yaml                     # Q3 Summarization config
 |   |-- q4.yaml                     # Q4 Translation config
 |   |-- q5.yaml                     # Q5 Language Modeling config
-|   +-- base.yaml                   # Ortak default degerler (seed, device, paths)
+|   +-- base.yaml                   # Shared default values (seed, device, paths)
 |
-|-- src/                            # Ana kaynak kodu
-|   |-- common/                     # Paylasilan altyapi (detay: 03-shared-infrastructure.md)
+|-- src/                            # Main source code
+|   |-- common/                     # Shared infrastructure (details: 03-shared-infrastructure.md)
 |   |   |-- __init__.py
 |   |   |-- config.py               # YAML config loader + merge logic
-|   |   |-- seed.py                 # Reproducibility: seed ayarlama
-|   |   |-- data_utils.py           # Genel data yukleyici, split, cache
-|   |   |-- vocab.py                # Vocabulary builder (neural modeller icin)
-|   |   |-- metrics.py              # Merkezi metrik hesaplama engine
+|   |   |-- seed.py                 # Reproducibility: seed setup
+|   |   |-- data_utils.py           # General data loader, split, cache
+|   |   |-- vocab.py                # Vocabulary builder (for neural models)
+|   |   |-- metrics.py              # Central metric computation engine
 |   |   |-- evaluation.py           # Evaluation orchestrator
-|   |   |-- visualization.py        # Ortak plot fonksiyonlari
+|   |   |-- visualization.py        # Shared plot functions
 |   |   |-- trainer.py              # Generic training loop (PyTorch)
-|   |   +-- export.py               # Sonuc kaydetme (JSON, CSV, tablolar)
+|   |   +-- export.py               # Result saving (JSON, CSV, tables)
 |   |
-|   |-- q1_classification/          # Soru 1 (detay: 04-q1-text-classification.md)
+|   |-- q1_classification/          # Question 1 (details: 04-q1-text-classification.md)
 |   |   |-- __init__.py
 |   |   |-- main.py                 # Entry point
-|   |   |-- preprocess.py           # Tokenization stratejileri, normalization
+|   |   |-- preprocess.py           # Tokenization strategies, normalization
 |   |   |-- dataset.py              # IMDb/SST-2 Dataset wrapper
 |   |   |-- models/
 |   |   |   |-- __init__.py
@@ -43,7 +43,7 @@ CENG467_Midterm/
 |   |   |-- train.py                # Training orchestration
 |   |   +-- analysis.py             # Misclassification analysis, error patterns
 |   |
-|   |-- q2_ner/                     # Soru 2 (detay: 05-q2-ner.md)
+|   |-- q2_ner/                     # Question 2 (details: 05-q2-ner.md)
 |   |   |-- __init__.py
 |   |   |-- main.py
 |   |   |-- preprocess.py           # CoNLL parser, BIO alignment
@@ -56,7 +56,7 @@ CENG467_Midterm/
 |   |   |-- train.py
 |   |   +-- analysis.py             # Entity-level error analysis
 |   |
-|   |-- q3_summarization/           # Soru 3 (detay: 06-q3-summarization.md)
+|   |-- q3_summarization/           # Question 3 (details: 06-q3-summarization.md)
 |   |   |-- __init__.py
 |   |   |-- main.py
 |   |   |-- preprocess.py           # Text cleaning, truncation
@@ -64,11 +64,11 @@ CENG467_Midterm/
 |   |   |-- models/
 |   |   |   |-- __init__.py
 |   |   |   |-- textrank.py         # Extractive: TextRank
-|   |   |   +-- bart_summarizer.py  # Abstractive: BART (veya T5)
+|   |   |   +-- bart_summarizer.py  # Abstractive: BART (or T5)
 |   |   |-- train.py                # BART fine-tuning
 |   |   +-- analysis.py             # Qualitative analysis, fluency
 |   |
-|   |-- q4_translation/             # Soru 4 (detay: 07-q4-machine-translation.md)
+|   |-- q4_translation/             # Question 4 (details: 07-q4-machine-translation.md)
 |   |   |-- __init__.py
 |   |   |-- main.py
 |   |   |-- preprocess.py           # Tokenization, BPE, vocab build
@@ -80,7 +80,7 @@ CENG467_Midterm/
 |   |   |-- train.py
 |   |   +-- analysis.py             # Translation quality analysis
 |   |
-|   |-- q5_language_model/          # Soru 5 (detay: 08-q5-language-modeling.md)
+|   |-- q5_language_model/          # Question 5 (details: 08-q5-language-modeling.md)
 |   |   |-- __init__.py
 |   |   |-- main.py
 |   |   |-- preprocess.py           # Corpus tokenization, vocabulary
@@ -89,34 +89,34 @@ CENG467_Midterm/
 |   |   |   |-- __init__.py
 |   |   |   |-- ngram.py            # N-gram LM (bigram, trigram + smoothing)
 |   |   |   |-- lstm_lm.py          # LSTM Language Model
-|   |   |   +-- gpt2_lm.py          # (Opsiyonel) GPT-2 fine-tuning
+|   |   |   +-- gpt2_lm.py          # (Optional) GPT-2 fine-tuning
 |   |   |-- train.py
 |   |   +-- generate.py             # Text generation + sampling strategies
 |   |
 |   +-- __init__.py
 |
-|-- notebooks/                      # Jupyter notebooks (hizli deney, gorsellestirme)
+|-- notebooks/                      # Jupyter notebooks (quick experiments, visualization)
 |   |-- q1_exploration.ipynb
 |   |-- q2_exploration.ipynb
 |   |-- q3_exploration.ipynb
 |   |-- q4_exploration.ipynb
 |   +-- q5_exploration.ipynb
 |
-|-- outputs/                        # Deney ciktilari (gitignore'da)
+|-- outputs/                        # Experiment outputs (in gitignore)
 |   |-- q1/
 |   |   |-- run_20260415_143022/    # Timestamped run
-|   |   |   |-- config.yaml         # Kullanilan config kopyasi
-|   |   |   |-- metrics.json        # Nihai metrikler
-|   |   |   |-- predictions.csv     # Model tahminleri
-|   |   |   |-- model_best.pt       # En iyi model checkpoint
-|   |   |   +-- figures/            # Plotlar
+|   |   |   |-- config.yaml         # Copy of used config
+|   |   |   |-- metrics.json        # Final metrics
+|   |   |   |-- predictions.csv     # Model predictions
+|   |   |   |-- model_best.pt       # Best model checkpoint
+|   |   |   +-- figures/            # Plots
 |   |   +-- ...
 |   |-- q2/ ...
 |   |-- q3/ ...
 |   |-- q4/ ...
 |   +-- q5/ ...
 |
-|-- report/                         # LaTeX rapor (detay: 11-report-structure.md)
+|-- report/                         # LaTeX report (details: 11-report-structure.md)
 |   |-- main.tex
 |   |-- sections/
 |   |   |-- introduction.tex
@@ -129,23 +129,23 @@ CENG467_Midterm/
 |   |-- tables/
 |   +-- references.bib
 |
-|-- docs/                           # Bu dokumantasyon dizini
+|-- docs/                           # This documentation directory
 |
 |-- requirements.txt                # pip dependencies
-|-- environment.yml                 # conda environment (alternatif)
+|-- environment.yml                 # conda environment (alternative)
 |-- .gitignore
-+-- README.md                       # Proje root README
++-- README.md                       # Project root README
 ```
 
 ---
 
-## Modul Bagimlilk Haritasi
+## Module Dependency Map
 
 ```
 configs/*.yaml
     |
     v
-src/common/config.py  <---- Tum main.py dosyalari bunu import eder
+src/common/config.py  <---- All main.py files import this
     |
     +---> src/common/seed.py
     +---> src/common/data_utils.py
@@ -157,33 +157,33 @@ src/common/config.py  <---- Tum main.py dosyalari bunu import eder
     |
     v
 src/q{n}_*/main.py
-    |-- preprocess.py  (q'ye ozel)
-    |-- dataset.py     (q'ye ozel, data_utils kullanir)
-    |-- models/*.py    (q'ye ozel)
-    |-- train.py       (common/trainer kullanir)
-    +-- analysis.py    (common/metrics + visualization kullanir)
+    |-- preprocess.py  (question-specific)
+    |-- dataset.py     (question-specific, uses data_utils)
+    |-- models/*.py    (question-specific)
+    |-- train.py       (uses common/trainer)
+    +-- analysis.py    (uses common/metrics + visualization)
 ```
 
 ---
 
-## Import Konvansiyonlari
+## Import Conventions
 
 ```python
-# Ortak altyapidan import
+# Import from shared infrastructure
 from src.common.config import load_config
 from src.common.seed import set_global_seed
 from src.common.metrics import compute_metrics
 from src.common.trainer import Trainer
 from src.common.evaluation import Evaluator
 
-# Soru-ozel modelden import
+# Import from question-specific model
 from src.q1_classification.models.bilstm import BiLSTMClassifier
 from src.q1_classification.preprocess import preprocess_pipeline
 ```
 
 ---
 
-## .gitignore Icerigi
+## .gitignore Contents
 
 ```
 outputs/
@@ -191,15 +191,15 @@ outputs/
 *.bin
 __pycache__/
 .ipynb_checkpoints/
-data/         # HuggingFace cache, buyuk dosyalar
+data/         # HuggingFace cache, large files
 *.egg-info/
 wandb/
 ```
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Ortak Altyapi](03-shared-infrastructure.md) - `src/common/` detaylari
-- [Experiment Config](10-experiment-config.md) - Config dosyasi formati
-- Her soru dokumani kendi alt dizininin detayini aciklar
+- [Shared Infrastructure](03-shared-infrastructure.md) - `src/common/` details
+- [Experiment Config](10-experiment-config.md) - Config file format
+- Each question document explains the details of its own subdirectory

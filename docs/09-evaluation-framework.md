@@ -1,26 +1,26 @@
 # 09 - Evaluation Framework
 
-> [Ana Sayfa](README.md) | Onceki: [Q5 - Language Modeling](08-q5-language-modeling.md) | Sonraki: [Experiment Config](10-experiment-config.md)
+> [Home](README.md) | Previous: [Q5 - Language Modeling](08-q5-language-modeling.md) | Next: [Experiment Config](10-experiment-config.md)
 
 ---
 
-## Genel Bakis
+## Overview
 
-Bu dokuman, projede kullanilan tum evaluation metriklerini, hesaplama yontemlerini, kutuphaneleri ve raporlama standartlarini tanimlar. Tum sorular ayni merkezi evaluation engine'i (`src/common/metrics.py` + `src/common/evaluation.py`) kullanir.
+This document defines all evaluation metrics used in the project, their computation methods, libraries, and reporting standards. All questions use the same centralized evaluation engine (`src/common/metrics.py` + `src/common/evaluation.py`).
 
 ---
 
-## Metrik Katalogu
+## Metric Catalog
 
 ### 1. Accuracy (Q1)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q1 - Text Classification |
-| **Formul** | `correct_predictions / total_predictions` |
-| **Aralik** | [0, 1] |
-| **Yuksek = Iyi** | Evet |
-| **Kutuphane** | `sklearn.metrics.accuracy_score` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q1 - Text Classification |
+| **Formula** | `correct_predictions / total_predictions` |
+| **Range** | [0, 1] |
+| **Higher = Better** | Yes |
+| **Library** | `sklearn.metrics.accuracy_score` |
 
 ```python
 from sklearn.metrics import accuracy_score
@@ -31,13 +31,13 @@ acc = accuracy_score(y_true, y_pred)
 
 ### 2. Macro-F1 (Q1)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q1 - Text Classification |
-| **Formul** | Her sinif icin F1 hesapla, ortalamalarini al |
-| **Aralik** | [0, 1] |
-| **Avantaj** | Dengesiz siniflar icin adil |
-| **Kutuphane** | `sklearn.metrics.f1_score(average='macro')` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q1 - Text Classification |
+| **Formula** | Compute F1 for each class, take their average |
+| **Range** | [0, 1] |
+| **Advantage** | Fair for imbalanced classes |
+| **Library** | `sklearn.metrics.f1_score(average='macro')` |
 
 ```python
 from sklearn.metrics import f1_score
@@ -48,46 +48,46 @@ f1 = f1_score(y_true, y_pred, average='macro')
 
 ### 3. Entity-Level Precision / Recall / F1 (Q2)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q2 - NER |
-| **Hesaplama Seviyesi** | Entity-level (token degil!) |
-| **Kutuphane** | `seqeval` |
-| **Onemli Not** | Kismi entity eslesmesi YANLIS sayilir |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q2 - NER |
+| **Computation Level** | Entity-level (not token!) |
+| **Library** | `seqeval` |
+| **Important Note** | Partial entity matches are counted as WRONG |
 
 ```python
 from seqeval.metrics import classification_report, f1_score
 from seqeval.scheme import IOB2
 
-# y_true ve y_pred: list[list[str]] (BIO tagleri)
+# y_true and y_pred: list[list[str]] (BIO tags)
 report = classification_report(y_true, y_pred, scheme=IOB2)
 f1 = f1_score(y_true, y_pred, scheme=IOB2)
 ```
 
 **Entity-Level vs Token-Level**:
 ```
-Gercek:  [B-LOC, I-LOC, I-LOC]   -> "New York City" (1 entity)
-Tahmin:  [B-LOC, I-LOC, O]        -> "New York" (1 entity)
+Ground truth:  [B-LOC, I-LOC, I-LOC]   -> "New York City" (1 entity)
+Prediction:    [B-LOC, I-LOC, O]        -> "New York" (1 entity)
 
-Token-level: 2/3 dogru = %66.7
-Entity-level: 0/1 dogru = %0 (entity siniri yanlis!)
+Token-level: 2/3 correct = 66.7%
+Entity-level: 0/1 correct = 0% (entity boundary is wrong!)
 ```
 
 ---
 
 ### 4. ROUGE (Q3)
 
-| Varyant | Olctugu Sey | Formul |
-|---------|------------|--------|
+| Variant | What It Measures | Formula |
+|---------|-----------------|---------|
 | **ROUGE-1** | Unigram overlap | F1(unigram_precision, unigram_recall) |
 | **ROUGE-2** | Bigram overlap | F1(bigram_precision, bigram_recall) |
 | **ROUGE-L** | Longest Common Subsequence | F1(LCS_precision, LCS_recall) |
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q3 - Summarization |
-| **Aralik** | [0, 1] |
-| **Kutuphane** | `evaluate` (HuggingFace) veya `rouge_score` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q3 - Summarization |
+| **Range** | [0, 1] |
+| **Library** | `evaluate` (HuggingFace) or `rouge_score` |
 
 ```python
 from evaluate import load
@@ -100,31 +100,31 @@ results = rouge.compute(
 # results = {"rouge1": 0.44, "rouge2": 0.21, "rougeL": 0.38, "rougeLsum": 0.40}
 ```
 
-**ROUGE Yorumu**:
-| Skor | Anlam |
-|------|-------|
-| ROUGE-1 > 0.40 | Iyi icerik kapsami |
-| ROUGE-2 > 0.18 | Iyi cumle yapisi kapsami |
-| ROUGE-L > 0.35 | Iyi genel yapisal benzerlik |
+**ROUGE Interpretation**:
+| Score | Meaning |
+|-------|---------|
+| ROUGE-1 > 0.40 | Good content coverage |
+| ROUGE-2 > 0.18 | Good sentence structure coverage |
+| ROUGE-L > 0.35 | Good overall structural similarity |
 
 ---
 
 ### 5. BLEU (Q3, Q4)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Sorular** | Q3 - Summarization, Q4 - Translation |
-| **Formul** | Geometric mean of n-gram precisions * brevity penalty |
-| **Aralik** | [0, 100] (sacrebleu) veya [0, 1] (nltk) |
-| **Kutuphane** | `sacrebleu` (Q4, standard) veya `nltk` (Q3) |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q3 - Summarization, Q4 - Translation |
+| **Formula** | Geometric mean of n-gram precisions * brevity penalty |
+| **Range** | [0, 100] (sacrebleu) or [0, 1] (nltk) |
+| **Library** | `sacrebleu` (Q4, standard) or `nltk` (Q3) |
 
 ```python
-# sacrebleu (Q4 icin onerilen)
+# sacrebleu (recommended for Q4)
 from sacrebleu import corpus_bleu
 bleu = corpus_bleu(predictions, [references])
-print(f"BLEU: {bleu.score:.1f}")  # 0-100 arasi
+print(f"BLEU: {bleu.score:.1f}")  # range 0-100
 
-# nltk (Q3 icin alternatif)
+# nltk (alternative for Q3)
 from nltk.translate.bleu_score import corpus_bleu
 score = corpus_bleu(
     [[ref.split()] for ref in references],
@@ -132,7 +132,7 @@ score = corpus_bleu(
 )
 ```
 
-**BLEU Bilesenleri**:
+**BLEU Components**:
 ```
 BLEU = BP * exp(sum(w_n * log(p_n)))
 
@@ -145,12 +145,12 @@ w_n = 1/4                                 # uniform weights
 
 ### 6. METEOR (Q3, Q4)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Sorular** | Q3, Q4 |
-| **Avantaj** | Synonym matching, stemming, word order |
-| **Aralik** | [0, 1] |
-| **Kutuphane** | `evaluate` veya `nltk.translate.meteor_score` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q3, Q4 |
+| **Advantage** | Synonym matching, stemming, word order |
+| **Range** | [0, 1] |
+| **Library** | `evaluate` or `nltk.translate.meteor_score` |
 
 ```python
 from evaluate import load
@@ -159,24 +159,24 @@ results = meteor.compute(predictions=predictions, references=references)
 ```
 
 **METEOR vs BLEU**:
-| Boyut | BLEU | METEOR |
-|-------|------|--------|
+| Dimension | BLEU | METEOR |
+|-----------|------|--------|
 | Matching | Exact n-gram | Exact + stem + synonym + paraphrase |
-| Recall | Dolayili (brevity penalty) | Dogrudan |
-| Word order | Yok | Penalty ile |
-| Korelasyon | Orta | Yuksek (insan degerlendirmesiyle) |
+| Recall | Indirect (brevity penalty) | Direct |
+| Word order | None | With penalty |
+| Correlation | Medium | High (with human evaluation) |
 
 ---
 
 ### 7. BERTScore (Q3, Q4)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Sorular** | Q3, Q4 |
-| **Yontem** | BERT embeddings ile cosine similarity |
-| **Cikti** | Precision, Recall, F1 |
-| **Aralik** | [0, 1] |
-| **Kutuphane** | `bert_score` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q3, Q4 |
+| **Method** | Cosine similarity with BERT embeddings |
+| **Output** | Precision, Recall, F1 |
+| **Range** | [0, 1] |
+| **Library** | `bert_score` |
 
 ```python
 from bert_score import score
@@ -184,27 +184,27 @@ from bert_score import score
 P, R, F1 = score(
     cands=predictions,
     refs=references,
-    lang="en",           # Q3 icin "en", Q4 icin "de"
+    lang="en",           # "en" for Q3, "de" for Q4
     verbose=True,
-    model_type="microsoft/deberta-xlarge-mnli"  # opsiyonel
+    model_type="microsoft/deberta-xlarge-mnli"  # optional
 )
-# Ortalama F1:
+# Average F1:
 avg_f1 = F1.mean().item()
 ```
 
-**BERTScore Avantaji**: N-gram overlap yerine semantik benzerlik olcer. "The dog ran" ve "The canine sprinted" icin yuksek skor verir.
+**BERTScore Advantage**: Measures semantic similarity instead of n-gram overlap. Gives a high score for "The dog ran" and "The canine sprinted".
 
 ---
 
 ### 8. ChrF (Q4)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q4 - Translation |
-| **Yontem** | Character n-gram F-score |
-| **Avantaj** | Morfolojik zengin diller (Almanca!) icin robust |
-| **Aralik** | [0, 100] |
-| **Kutuphane** | `sacrebleu` |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q4 - Translation |
+| **Method** | Character n-gram F-score |
+| **Advantage** | Robust for morphologically rich languages (German!) |
+| **Range** | [0, 100] |
+| **Library** | `sacrebleu` |
 
 ```python
 from sacrebleu import corpus_chrf
@@ -212,18 +212,18 @@ chrf = corpus_chrf(predictions, [references])
 print(f"ChrF: {chrf.score:.1f}")
 ```
 
-**Neden ChrF?** Almanca gibi bileşik kelimeli dillerde word-level metrikler zayif kalir. ChrF karakter seviyesinde esleme yaparak morfolojik varyasyonlari yakalayabilir.
+**Why ChrF?** Word-level metrics are weak for compound-word languages like German. ChrF performs character-level matching to capture morphological variations.
 
 ---
 
 ### 9. Perplexity (Q5)
 
-| Ozellik | Deger |
-|---------|-------|
-| **Kullanildigi Soru** | Q5 - Language Modeling |
-| **Formul** | `exp(average_cross_entropy_loss)` |
-| **Aralik** | [1, vocab_size] |
-| **Dusuk = Iyi** | Evet |
+| Property | Value |
+|----------|-------|
+| **Used In** | Q5 - Language Modeling |
+| **Formula** | `exp(average_cross_entropy_loss)` |
+| **Range** | [1, vocab_size] |
+| **Lower = Better** | Yes |
 
 ```python
 import math
@@ -233,13 +233,13 @@ def compute_perplexity(total_loss: float, num_tokens: int) -> float:
     return math.exp(avg_loss)
 ```
 
-**Perplexity Sezgisel Anlami**: Modelin her adimda kac token arasinda "kararsiz" kaldigi. PP=100 ise model ortalama 100 token arasindan sec.
+**Intuitive Meaning of Perplexity**: How many tokens the model is "uncertain" between at each step. If PP=100, the model is choosing among an average of 100 tokens.
 
 ---
 
 ## Evaluation Pipeline
 
-### Genel Akis
+### General Flow
 
 ```
 Model.predict(test_data)
@@ -261,20 +261,20 @@ Model.predict(test_data)
     export.save_metrics()  +  visualization.plot_comparison()
 ```
 
-### Evaluation Kontrol Listesi (Her Soru icin)
+### Evaluation Checklist (For Each Question)
 
-- [ ] Test seti yalnizca bir kez, final evaluation icin kullanildi
-- [ ] Tum modeller ayni test seti uzerinde degerlendirildi
-- [ ] Metrikler dogru seviyede hesaplandi (entity vs token, corpus vs sentence)
-- [ ] Sonuclar JSON + CSV olarak kaydedildi
-- [ ] Karsilastirma tablosu olusturuldu
-- [ ] Gorseller uretildi
+- [ ] Test set was used only once, for final evaluation
+- [ ] All models were evaluated on the same test set
+- [ ] Metrics were computed at the correct level (entity vs token, corpus vs sentence)
+- [ ] Results were saved as JSON + CSV
+- [ ] Comparison table was created
+- [ ] Visualizations were generated
 
 ---
 
-## Raporlama Standardi
+## Reporting Standard
 
-### Sonuc Tablosu Formati
+### Result Table Format
 
 ```
 | Model          | Metric_1 | Metric_2 | ... |
@@ -283,10 +283,10 @@ Model.predict(test_data)
 | Model A        | 0.XX     | 0.XX     |     |
 | Model B        | **0.XX** | **0.XX** |     |
 
-Bold = en iyi skor
+Bold = best score
 ```
 
-### JSON Cikti Formati
+### JSON Output Format
 
 ```json
 {
@@ -313,12 +313,12 @@ Bold = en iyi skor
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Ortak Altyapi](03-shared-infrastructure.md) - metrics.py ve evaluation.py implementasyonu
+- [Shared Infrastructure](03-shared-infrastructure.md) - metrics.py and evaluation.py implementation
 - [Q1](04-q1-text-classification.md) - Accuracy, Macro-F1
 - [Q2](05-q2-ner.md) - Entity-level P/R/F1
 - [Q3](06-q3-summarization.md) - ROUGE, BLEU, METEOR, BERTScore
 - [Q4](07-q4-machine-translation.md) - BLEU, METEOR, ChrF, BERTScore
 - [Q5](08-q5-language-modeling.md) - Perplexity
-- [LaTeX Rapor](11-report-structure.md) - Raporda nasil sunulacagi
+- [LaTeX Report](11-report-structure.md) - How to present in the report

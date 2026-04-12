@@ -1,30 +1,30 @@
 # 08 - Q5: Language Modeling
 
-> [Ana Sayfa](README.md) | Onceki: [Q4 - Machine Translation](07-q4-machine-translation.md) | Sonraki: [Evaluation Framework](09-evaluation-framework.md)
+> [Home](README.md) | Previous: [Q4 - Machine Translation](07-q4-machine-translation.md) | Next: [Evaluation Framework](09-evaluation-framework.md)
 
 ---
 
-## Hedef
+## Objective
 
-Olasiliksal sequence modelling ve text generation'i incelemek. N-gram, LSTM ve opsiyonel olarak transformer-based modelleri karsilastirmak. Perplexity ile degerlendirmek, olusturulan metinlerin akicilik ve tutarliligini analiz etmek.
+Explore probabilistic sequence modeling and text generation. Compare N-gram, LSTM, and optionally transformer-based models. Evaluate with perplexity, analyze fluency and coherence of generated text.
 
 ---
 
 ## Dataset: WikiText-2
 
-### Ozellikler
-- **Boyut**: ~2M token (train), ~217K token (val), ~245K token (test)
-- **Icerik**: Wikipedia makaleleri (Good/Featured Articles)
-- **Vocabulary**: ~33K unique token
-- **Kaynak**: `datasets.load_dataset("wikitext", "wikitext-2-raw-v1")`
+### Properties
+- **Size**: ~2M tokens (train), ~217K tokens (val), ~245K tokens (test)
+- **Content**: Wikipedia articles (Good/Featured Articles)
+- **Vocabulary**: ~33K unique tokens
+- **Source**: `datasets.load_dataset("wikitext", "wikitext-2-raw-v1")`
 
-### Alternatif: Penn Treebank (PTB)
-- **Boyut**: ~929K train / ~73K val / ~82K test token
-- **Daha kucuk vocabulary**: ~10K
-- **Avantaj**: Daha kucuk, hizli deney; NLP'de standard benchmark
+### Alternative: Penn Treebank (PTB)
+- **Size**: ~929K train / ~73K val / ~82K test tokens
+- **Smaller vocabulary**: ~10K
+- **Advantage**: Smaller, faster experiments; standard benchmark in NLP
 
-### Secim Onerisi
-WikiText-2 tercih edilir (daha buyuk, daha modern, daha temiz).
+### Recommendation
+WikiText-2 is preferred (larger, more modern, cleaner).
 
 ---
 
@@ -36,16 +36,16 @@ WikiText-2 tercih edilir (daha buyuk, daha modern, daha temiz).
 def load_and_tokenize(dataset_name: str = "wikitext-2",
                       tokenizer_type: str = "word") -> dict:
     """
-    1. Raw metni yukle
-    2. Bos satirlari filtrele
-    3. Tokenize et (word-level)
-    4. Vocabulary olustur
+    1. Load raw text
+    2. Filter empty lines
+    3. Tokenize (word-level)
+    4. Build vocabulary
     """
 
 def create_sequences(token_ids: list[int],
                      seq_length: int = 35) -> tuple:
     """
-    Sliding window ile input/target cifti olustur:
+    Create input/target pairs using sliding window:
     Input:  [w1, w2, w3, ..., w35]
     Target: [w2, w3, w4, ..., w36]
     (shifted by 1)
@@ -60,12 +60,12 @@ class LMDataset(Dataset):
     def __init__(self, data: torch.Tensor, seq_length: int = 35):
         """
         data: (total_tokens,) tensor
-        Her __getitem__: (seq_length,) input, (seq_length,) target
+        Each __getitem__: (seq_length,) input, (seq_length,) target
         """
 
 def batchify(data: torch.Tensor, batch_size: int) -> torch.Tensor:
     """
-    Veriyi batch_size sayida esit parcaya boler.
+    Splits data into batch_size equal chunks.
     Standard LM batchification:
     data shape: (total_tokens,) -> (total_tokens // batch_size, batch_size)
     """
@@ -73,37 +73,37 @@ def batchify(data: torch.Tensor, batch_size: int) -> torch.Tensor:
 
 ---
 
-## Model Mimarileri
+## Model Architectures
 
 ### Model 1: N-gram Language Model
 
-**Dosya**: `models/ngram.py`
+**File**: `models/ngram.py`
 
 ```python
 class NGramLanguageModel:
     """
     N-gram LM with smoothing.
-    Bigram ve Trigram destegi.
+    Supports bigram and trigram.
     """
 
     def __init__(self, n: int = 3,
                  smoothing: str = "laplace",
                  alpha: float = 1.0):
         """
-        n: n-gram boyutu (2=bigram, 3=trigram)
-        smoothing: "laplace" (add-k), "kneser_ney", veya "interpolation"
+        n: n-gram size (2=bigram, 3=trigram)
+        smoothing: "laplace" (add-k), "kneser_ney", or "interpolation"
         """
 
     def fit(self, token_sequences: list[list[str]]) -> None:
         """
-        N-gram sayimlarini olusturur:
+        Builds n-gram counts:
         - Unigram counts
         - Bigram counts
-        - Trigram counts (n=3 ise)
+        - Trigram counts (if n=3)
         """
 
     def probability(self, token: str, context: tuple) -> float:
-        """P(token | context) hesaplar, smoothing ile."""
+        """Computes P(token | context) with smoothing."""
 
     def perplexity(self, token_sequence: list[str]) -> float:
         """
@@ -114,32 +114,32 @@ class NGramLanguageModel:
                  max_length: int = 50,
                  temperature: float = 1.0) -> list[str]:
         """
-        Olasilik dagilimina gore sampling ile text uretimi.
+        Text generation via sampling from the probability distribution.
         temperature: <1 conservative, >1 creative
         """
 ```
 
-**N-gram Smoothing Yontemleri**:
+**N-gram Smoothing Methods**:
 
-| Yontem | Formul (basitlestirilmis) | Avantaj |
-|--------|--------------------------|---------|
-| Laplace (Add-1) | (count + 1) / (total + V) | Basit |
-| Add-k | (count + k) / (total + kV) | k ayarlanabilir |
-| Kneser-Ney | Discount + backoff | En iyi performans |
-| Linear Interpolation | lambda1*P_tri + lambda2*P_bi + lambda3*P_uni | Dengeli |
+| Method | Formula (simplified) | Advantage |
+|--------|----------------------|-----------|
+| Laplace (Add-1) | (count + 1) / (total + V) | Simple |
+| Add-k | (count + k) / (total + kV) | k is adjustable |
+| Kneser-Ney | Discount + backoff | Best performance |
+| Linear Interpolation | lambda1*P_tri + lambda2*P_bi + lambda3*P_uni | Balanced |
 
-**Parametreler**:
-| Parametre | Deger |
+**Parameters**:
+| Parameter | Value |
 |-----------|-------|
 | n | 3 (trigram) |
-| smoothing | Laplace veya Kneser-Ney |
+| smoothing | Laplace or Kneser-Ney |
 | alpha (Laplace) | 1.0 |
 
 ---
 
 ### Model 2: LSTM Language Model
 
-**Dosya**: `models/lstm_lm.py`
+**File**: `models/lstm_lm.py`
 
 ```python
 class LSTMLanguageModel(nn.Module):
@@ -147,14 +147,14 @@ class LSTMLanguageModel(nn.Module):
                  hidden_dim: int = 200, num_layers: int = 2,
                  dropout: float = 0.2, tie_weights: bool = True):
         """
-        Katmanlar:
+        Layers:
         1. Embedding
         2. LSTM (multi-layer)
         3. Dropout
         4. Linear (hidden -> vocab)
 
-        tie_weights: Embedding ve output projection agirliklarini paylas
-        (parametre tasarrufu + performance artisi)
+        tie_weights: Share embedding and output projection weights
+        (parameter savings + performance improvement)
         """
 
     def forward(self, x, hidden):
@@ -166,24 +166,24 @@ class LSTMLanguageModel(nn.Module):
         """
 
     def init_hidden(self, batch_size: int):
-        """Sifir-initialize hidden state."""
+        """Zero-initialize hidden state."""
 
     def generate(self, seed_indices: list[int], max_length: int = 100,
                  temperature: float = 1.0,
                  top_k: int = None) -> list[int]:
         """
         Autoregressive text generation:
-        1. Seed ile baslat
-        2. Her adimda:
+        1. Start with seed
+        2. At each step:
            a. Forward pass
-           b. Son adimin logits'ini al
+           b. Get logits of the last step
            c. temperature / top-k sampling
-           d. Sonraki token'i sec
-        3. max_length'e kadar devam et
+           d. Select next token
+        3. Continue until max_length
         """
 ```
 
-**Mimari Diyagrami**:
+**Architecture Diagram**:
 ```
 Input:   [The]  [cat]  [sat]  [on]  [the]
            |      |      |      |      |
@@ -213,11 +213,11 @@ Target:  [cat]  [sat]  [on]  [the]  [mat]
 ```
 Embedding.weight == Linear.weight (transposed)
 ```
-- Parametre sayisini onemli olcude azaltir
-- Embedding ve output space'i tutarli yapar
+- Significantly reduces the number of parameters
+- Makes the embedding and output space consistent
 
-**Hyperparametreler**:
-| Parametre | Deger |
+**Hyperparameters**:
+| Parameter | Value |
 |-----------|-------|
 | embed_dim | 200 |
 | hidden_dim | 200 |
@@ -232,37 +232,37 @@ Embedding.weight == Linear.weight (transposed)
 | gradient_clip | 0.25 |
 | num_epochs | 40 |
 
-> Not: SGD + yuksek LR + agresif clipping, AWD-LSTM stiline yakin bir yaklasimdir. Adam (lr=1e-3) de alternatiftir.
+> Note: SGD + high LR + aggressive clipping is an approach close to the AWD-LSTM style. Adam (lr=1e-3) is also an alternative.
 
 ---
 
-### Model 3 (Opsiyonel): GPT-2 Fine-tuning
+### Model 3 (Optional): GPT-2 Fine-tuning
 
-**Dosya**: `models/gpt2_lm.py`
+**File**: `models/gpt2_lm.py`
 
 ```python
 class GPT2LanguageModel:
     """
     GPT-2 small (117M params) fine-tuning.
-    Opsiyonel ama onemli karsilastirma.
+    Optional but important comparison.
     """
 
     def __init__(self, model_name: str = "gpt2"):
-        """HuggingFace GPT2LMHeadModel yukler."""
+        """Loads HuggingFace GPT2LMHeadModel."""
 
     def fine_tune(self, train_text, val_text, config):
         """
         Causal LM fine-tuning.
-        HuggingFace Trainer kullanir.
+        Uses HuggingFace Trainer.
         """
 
     def compute_perplexity(self, text: str) -> float:
-        """Model perplexity hesaplar."""
+        """Computes model perplexity."""
 
     def generate(self, prompt: str, max_length: int = 100,
                  temperature: float = 0.7,
                  top_k: int = 50, top_p: float = 0.9) -> str:
-        """Nucleus sampling ile generation."""
+        """Generation with nucleus sampling."""
 ```
 
 ---
@@ -275,34 +275,34 @@ class GPT2LanguageModel:
 def generate_samples(model, vocab, config,
                      num_samples: int = 5) -> list[str]:
     """
-    Her model icin kisa metin ornekleri uretir.
-    Farkli sampling stratejileri dener.
+    Generates short text samples for each model.
+    Tries different sampling strategies.
     """
 
-# Sampling Stratejileri:
+# Sampling Strategies:
 def greedy_decode(logits):
-    """argmax - en olasilikli token"""
+    """argmax - most probable token"""
 
 def temperature_sampling(logits, temperature=1.0):
     """logits / temperature -> softmax -> sample"""
 
 def top_k_sampling(logits, k=50):
-    """En yuksek k token arasindan sample"""
+    """Sample from the top k tokens"""
 
 def nucleus_sampling(logits, p=0.9):
-    """Kumulatif olasilik p'ye kadar olan tokenlar arasindan sample"""
+    """Sample from tokens up to cumulative probability p"""
 ```
 
-### Sampling Stratejileri Karsilastirmasi
+### Sampling Strategies Comparison
 
-| Strateji | temperature | Ozellik |
-|----------|-------------|---------|
-| Greedy | - | Deterministic, tekrarli |
-| Low temp | 0.5 | Conservative, tutarli |
-| Normal | 1.0 | Dengeli |
-| High temp | 1.5 | Yaratici, kaorik |
-| Top-k (k=50) | 1.0 | Dusuk olasilikli tokenlari filtreler |
-| Nucleus (p=0.9) | 1.0 | Dinamik filtreleme |
+| Strategy | temperature | Property |
+|----------|-------------|----------|
+| Greedy | - | Deterministic, repetitive |
+| Low temp | 0.5 | Conservative, consistent |
+| Normal | 1.0 | Balanced |
+| High temp | 1.5 | Creative, chaotic |
+| Top-k (k=50) | 1.0 | Filters low-probability tokens |
+| Nucleus (p=0.9) | 1.0 | Dynamic filtering |
 
 ---
 
@@ -315,29 +315,29 @@ def compute_perplexity(model, test_loader, criterion) -> float:
     """
     PP = exp(average cross-entropy loss)
 
-    1. Model'i eval moduna al
-    2. Tum test batch'leri uzerinde loss hesapla
-    3. Ortalama loss al
+    1. Set model to eval mode
+    2. Compute loss over all test batches
+    3. Take average loss
     4. exp(avg_loss) = perplexity
     """
 ```
 
-**Perplexity Yorumu**:
-| Deger | Anlam |
-|-------|-------|
-| ~1 | Mukemmel tahmin (mumkun degil) |
-| ~60-100 | Iyi LSTM performansi (WikiText-2) |
-| ~100-200 | Makul performans |
-| ~300+ | Zayif model |
-| Vocab size | Random tahmin (en kotu) |
+**Perplexity Interpretation**:
+| Value | Meaning |
+|-------|---------|
+| ~1 | Perfect prediction (not possible) |
+| ~60-100 | Good LSTM performance (WikiText-2) |
+| ~100-200 | Reasonable performance |
+| ~300+ | Weak model |
+| Vocab size | Random prediction (worst case) |
 
-### N-gram icin Perplexity
+### Perplexity for N-gram
 
 ```python
 def ngram_perplexity(model, test_tokens: list[str]) -> float:
     """
     PP = exp(-1/N * sum(log P(w_i | w_{i-n+1}...w_{i-1})))
-    N-gram smoothing ile hesaplanir.
+    Computed with n-gram smoothing.
     """
 ```
 
@@ -345,49 +345,49 @@ def ngram_perplexity(model, test_tokens: list[str]) -> float:
 
 ## Analysis
 
-### Fluency ve Coherence Analizi
+### Fluency and Coherence Analysis
 
 ```python
 def analyze_generated_text(samples: dict[str, list[str]]) -> dict:
     """
-    Her model icin:
-    - Fluency: Gramatikal dogruluk
-    - Coherence: Konu tutarliligi
-    - Repetition: Tekrar orani
-    - Vocabulary diversity: Unique token orani
+    For each model:
+    - Fluency: Grammatical correctness
+    - Coherence: Topic consistency
+    - Repetition: Repetition rate
+    - Vocabulary diversity: Unique token ratio
     """
 
 def compute_repetition_rate(text: str, n: int = 3) -> float:
-    """Tekrarlanan n-gram orani."""
+    """Repeated n-gram ratio."""
 
 def compute_distinct_n(texts: list[str], n: int = 2) -> float:
-    """Unique n-gram orani (diversity olcusu)."""
+    """Unique n-gram ratio (diversity measure)."""
 ```
 
-### Beklenen Karsilastirma
+### Expected Comparison
 
-| Boyut | N-gram | LSTM | GPT-2 (opsiyonel) |
-|-------|--------|------|-------------------|
-| Perplexity | Yuksek (~200+) | Orta (~80-120) | Dusuk (~30-50) |
-| Fluency | Dusuk | Orta | Yuksek |
-| Coherence | Cok dusuk | Kisa vadede iyi | Uzun vadede iyi |
-| Long-range | Yok (n window) | Sinirli | Guclu |
-| Training | Hizli (sayim) | Orta | Uzun |
-| Memory | O(V^n) | O(params) | O(params) buyuk |
+| Dimension | N-gram | LSTM | GPT-2 (optional) |
+|-----------|--------|------|-------------------|
+| Perplexity | High (~200+) | Medium (~80-120) | Low (~30-50) |
+| Fluency | Low | Medium | High |
+| Coherence | Very low | Good in short-range | Good in long-range |
+| Long-range | None (n window) | Limited | Strong |
+| Training | Fast (counting) | Medium | Long |
+| Memory | O(V^n) | O(params) | O(params) large |
 
 ---
 
-## Beklenen Ciktilar
+## Expected Outputs
 
 ```
 outputs/q5/run_{timestamp}/
 |-- config.yaml
-|-- metrics.json                   # Perplexity degerleri
+|-- metrics.json                   # Perplexity values
 |-- generated_samples/
 |   |-- ngram_samples.txt
 |   |-- lstm_samples.txt
-|   +-- gpt2_samples.txt           # opsiyonel
-|-- analysis.json                  # Fluency, coherence analizi
+|   +-- gpt2_samples.txt           # optional
+|-- analysis.json                  # Fluency, coherence analysis
 |-- figures/
 |   |-- perplexity_comparison.png
 |   |-- training_curves_lstm.png
@@ -397,7 +397,7 @@ outputs/q5/run_{timestamp}/
 
 ---
 
-## Config Ornegi (q5.yaml)
+## Config Example (q5.yaml)
 
 ```yaml
 question: "q5"
@@ -432,7 +432,7 @@ models:
     gradient_clip: 0.25
     num_epochs: 40
 
-  gpt2:                          # opsiyonel
+  gpt2:                          # optional
     model_name: "gpt2"
     batch_size: 4
     learning_rate: 5e-5
@@ -450,9 +450,9 @@ evaluation:
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Ortak Altyapi](03-shared-infrastructure.md) - Vocabulary, Trainer
-- [Q4 - Machine Translation](07-q4-machine-translation.md) - Benzer RNN/Transformer mimarileri
-- [Evaluation Framework](09-evaluation-framework.md) - Perplexity detaylari
-- [Experiment Config](10-experiment-config.md) - Config yapisi
+- [Shared Infrastructure](03-shared-infrastructure.md) - Vocabulary, Trainer
+- [Q4 - Machine Translation](07-q4-machine-translation.md) - Similar RNN/Transformer architectures
+- [Evaluation Framework](09-evaluation-framework.md) - Perplexity details
+- [Experiment Config](10-experiment-config.md) - Config structure

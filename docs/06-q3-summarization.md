@@ -1,25 +1,25 @@
 # 06 - Q3: Text Summarization
 
-> [Ana Sayfa](README.md) | Onceki: [Q2 - NER](05-q2-ner.md) | Sonraki: [Q4 - Machine Translation](07-q4-machine-translation.md)
+> [Home](README.md) | Previous: [Q2 - NER](05-q2-ner.md) | Next: [Q4 - Machine Translation](07-q4-machine-translation.md)
 
 ---
 
-## Hedef
+## Objective
 
-Extractive ve abstractive ozetleme yontemlerini karsilastirmak. Performansi ROUGE, BLEU, METEOR ve BERTScore ile degerlendirmek. Akicilik, factual tutarlilik ve bilgi kapsami acisindan kalitatif analiz yapmak.
+Compare extractive and abstractive summarization methods. Evaluate performance using ROUGE, BLEU, METEOR, and BERTScore. Perform qualitative analysis in terms of fluency, factual consistency, and information coverage.
 
 ---
 
 ## Dataset: CNN/DailyMail
 
-### Ozellikler
-- **Boyut**: ~300K makale-ozet cifti (subset kullanilacak)
-- **Subset**: 10K train / 1K val / 1K test (yeterli ve verimli)
-- **Ortalama makale uzunlugu**: ~780 kelime
-- **Ortalama ozet uzunlugu**: ~56 kelime (3-4 cumle)
-- **Kaynak**: `datasets.load_dataset("cnn_dailymail", "3.0.0")`
+### Properties
+- **Size**: ~300K article-summary pairs (subset will be used)
+- **Subset**: 10K train / 1K val / 1K test (sufficient and efficient)
+- **Average article length**: ~780 words
+- **Average summary length**: ~56 words (3-4 sentences)
+- **Source**: `datasets.load_dataset("cnn_dailymail", "3.0.0")`
 
-### Subset Olusturma
+### Subset Creation
 ```python
 dataset = load_dataset("cnn_dailymail", "3.0.0")
 train_subset = dataset["train"].shuffle(seed=42).select(range(10000))
@@ -27,7 +27,7 @@ val_subset = dataset["validation"].shuffle(seed=42).select(range(1000))
 test_subset = dataset["test"].shuffle(seed=42).select(range(1000))
 ```
 
-### Veri Yapisi
+### Data Structure
 ```python
 {
     "article": "LONDON, England (CNN) -- An American tourist...",
@@ -45,93 +45,93 @@ test_subset = dataset["test"].shuffle(seed=42).select(range(1000))
 ```python
 def clean_article(text: str) -> str:
     """
-    - CNN/DailyMail ozel isaret temizligi
-    - Fazla whitespace/newline normalizasyonu
-    - Encoding sorunlari
+    - CNN/DailyMail special marker cleanup
+    - Extra whitespace/newline normalization
+    - Encoding issues
     """
 
 def truncate_article(text: str, max_tokens: int = 1024) -> str:
-    """BART/T5 icin max input length'e truncate."""
+    """Truncate to max input length for BART/T5."""
 
 def split_into_sentences(text: str) -> list[str]:
     """
-    TextRank icin cumle bolme.
-    nltk.sent_tokenize veya spacy sentence segmentation.
+    Sentence splitting for TextRank.
+    nltk.sent_tokenize or spacy sentence segmentation.
     """
 ```
 
 ---
 
-## Model Mimarileri
+## Model Architectures
 
 ### Model 1: TextRank (Extractive)
 
-**Dosya**: `models/textrank.py`
+**File**: `models/textrank.py`
 
 ```python
 class TextRankSummarizer:
     """
     Graph-based extractive summarization.
-    PageRank algoritmasinin metin ozetleme uyarlamasi.
+    Adaptation of the PageRank algorithm for text summarization.
     """
 
     def __init__(self, similarity_method: str = "tfidf",
                  damping: float = 0.85,
                  num_sentences: int = 3):
         """
-        similarity_method: "tfidf" veya "embedding"
-        damping: PageRank damping faktoru
-        num_sentences: secilecek cumle sayisi
+        similarity_method: "tfidf" or "embedding"
+        damping: PageRank damping factor
+        num_sentences: number of sentences to select
         """
 
     def build_similarity_matrix(self, sentences: list[str]) -> np.ndarray:
         """
-        Cmleler arasi benzerlik matrisi:
+        Inter-sentence similarity matrix:
         - TF-IDF cosine similarity
-        - (veya) Sentence embedding cosine similarity
+        - (or) Sentence embedding cosine similarity
         """
 
     def rank_sentences(self, similarity_matrix: np.ndarray) -> list[float]:
-        """PageRank skoru hesaplar."""
+        """Computes PageRank scores."""
 
     def summarize(self, text: str) -> str:
         """
-        1. Metni cumlelere bol
-        2. Benzerlik matrisi olustur
-        3. PageRank ile sirala
-        4. En yuksek skorlu N cumleyi sec
-        5. Orijinal sirayla birlestir
+        1. Split text into sentences
+        2. Build similarity matrix
+        3. Rank with PageRank
+        4. Select top-N scored sentences
+        5. Combine in original order
         """
 ```
 
-**Algoritma Akisi**:
+**Algorithm Flow**:
 ```
-Input Article (metin)
+Input Article (text)
         |
         v
 [Sentence Segmentation] -> ["S1", "S2", "S3", ..., "Sn"]
         |
         v
-[TF-IDF Vectorization] -> Cumle vektorleri
+[TF-IDF Vectorization] -> Sentence vectors
         |
         v
-[Cosine Similarity Matrix] -> n x n matris
+[Cosine Similarity Matrix] -> n x n matrix
         |
         v
-[PageRank Algorithm] -> Skor: [0.23, 0.15, 0.31, ...]
+[PageRank Algorithm] -> Scores: [0.23, 0.15, 0.31, ...]
         |
         v
-[Top-K Sentence Selection] -> En yuksek skorlu 3 cumle
+[Top-K Sentence Selection] -> Top 3 scored sentences
         |
         v
-[Orijinal Sira ile Birlestirme]
+[Combine in Original Order]
         |
         v
 Output Summary
 ```
 
-**Parametreler**:
-| Parametre | Deger |
+**Parameters**:
+| Parameter | Value |
 |-----------|-------|
 | similarity | TF-IDF cosine |
 | damping | 0.85 |
@@ -143,24 +143,24 @@ Output Summary
 
 ### Model 2: BART (Abstractive)
 
-**Dosya**: `models/bart_summarizer.py`
+**File**: `models/bart_summarizer.py`
 
 ```python
 class BARTSummarizer:
     """
     facebook/bart-large-cnn fine-tuned model.
-    Encoder-decoder transformer ile abstractive summarization.
+    Abstractive summarization with encoder-decoder transformer.
     """
 
     def __init__(self, model_name: str = "facebook/bart-large-cnn",
                  max_input_length: int = 1024,
                  max_output_length: int = 142,
                  min_output_length: int = 56):
-        """Pretrained BART modeli ve tokenizer yukler."""
+        """Loads pretrained BART model and tokenizer."""
 
     def summarize(self, text: str, **generate_kwargs) -> str:
         """
-        Tek metin icin ozet uretir.
+        Generates summary for a single text.
         generate_kwargs: num_beams, length_penalty, etc.
         """
 
@@ -170,31 +170,31 @@ class BARTSummarizer:
 
     def fine_tune(self, train_dataset, val_dataset, config):
         """
-        Opsiyonel: Eger pretrained yeterli degilse fine-tune.
-        Cogu durumda facebook/bart-large-cnn zaten CNN/DM uzerinde
-        fine-tuned, bu yuzden dogrudan kullanilabilir.
+        Optional: Fine-tune if pretrained is not sufficient.
+        In most cases facebook/bart-large-cnn is already
+        fine-tuned on CNN/DM, so it can be used directly.
         """
 ```
 
-**Yaklasim Secenekleri**:
+**Approach Options**:
 
-| Yaklasim | Aciklama | Onerilen |
-|----------|----------|----------|
-| Zero-shot | Pretrained BART-large-CNN dogrudan | Evet (varsayilan) |
-| Fine-tune | Subset uzerinde ek fine-tuning | Opsiyonel karsilastirma |
+| Approach | Description | Recommended |
+|----------|-------------|-------------|
+| Zero-shot | Pretrained BART-large-CNN directly | Yes (default) |
+| Fine-tune | Additional fine-tuning on subset | Optional comparison |
 
-> **Not**: `facebook/bart-large-cnn` zaten CNN/DailyMail uzerinde fine-tune edilmistir. Ek fine-tuning gereksiz olabilir ama karsilastirma amaciyla yapilabilir.
+> **Note**: `facebook/bart-large-cnn` is already fine-tuned on CNN/DailyMail. Additional fine-tuning may be unnecessary but can be done for comparison purposes.
 
-**T5 Alternatifi**:
+**T5 Alternative**:
 ```python
 class T5Summarizer:
-    """google/flan-t5-base alternatifi."""
-    # Ayni API, farkli model_name
-    # Input prefix: "summarize: " eklenmeli
+    """google/flan-t5-base alternative."""
+    # Same API, different model_name
+    # Input prefix: "summarize: " must be added
 ```
 
-**Generation Parametreleri**:
-| Parametre | Deger |
+**Generation Parameters**:
+| Parameter | Value |
 |-----------|-------|
 | num_beams | 4 |
 | length_penalty | 2.0 |
@@ -207,10 +207,10 @@ class T5Summarizer:
 
 ## Evaluation
 
-### Metrik Seti
+### Metric Set
 
-| Metrik | Olctugu Sey | Kutuphane |
-|--------|------------|-----------|
+| Metric | What It Measures | Library |
+|--------|-----------------|---------|
 | **ROUGE-1** | Unigram overlap | `evaluate` / `rouge_score` |
 | **ROUGE-2** | Bigram overlap | `evaluate` / `rouge_score` |
 | **ROUGE-L** | Longest common subsequence | `evaluate` / `rouge_score` |
@@ -218,7 +218,7 @@ class T5Summarizer:
 | **METEOR** | Alignment + synonym + stemming | `evaluate` / `nltk.translate.meteor` |
 | **BERTScore** | Contextual semantic similarity | `bert_score` |
 
-### Metrik Hesaplama Detayi
+### Metric Computation Details
 
 ```python
 # ROUGE
@@ -242,7 +242,7 @@ from bert_score import score
 P, R, F1 = score(preds, refs, lang="en", verbose=True)
 ```
 
-Detaylar icin: [Evaluation Framework](09-evaluation-framework.md)
+For details see: [Evaluation Framework](09-evaluation-framework.md)
 
 ---
 
@@ -254,37 +254,37 @@ Detaylar icin: [Evaluation Framework](09-evaluation-framework.md)
 def qualitative_comparison(articles, references, extractive_summaries,
                            abstractive_summaries, n: int = 3) -> list[dict]:
     """
-    En az 3 ornek icin:
-    - Kaynak metin (truncated)
-    - Referans ozet
-    - TextRank ciktisi
-    - BART ciktisi
-    - Her biri icin: fluency, factual consistency, information coverage
+    For at least 3 examples:
+    - Source text (truncated)
+    - Reference summary
+    - TextRank output
+    - BART output
+    - For each: fluency, factual consistency, information coverage
     """
 
 def analyze_extractive_vs_abstractive(examples: list[dict]) -> dict:
     """
-    Karsilastirma boyutlari:
-    1. Fluency (akicilik): Extractive -> kaynak cumleler, Abstractive -> yeni cumleler
-    2. Factual Consistency: Extractive daha guvenilir, Abstractive hallucination riski
-    3. Information Coverage: Abstractive daha yogun bilgi
-    4. Redundancy: Extractive tekrar riski, Abstractive daha ozlu
+    Comparison dimensions:
+    1. Fluency: Extractive -> source sentences, Abstractive -> new sentences
+    2. Factual Consistency: Extractive more reliable, Abstractive has hallucination risk
+    3. Information Coverage: Abstractive provides denser information
+    4. Redundancy: Extractive has repetition risk, Abstractive more concise
     """
 ```
 
-### Ornek Karsilastirma Tablosu (Rapor icin)
+### Example Comparison Table (For Report)
 
-| Boyut | TextRank (Extractive) | BART (Abstractive) |
-|-------|----------------------|-------------------|
-| Akicilik | Kaynak cumleler, dogal | Yeni cumleler, daha ozlu |
-| Factual Tutarlilik | Yuksek (kaynak kopyasi) | Risk: hallucination |
-| Bilgi Yogunlugu | Dusuk (tam cumleler) | Yuksek (sikilastirma) |
-| Hesaplama Maliyeti | Dusuk (CPU yeterli) | Yuksek (GPU gerekli) |
-| Okunabilirlik | Parcali olabilir | Daha tutarli |
+| Dimension | TextRank (Extractive) | BART (Abstractive) |
+|-----------|----------------------|-------------------|
+| Fluency | Source sentences, natural | New sentences, more concise |
+| Factual Consistency | High (source copy) | Risk: hallucination |
+| Information Density | Low (full sentences) | High (compression) |
+| Computational Cost | Low (CPU sufficient) | High (GPU required) |
+| Readability | Can be fragmented | More coherent |
 
 ---
 
-## Beklenen Ciktilar
+## Expected Outputs
 
 ```
 outputs/q3/run_{timestamp}/
@@ -293,16 +293,16 @@ outputs/q3/run_{timestamp}/
 |-- predictions/
 |   |-- textrank_summaries.csv
 |   +-- bart_summaries.csv
-|-- qualitative_analysis.json         # 3+ detayli ornek
+|-- qualitative_analysis.json         # 3+ detailed examples
 |-- figures/
 |   |-- metric_comparison.png
 |   +-- rouge_distribution.png
-+-- (opsiyonel) model_bart_finetuned/
++-- (optional) model_bart_finetuned/
 ```
 
 ---
 
-## Config Ornegi (q3.yaml)
+## Config Example (q3.yaml)
 
 ```yaml
 question: "q3"
@@ -333,7 +333,7 @@ models:
     num_beams: 4
     length_penalty: 2.0
     no_repeat_ngram_size: 3
-    fine_tune: false          # Pretrained yeterli
+    fine_tune: false          # Pretrained is sufficient
 
 evaluation:
   metrics: ["rouge1", "rouge2", "rougeL", "bleu", "meteor", "bertscore"]
@@ -342,8 +342,8 @@ evaluation:
 
 ---
 
-## Iliskili Dokumanlar
+## Related Documents
 
-- [Ortak Altyapi](03-shared-infrastructure.md) - metrics.py (ROUGE, BLEU, etc.)
-- [Evaluation Framework](09-evaluation-framework.md) - Tum metriklerin detayli aciklamasi
-- [Q4 - Machine Translation](07-q4-machine-translation.md) - Benzer metrikler (BLEU, METEOR, BERTScore)
+- [Shared Infrastructure](03-shared-infrastructure.md) - metrics.py (ROUGE, BLEU, etc.)
+- [Evaluation Framework](09-evaluation-framework.md) - Detailed explanation of all metrics
+- [Q4 - Machine Translation](07-q4-machine-translation.md) - Similar metrics (BLEU, METEOR, BERTScore)
