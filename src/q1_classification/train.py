@@ -1,4 +1,4 @@
-"""Training orchestration for the initial Q1 baseline slice."""
+"""Training orchestration for Q1 text classification."""
 
 from __future__ import annotations
 
@@ -8,11 +8,11 @@ from src.common.export import save_metrics, save_predictions
 from src.common.metrics import compute_classification_report, compute_metrics
 from src.q1_classification.analysis import analyze_misclassifications, identify_error_patterns
 from src.q1_classification.dataset import prepare_datasets
-from src.q1_classification.models import TFIDFClassifier
+from src.q1_classification.models import BiLSTMClassifier, TFIDFClassifier
 
 
-def _build_models(config) -> dict[str, TFIDFClassifier]:
-    models: dict[str, TFIDFClassifier] = {}
+def _build_models(config) -> dict[str, object]:
+    models: dict[str, object] = {}
     for model_name in ["tfidf_lr", "tfidf_svm"]:
         model_config = getattr(config.models, model_name)
         if not model_config.enabled:
@@ -22,6 +22,33 @@ def _build_models(config) -> dict[str, TFIDFClassifier]:
             max_features=model_config.max_features,
             ngram_range=tuple(model_config.ngram_range),
             C=model_config.C,
+        )
+
+    if "bilstm" in config.models and config.models.bilstm.enabled:
+        model_config = config.models.bilstm
+        if BiLSTMClassifier is None:
+            raise ImportError("BiLSTM support requires the 'torch' package. Install dependencies from requirements.txt.")
+        models["bilstm"] = BiLSTMClassifier(
+            embedding_dim=model_config.embedding_dim,
+            hidden_dim=model_config.hidden_dim,
+            num_layers=model_config.num_layers,
+            dropout=model_config.dropout,
+            batch_size=model_config.batch_size,
+            learning_rate=model_config.learning_rate,
+            max_epochs=model_config.max_epochs,
+            early_stopping_patience=getattr(
+                model_config,
+                "early_stopping_patience",
+                getattr(config.training, "early_stopping_patience", 3),
+            ),
+            max_vocab_size=model_config.max_vocab_size,
+            min_frequency=model_config.min_frequency,
+            max_seq_length=model_config.max_seq_length,
+            weight_decay=getattr(model_config, "weight_decay", 0.0),
+            monitor_metric=getattr(model_config, "monitor_metric", "macro_f1"),
+            num_workers=getattr(model_config, "num_workers", 0),
+            device=config.device,
+            seed=config.seed,
         )
     return models
 
@@ -81,7 +108,11 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
     analysis_output: dict[str, dict] = {}
 
     for model_name, model in models.items():
-        model.fit(datasets["train"]["texts"], datasets["train"]["labels"])
+        model.fit(
+            datasets["train"]["texts"],
+            datasets["train"]["labels"],
+            validation_data=datasets["validation"],
+        )
         metrics_output[model_name] = {}
         analysis_output[model_name] = {}
 

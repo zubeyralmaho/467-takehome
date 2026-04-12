@@ -32,7 +32,8 @@ class TFIDFClassifier:
         else:
             raise ValueError(f"Unsupported classifier_type: {classifier_type}")
 
-    def fit(self, texts: list[str], labels: list[int]) -> None:
+    def fit(self, texts: list[str], labels: list[int], validation_data: dict[str, list] | None = None) -> None:
+        del validation_data
         features = self.vectorizer.fit_transform(texts)
         self.classifier.fit(features, labels)
 

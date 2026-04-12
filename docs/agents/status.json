@@ -1,28 +1,28 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 01:21"
+    "last_updated": "2026-04-13 01:35"
   },
   "areas": [
     {
       "key": "shared_infrastructure",
       "label": "Shared infrastructure",
       "owner": "unassigned",
-      "status": "todo",
-      "notes": "Config, metrics, training utilities"
+      "status": "in_progress",
+      "notes": "Initial config, seed, dataset split, metrics, and export scaffold implemented; trainer, evaluator, vocab, and visualization remain"
     },
     {
       "key": "q1_text_classification",
       "label": "Q1 Text Classification",
       "owner": "unassigned",
-      "status": "todo",
-      "notes": "Baseline + neural + transformer"
+      "status": "in_progress",
+      "notes": "TF-IDF baselines and the BiLSTM path are implemented; DistilBERT remains the next unclaimed Q1 slice"
     },
     {
       "key": "q2_named_entity_recognition",
       "label": "Q2 Named Entity Recognition",
-      "owner": "unassigned",
-      "status": "todo",
-      "notes": "CRF, BiLSTM-CRF, BERT-NER"
+      "owner": "copilot-q2-crf",
+      "status": "in_progress",
+      "notes": "CRF baseline slice claimed; CoNLL-2003 data flow and initial training pipeline in progress"
     },
     {
       "key": "q3_summarization",
@@ -48,9 +48,9 @@
     {
       "key": "evaluation_and_analysis",
       "label": "Evaluation and analysis",
-      "owner": "unassigned",
-      "status": "todo",
-      "notes": "Shared metrics, plots, error analysis"
+      "owner": "copilot-q1-eval",
+      "status": "in_progress",
+      "notes": "Q1 confusion-matrix and evaluation artifact export in progress; keep model-training ownership unchanged"
     },
     {
       "key": "report_preparation",
@@ -58,12 +58,19 @@
       "owner": "unassigned",
       "status": "todo",
       "notes": "LaTeX report structure and results write-up"
+    },
+    {
+      "key": "project_state_sync",
+      "label": "Project state sync",
+      "owner": "copilot-tracker",
+      "status": "done",
+      "notes": "docs/agents state synced with the implemented Q1 baseline and scaffold"
     }
   ],
   "priorities": [
-    "Finalize shared project skeleton and reusable utilities.",
-    "Implement Q1 first to validate the end-to-end pipeline.",
-    "Use the validated infrastructure to accelerate Q2-Q5."
+    "Extend the shared scaffold only where Q1 needs it next.",
+    "Implement BiLSTM and DistilBERT on top of the verified Q1 classical baselines.",
+    "Freeze broader evaluation and export conventions before scaling Q2-Q5."
   ],
   "handoff": {
     "current_blockers": [],
@@ -73,9 +80,9 @@
       "Whether optional GPT-2 fine-tuning will be included in Q5."
     ],
     "next_recommended_actions": [
-      "Build shared infrastructure under src/common/.",
-      "Implement the Q1 baseline and establish the output format.",
-      "Freeze evaluation and export conventions before Q2-Q5 scale out."
+      "Claim the DistilBERT Q1 slice as the next separate owner and reuse the verified Q1 export flow",
+      "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
+      "Extend shared evaluation/export only if DistilBERT reveals a concrete gap"
     ],
     "entries": [
       {
@@ -84,6 +91,22 @@
         "scope": "Agent tracking automation",
         "outcome": "JSON state and CLI now generate the board, handoff view, and per-agent log",
         "next": "Use the CLI as agents pick up Q1-Q5 work",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-tracker",
+        "date": "2026-04-13",
+        "scope": "Project state sync",
+        "outcome": "docs/agents now reflects the implemented shared scaffold and Q1 classical baseline progress",
+        "next": "Claim the next Q1 neural-model slice before editing implementation files",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-bilstm",
+        "date": "2026-04-13",
+        "scope": "Q1 BiLSTM implementation",
+        "outcome": "Added an opt-in BiLSTM path, fixed CLI override handling, and validated the end-to-end export flow on a small IMDb run",
+        "next": "Claim DistilBERT as a separate Q1 slice and reuse the same metrics and prediction export path",
         "blocker": "None"
       }
     ]
@@ -115,6 +138,107 @@
       "next_actions": [
         "Use set-area when an agent claims a project area",
         "Use append-agent during active work to keep logs incremental"
+      ]
+    },
+    {
+      "name": "copilot-tracker",
+      "date": "2026-04-13",
+      "scope": "Sync docs/agents status with the implemented Q1 baseline and shared scaffold",
+      "status": "done",
+      "owner": "copilot-tracker",
+      "related_area": "project_state_sync",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed docs/agents protocol and current board"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Claimed a tracking-only area to avoid taking ownership of implementation scopes",
+          "Updated area statuses to match the implemented shared scaffold and Q1 classical baseline slice",
+          "Refreshed handoff recommendations to point at the next narrow Q1 slices"
+        ]
+      },
+      "decisions": [
+        "Kept this pass limited to docs/agents state and did not claim any implementation area"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Claim the next implementation slice before editing non-tracking files",
+        "If Q1 continues, split BiLSTM and DistilBERT into separate claims"
+      ]
+    },
+    {
+      "name": "copilot-q1-bilstm",
+      "date": "2026-04-13",
+      "scope": "Implement and validate the Q1 BiLSTM slice on top of the existing IMDb pipeline",
+      "status": "review",
+      "owner": "copilot-q1-bilstm",
+      "related_area": "q1_text_classification",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed board, protocol, and current Q1 classical pipeline"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Implemented a self-contained BiLSTM wrapper with fit, predict, and confidence interfaces",
+          "Integrated BiLSTM into the existing Q1 training and export flow",
+          "Added PyTorch dependency support and runtime environment reporting",
+          "Fixed CLI override accumulation so repeated --override flags work as documented",
+          "Validated the BiLSTM path with a small end-to-end IMDb run and confirmed metrics plus prediction exports"
+        ]
+      },
+      "decisions": [
+        "Kept the BiLSTM config opt-in so the default Q1 run remains lightweight while the neural slice stabilizes"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Claim the DistilBERT Q1 slice separately and plug it into the same evaluation/export flow"
+      ]
+    },
+    {
+      "name": "copilot-q2-crf",
+      "date": "2026-04-13",
+      "scope": "Implement the Q2 CRF baseline slice on top of the shared scaffold",
+      "status": "in_progress",
+      "owner": "copilot-q2-crf",
+      "related_area": "q2_named_entity_recognition",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed board, protocol, and Q2 NER design doc"
+        ],
+        "in_progress": [],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Inspect shared and Q1 code patterns, then scaffold CoNLL data loading and CRF baseline"
+      ]
+    },
+    {
+      "name": "copilot-q1-eval",
+      "date": "2026-04-13",
+      "scope": "Implement shared Q1 evaluation artifacts and exports without changing active model-training ownership",
+      "status": "in_progress",
+      "owner": "copilot-q1-eval",
+      "related_area": "evaluation_and_analysis",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed docs and current Q1 export flow"
+        ],
+        "in_progress": [
+          "Adding confusion-matrix and richer evaluation artifact support for Q1"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Implement shared evaluation artifact generation and wire it into the Q1 training flow"
       ]
     }
   ]

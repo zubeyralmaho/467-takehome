@@ -13,7 +13,13 @@ from src.q1_classification.train import run_training
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run Q1 text classification baselines.")
     parser.add_argument("--config", required=True, help="Path to the question config YAML file.")
-    parser.add_argument("--override", nargs="*", default=[], help="Optional dotted config overrides.")
+    parser.add_argument(
+        "--override",
+        action="extend",
+        nargs="+",
+        default=[],
+        help="Optional dotted config overrides.",
+    )
     parser.add_argument(
         "--final-eval",
         action="store_true",

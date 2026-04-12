@@ -31,6 +31,23 @@ models:
     ngram_range: [1, 2]
     C: 1.0
 
+  bilstm:
+    enabled: false
+    embedding_dim: 128
+    hidden_dim: 128
+    num_layers: 1
+    dropout: 0.3
+    batch_size: 64
+    learning_rate: 0.001
+    weight_decay: 0.0
+    max_epochs: 6
+    early_stopping_patience: 2
+    max_vocab_size: 30000
+    min_frequency: 2
+    max_seq_length: 256
+    num_workers: 0
+    monitor_metric: macro_f1
+
 evaluation:
   metrics: [accuracy, macro_f1]
   num_misclassified_examples: 5
