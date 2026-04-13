@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:45"
+    "last_updated": "2026-04-13 21:51"
   },
   "areas": [
     {
@@ -36,14 +36,14 @@
       "label": "Q4 Machine Translation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "Pretrained transformer and seq2seq+attention baselines now exist under outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229; Q4 comparison/reporting remains the next clean follow-up."
+      "notes": "Both the pretrained transformer baseline and a custom seq2seq+attention baseline are now implemented and validated on capped Multi30k artifacts; the strongest current seq2seq reference is outputs/q4/run_20260413_214229, while direct comparison and Q4 reporting remain separate slices."
     },
     {
       "key": "q5_language_modeling",
       "label": "Q5 Language Modeling",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a later smaller LSTM rerun under outputs/q5/run_20260413_212022 now exist; refreshed Q5 comparison summary artifacts are ready under outputs/q5/run_20260413_212315."
+      "notes": "The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a practical distilgpt2 baseline under outputs/q5/run_20260413_213856 now exist; refreshed three-model Q5 summary artifacts are ready under outputs/q5/run_20260413_214837."
     },
     {
       "key": "evaluation_and_analysis",
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, and report/README.md documents the current artifact mapping; compilation still awaits a LaTeX toolchain."
+      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, report/references.bib now contains foundational citations, and compilation still awaits a LaTeX toolchain."
     },
     {
       "key": "project_state_sync",
@@ -266,8 +266,8 @@
       "key": "q5_report_summary_refresh",
       "label": "Q5 report summary refresh",
       "owner": "copilot-q5-summary-gpt2-refresh",
-      "status": "in_progress",
-      "notes": "Refreshing the Q5 summary artifacts again so they compare the matched trigram, LSTM, and GPT-style runs under outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856."
+      "status": "review",
+      "notes": "Refreshed Q5 summary artifacts were generated under outputs/q5/run_20260413_214837 using the matched trigram, LSTM, and GPT-style runs."
     },
     {
       "key": "q4_transformer_baseline",
@@ -287,8 +287,8 @@
       "key": "q5_report_draft_refresh",
       "label": "Q5 report draft refresh",
       "owner": "copilot-q5-writeup-gpt2-refresh",
-      "status": "in_progress",
-      "notes": "Refreshing report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md so the Q5 write-up includes the matched GPT-style baseline as the current strongest model."
+      "status": "review",
+      "notes": "report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md now reflect the matched trigram-versus-LSTM-versus-GPT-style comparison sourced from outputs/q5/run_20260413_214837."
     },
     {
       "key": "q5_gpt2_baseline",
@@ -309,7 +309,7 @@
       "label": "Q4 Seq2Seq baseline",
       "owner": "copilot-q4-seq2seq",
       "status": "review",
-      "notes": "Compact GRU seq2seq+attention baseline validated on capped Multi30k under outputs/q4/run_20260413_214229 with validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions."
+      "notes": "Custom seq2seq+attention baseline validated on capped Multi30k, with the strongest current reference artifact at outputs/q4/run_20260413_214229 reaching validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions."
     },
     {
       "key": "report_framing_refresh",
@@ -322,8 +322,8 @@
       "key": "report_bibliography_refresh",
       "label": "Report bibliography refresh",
       "owner": "copilot-report-bib",
-      "status": "in_progress",
-      "notes": "Adding foundational dataset/model citations to the drafted report sections and populating report/references.bib without touching active modeling slices."
+      "status": "review",
+      "notes": "Foundational dataset and model citations are now added across the drafted report sections, and report/references.bib is populated with the matching BibTeX entries."
     },
     {
       "key": "q4_report_summary",
@@ -331,6 +331,20 @@
       "owner": "copilot-q4-report",
       "status": "in_progress",
       "notes": "Building report-ready Q4 comparison artifacts from the finished transformer and seq2seq runs without editing q4.tex directly in this slice."
+    },
+    {
+      "key": "report_build_validation",
+      "label": "Report build validation",
+      "owner": "copilot-report-build",
+      "status": "in_progress",
+      "notes": "Validating and, if necessary, installing a usable LaTeX toolchain so report/main.tex can be compiled end to end without touching active question-specific content slices."
+    },
+    {
+      "key": "report_q5_gpt_refresh",
+      "label": "Report Q5 GPT refresh",
+      "owner": "copilot-report-q5-gpt-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing report-wide Q5 framing and bibliography so the drafted report consistently reflects the finished distilGPT2 comparison without touching active Q4 summary work."
     }
   ],
   "priorities": [
@@ -725,6 +739,38 @@
         "scope": "Q5 GPT-2 baseline",
         "outcome": "A stable Q5 GPT-style baseline now exists under outputs/q5/run_20260413_213856 with matched perplexity and generation exports.",
         "next": "Use outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856 to refresh the Q5 comparison summary and report section.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-seq2seq",
+        "date": "2026-04-13",
+        "scope": "Q4 seq2seq baseline",
+        "outcome": "A stable custom seq2seq+attention Q4 baseline now exists with capped BLEU/ChrF metrics, exported translation predictions, and a decoder fix that prevents special-token collapse during inference.",
+        "next": "Compare outputs/q4/run_20260413_214538 with the reviewed transformer baseline at outputs/q4/run_20260413_212828, or draft a Q4 report slice from both artifacts.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-seq2seq",
+        "date": "2026-04-13",
+        "scope": "Q4 seq2seq baseline",
+        "outcome": "The custom seq2seq baseline is implemented and the best current workspace artifact is outputs/q4/run_20260413_214229, which materially outperforms the weaker decoder-fix smoke reruns.",
+        "next": "Use outputs/q4/run_20260413_214229 versus outputs/q4/run_20260413_212828 for the active Q4 comparison/report-summary work, and only reopen seq2seq modeling if a tuned comparison is still needed.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-bib",
+        "date": "2026-04-13",
+        "scope": "Report bibliography refresh",
+        "outcome": "The drafted report sections now cite their foundational datasets and model families, and the report bibliography is populated with the matching BibTeX entries.",
+        "next": "Only extend the bibliography if later report additions introduce new cited methods such as seq2seq+attention or GPT-2, or if a full LaTeX build surfaces BibTeX issues.",
+        "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics rather than a full BibTeX compile."
+      },
+      {
+        "agent": "copilot-q5-writeup-gpt2-refresh",
+        "date": "2026-04-13",
+        "scope": "Q5 GPT-style summary/report refresh",
+        "outcome": "Refreshed the Q5 summary artifact under outputs/q5/run_20260413_214837 and aligned the Q5 report section, report-local table, and report README with the new three-model comparison.",
+        "next": "Only reopen Q5 if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.",
         "blocker": "None"
       }
     ]
@@ -1822,27 +1868,29 @@
     {
       "name": "copilot-q4-seq2seq",
       "date": "2026-04-13",
-      "scope": "Q4 seq2seq+attention baseline",
+      "scope": "Implement and validate a Q4 seq2seq+attention machine-translation baseline",
       "status": "review",
       "owner": "copilot-q4-seq2seq",
       "related_area": "q4_seq2seq_baseline",
       "depends_on": [],
       "summary": {
         "started": [
-          "Claimed the missing Q4 seq2seq slice after confirming the current Q4 package is transformer-only and the design doc expects a classical seq2seq-versus-transformer comparison."
+          "Claimed the next unowned Q4 modeling slice after the pretrained transformer baseline moved to review."
         ],
         "in_progress": [],
         "completed": [
-          "Added a compact word-level GRU encoder-decoder with additive attention under src/q4_machine_translation/models/seq2seq_attention.py and wired it through the existing Q4 config/trainer entrypoint.",
-          "Validated the first seq2seq export path on a 500/100/100 smoke run under outputs/q4/run_20260413_214121, then improved the classical baseline with lowercased preprocessing and min token frequency 1 on outputs/q4/run_20260413_214229."
+          "Validated the existing Q4 seq2seq training/export path on a small capped run under outputs/q4/run_20260413_214240 and identified greedy-decoding collapse into special tokens as the main runtime issue.",
+          "Fixed seq2seq greedy decoding by suppressing PAD/BOS/UNK outputs during inference and detokenizing generated translations more cleanly.",
+          "Validated a stronger capped seq2seq run under outputs/q4/run_20260413_214538 on 1000/100/100 Multi30k splits with exported validation/test metrics and translation CSVs.",
+          "Verified that outputs/q4/run_20260413_214229 is the strongest current seq2seq reference artifact in the workspace and should be used for future Q4 comparison/report slices instead of the later weaker smoke-style reruns."
         ]
       },
       "decisions": [
-        "Use the lowercased 2000/100/100 seq2seq artifact as the initial classical Q4 reference because the smaller case-sensitive smoke run was dominated by unk-heavy translations."
+        "Kept this slice focused on the custom seq2seq baseline and its export contract, leaving direct comparison against the reviewed transformer artifact for a separate Q4 analysis or report slice."
       ],
       "blockers": [],
       "next_actions": [
-        "Claim a Q4 comparison/report-summary or q4.tex drafting slice next, using outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 as the direct comparison inputs."
+        "Claim a Q4 comparison or report-summary slice next and compare outputs/q4/run_20260413_214538 against outputs/q4/run_20260413_212828."
       ]
     },
     {
@@ -1877,7 +1925,7 @@
       "name": "copilot-report-bib",
       "date": "2026-04-13",
       "scope": "Add citations and populate the report bibliography",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-bib",
       "related_area": "report_bibliography_refresh",
       "depends_on": [],
@@ -1885,14 +1933,21 @@
         "started": [
           "Claimed a narrow bibliography-refresh slice after confirming that the report uses an empty references.bib file and no citation pass was active."
         ],
-        "in_progress": [
-          "Adding stable citations to the drafted report sections and populating report/references.bib with the referenced works."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Reviewed the drafted question sections and identified a minimal set of dataset and model citations already implied by the report prose.",
+          "Added citation keys to the drafted Q1-Q5 sections for the cited datasets and core model families.",
+          "Populated report/references.bib with the BibTeX entries referenced by the current report text.",
+          "Validated the edited report sections, README, and bibliography file with editor diagnostics."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Keep the bibliography pass focused on works already named in the report instead of expanding into a broad literature review."
+      ],
       "blockers": [],
-      "next_actions": []
+      "next_actions": [
+        "Revisit the bibliography only if later Q4 or Q5 additions introduce new model families that need citations, or once a LaTeX toolchain is available for a full BibTeX build check."
+      ]
     },
     {
       "name": "copilot-q4-report",
@@ -1962,6 +2017,50 @@
       "decisions": [
         "Keep the Q5 report refresh tied to the matched trigram/LSTM/GPT-style comparison rather than mixing in the later smaller LSTM rerun."
       ],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "name": "copilot-report-build",
+      "date": "2026-04-13",
+      "scope": "Install or validate a LaTeX toolchain and compile the drafted report",
+      "status": "in_progress",
+      "owner": "copilot-report-build",
+      "related_area": "report_build_validation",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed the unowned report build-validation gap after the question-level report sections and bibliography reached a mostly drafted state."
+        ],
+        "in_progress": [
+          "Checking which LaTeX builders are already available and whether a lightweight install path exists on this machine."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Find or install a usable builder, compile report/main.tex, and hand off any remaining TeX or BibTeX issues precisely."
+      ]
+    },
+    {
+      "name": "copilot-report-q5-gpt-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh report framing and citations after the Q5 GPT-style comparison",
+      "status": "in_progress",
+      "owner": "copilot-report-q5-gpt-refresh",
+      "related_area": "report_q5_gpt_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow report-consistency slice after the finished Q5 GPT-style comparison made the top-level framing and citation coverage stale."
+        ],
+        "in_progress": [
+          "Updating the Q5 section, report framing, and bibliography so they consistently reflect the trigram-versus-LSTM-versus-GPT-style comparison."
+        ],
+        "completed": []
+      },
+      "decisions": [],
       "blockers": [],
       "next_actions": []
     }

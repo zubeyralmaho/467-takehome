@@ -2,7 +2,7 @@
 
 \subsection{Dataset Description}
 
-Question 1 uses the IMDb movie-review sentiment benchmark, which contains 50{,}000 balanced reviews split into 25{,}000 original training examples and 25{,}000 original test examples. The project pipeline normally applies a stratified 80/20 split to the training portion, but the matched larger-budget comparison used a capped setting to keep the neural runs tractable on the available hardware. Concretely, 4{,}000 reviews were first sampled from the original training split and then divided into 3{,}200 training and 800 validation examples, while 2{,}000 reviews were sampled from the original test split for final evaluation. Because the label distribution is balanced, accuracy and macro-F1 move closely together and both are useful summary metrics.
+Question 1 uses the IMDb movie-review sentiment benchmark \cite{maas2011imdb}, which contains 50{,}000 balanced reviews split into 25{,}000 original training examples and 25{,}000 original test examples. The project pipeline normally applies a stratified 80/20 split to the training portion, but the matched larger-budget comparison used a capped setting to keep the neural runs tractable on the available hardware. Concretely, 4{,}000 reviews were first sampled from the original training split and then divided into 3{,}200 training and 800 validation examples, while 2{,}000 reviews were sampled from the original test split for final evaluation. Because the label distribution is balanced, accuracy and macro-F1 move closely together and both are useful summary metrics.
 
 \subsection{Preprocessing Pipeline}
 
@@ -21,7 +21,7 @@ The sparse baselines use unigram and bigram TF-IDF features with 50{,}000 maximu
 The word-level neural baseline uses learned 128-dimensional embeddings, a single bidirectional LSTM with hidden size 128, dropout 0.3, batch size 64, and Adam optimization with learning rate \(10^{-3}\). Early stopping monitors validation macro-F1 with patience 2 and training can run for up to 6 epochs. In the current implementation, this model does not use pretrained GloVe initialization, so its representation quality depends entirely on the supervised IMDb subset.
 
 \paragraph{DistilBERT.}
-The contextual baseline fine-tunes \texttt{distilbert-base-uncased} with batch size 16, learning rate \(2 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, and maximum sequence length 256. The completed larger-budget run converged within 2 epochs and produced the strongest validation and test scores among all finished Q1 models.
+The contextual baseline fine-tunes \texttt{distilbert-base-uncased} \cite{sanh2019distilbert} with batch size 16, learning rate \(2 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, and maximum sequence length 256. The completed larger-budget run converged within 2 epochs and produced the strongest validation and test scores among all finished Q1 models.
 
 \subsection{Results}
 

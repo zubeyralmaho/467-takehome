@@ -5,10 +5,11 @@
 \toprule
 Model & Validation Perplexity & Test Perplexity & Source Run \\
 \midrule
-Trigram add-k & 1392.54 & 1388.72 & run\_20260413\_202258 \\
+distilGPT-2 & 109.78 & 106.44 & run\_20260413\_213856 \\
 LSTM & 286.06 & 279.46 & run\_20260413\_211945 \\
+Trigram add-k & 1392.54 & 1388.72 & run\_20260413\_202258 \\
 \bottomrule
 \end{tabular}
-\caption{Matched Q5 perplexity comparison on the capped WikiText-2 split.}
+\caption{Matched Q5 perplexity comparison across the finished trigram, LSTM, and GPT-style baselines on the capped WikiText-2 split.}
 \label{tab:q5_overall_results}
 \end{table}

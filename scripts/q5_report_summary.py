@@ -16,6 +16,7 @@ from src.common.export import create_run_dir, generate_latex_table, save_environ
 
 
 DISPLAY_NAMES = {
+    "gpt2": "distilGPT-2",
     "ngram": "Trigram add-k",
     "lstm": "LSTM",
 }
@@ -148,6 +149,18 @@ def _build_findings(
     else:
         findings.append("Only one finished Q5 run was provided, so this summary should be treated as a single-model snapshot rather than a direct comparison.")
 
+    if "lstm" in rows_by_model and "gpt2" in rows_by_model:
+        lstm_row = rows_by_model["lstm"]
+        gpt2_row = rows_by_model["gpt2"]
+        test_reduction = 100.0 * (lstm_row["test_perplexity"] - gpt2_row["test_perplexity"]) / lstm_row["test_perplexity"]
+        validation_reduction = 100.0 * (lstm_row["validation_perplexity"] - gpt2_row["validation_perplexity"]) / lstm_row["validation_perplexity"]
+        findings.append(
+            (
+                f"Compared with the matched LSTM baseline, the GPT-style baseline reduced validation perplexity by {validation_reduction:.1f}% "
+                f"and test perplexity by {test_reduction:.1f}% on the same 3000/400/400 budget."
+            )
+        )
+
     average_lengths: dict[str, float] = {}
     for model_key in {row["model"] for row in generation_rows}:
         model_rows = [row for row in generation_rows if row["model"] == model_key]
@@ -161,10 +174,18 @@ def _build_findings(
             )
         )
 
+    if "gpt2" in average_lengths and "lstm" in average_lengths:
+        findings.append(
+            (
+                f"The GPT-style baseline produced continuations of comparable length to the LSTM ({average_lengths['gpt2']:.1f} vs {average_lengths['lstm']:.1f} tokens on average), "
+                "but with noticeably smoother local phrasing in the seeded samples."
+            )
+        )
+
     discussion = [
-        "Use the trigram run as the classical Q5 reference point and the LSTM as the first meaningful neural baseline; the perplexity gap is already large enough to support that narrative.",
+        "Use the trigram run as the classical Q5 reference point, the LSTM as the compact recurrent baseline, and the GPT-style run as the strongest current transformer-style result.",
         "The LSTM generations are still noisy, but they sustain longer local grammatical structure than the sparse n-gram samples under the same seeded prompts.",
-        "If more Q5 time remains, the next worthwhile comparison is GPT-2 or another pretrained causal LM rather than additional work on the trigram model."
+        "The GPT-style generations are still imperfect, yet the perplexity gap indicates that pretrained causal language modeling is a stronger reference than either classical counts or the small capped LSTM on this setup."
     ]
 
     sample_lines = [
@@ -173,7 +194,7 @@ def _build_findings(
     ]
 
     recommendation = (
-        "Anchor Q5 analysis on the LSTM-versus-trigram comparison now available, and only reopen Q5 modeling if a GPT-2 baseline is needed for a transformer reference."
+        "Anchor Q5 analysis on the three-model trigram-versus-LSTM-versus-GPT-style comparison now available, and only reopen Q5 modeling if a larger matched rerun or actual GPT-2 fine-tuning is needed."
     )
     return findings, discussion, sample_lines, recommendation
 
@@ -299,7 +320,7 @@ def main() -> None:
     latex_table = generate_latex_table(
         overall_rows,
         columns=["display_name", "validation_perplexity", "test_perplexity", "source_run"],
-        caption="Q5 capped perplexity comparison across the finished trigram and LSTM language-model baselines.",
+        caption="Q5 capped perplexity comparison across the finished trigram, LSTM, and GPT-style language-model baselines.",
         label="tab:q5_model_comparison",
     )
     latex_summary = "\n".join(

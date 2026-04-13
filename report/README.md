@@ -11,7 +11,7 @@ This directory contains the LaTeX scaffold for the final take-home report.
 - `sections/conclusion.tex` is drafted, but it still reflects the pre-Q4 report state and should be refreshed after the Q4 section is folded into the final narrative.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
-- `references.bib` is currently an empty placeholder.
+- `references.bib` now contains an initial set of foundational dataset and model citations used by the drafted sections.
 
 ## Compile Prerequisites
 
@@ -75,9 +75,10 @@ pdflatex main.tex
 
 - Trigram baseline run: `outputs/q5/run_20260413_202258`
 - Matched LSTM comparison run: `outputs/q5/run_20260413_211945`
-- Refreshed Q5 summary artifact: `outputs/q5/run_20260413_212315`
+- GPT-style baseline run: `outputs/q5/run_20260413_213856`
+- Refreshed Q5 summary artifact: `outputs/q5/run_20260413_214837`
 - Later smaller LSTM rerun: `outputs/q5/run_20260413_212022`
-- `sections/q5.tex` now uses the matched trigram-versus-LSTM comparison, while the later smaller LSTM rerun remains a separate reference rather than part of the direct report table.
+- `sections/q5.tex` now uses the matched trigram-versus-LSTM-versus-GPT-style comparison, while the later smaller LSTM rerun remains a separate reference rather than part of the direct report table.
 
 ## Editing Workflow
 
@@ -94,4 +95,4 @@ pdflatex main.tex
 - Fill `references.bib` when citations are added to the final prose.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
 - Refresh `sections/introduction.tex` and `sections/conclusion.tex` so they reflect the now-drafted Q4 section and the updated overall report state.
-- Only reopen `sections/q5.tex` if a GPT-2 style Q5 baseline or a larger matched LSTM comparison becomes available.
+- Only reopen `sections/q5.tex` if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.

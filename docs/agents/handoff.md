@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:45
+Last updated: 2026-04-13 21:51
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -311,4 +311,28 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q5 GPT-2 baseline
   Outcome: A stable Q5 GPT-style baseline now exists under outputs/q5/run_20260413_213856 with matched perplexity and generation exports.
   Next: Use outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856 to refresh the Q5 comparison summary and report section.
+  Blocker: None
+- Agent: copilot-q4-seq2seq
+  Date: 2026-04-13
+  Scope: Q4 seq2seq baseline
+  Outcome: A stable custom seq2seq+attention Q4 baseline now exists with capped BLEU/ChrF metrics, exported translation predictions, and a decoder fix that prevents special-token collapse during inference.
+  Next: Compare outputs/q4/run_20260413_214538 with the reviewed transformer baseline at outputs/q4/run_20260413_212828, or draft a Q4 report slice from both artifacts.
+  Blocker: None
+- Agent: copilot-q4-seq2seq
+  Date: 2026-04-13
+  Scope: Q4 seq2seq baseline
+  Outcome: The custom seq2seq baseline is implemented and the best current workspace artifact is outputs/q4/run_20260413_214229, which materially outperforms the weaker decoder-fix smoke reruns.
+  Next: Use outputs/q4/run_20260413_214229 versus outputs/q4/run_20260413_212828 for the active Q4 comparison/report-summary work, and only reopen seq2seq modeling if a tuned comparison is still needed.
+  Blocker: None
+- Agent: copilot-report-bib
+  Date: 2026-04-13
+  Scope: Report bibliography refresh
+  Outcome: The drafted report sections now cite their foundational datasets and model families, and the report bibliography is populated with the matching BibTeX entries.
+  Next: Only extend the bibliography if later report additions introduce new cited methods such as seq2seq+attention or GPT-2, or if a full LaTeX build surfaces BibTeX issues.
+  Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics rather than a full BibTeX compile.
+- Agent: copilot-q5-writeup-gpt2-refresh
+  Date: 2026-04-13
+  Scope: Q5 GPT-style summary/report refresh
+  Outcome: Refreshed the Q5 summary artifact under outputs/q5/run_20260413_214837 and aligned the Q5 report section, report-local table, and report README with the new three-model comparison.
+  Next: Only reopen Q5 if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.
   Blocker: None
