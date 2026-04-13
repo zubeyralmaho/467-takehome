@@ -12,7 +12,7 @@ The data-trained Q5 baselines use the same lowercase word-level tokenization, th
 
 The second comparator is a compact two-layer word-level LSTM \cite{hochreiter1997lstm} with 128-dimensional embeddings and hidden states, dropout 0.2, tied input-output weights, and teacher-forced next-token training. This is still a modest recurrent model rather than a state-of-the-art language model, but it is sufficient to test whether a learned hidden-state representation materially improves perplexity and generated-text fluency over the trigram baseline under the same capped dataset budget.
 
-The third model is a practical GPT-style reference using pretrained \texttt{distilgpt2}. Unlike the trigram and LSTM models, this transformer is not trained from scratch on the capped Q5 split; instead, it is evaluated directly on the same held-out WikiText-2 lines and prompted with the same seeded generation prefixes. That makes it a useful reference point for how much additional modeling strength a pretrained causal transformer contributes beyond the data-limited baselines.
+The third model is a practical GPT-style reference using pretrained \texttt{distilgpt2}, representing the GPT-2 causal language-model family \cite{radford2019gpt2}. Unlike the trigram and LSTM models, this transformer is not trained from scratch on the capped Q5 split; instead, it is evaluated directly on the same held-out WikiText-2 lines and prompted with the same seeded generation prefixes. That makes it a useful reference point for how much additional modeling strength a pretrained causal transformer contributes beyond the data-limited baselines.
 
 \subsection{Results}
 

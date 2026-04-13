@@ -7,11 +7,11 @@ This directory contains the LaTeX scaffold for the final take-home report.
 - `main.tex` wires together the full report structure from `docs/11-report-structure.md`.
 - `sections/q1.tex`, `sections/q2.tex`, `sections/q3.tex`, `sections/q4.tex`, and `sections/q5.tex` are drafted from stable experiment artifacts.
 - `sections/q3.tex` now contains a direct capped comparison between TextRank and a pretrained DistilBART baseline.
-- `sections/q4.tex` now contains a baseline-first write-up for the pretrained Q4 transformer artifact.
-- `sections/conclusion.tex` is drafted, but it still reflects the pre-Q4 report state and should be refreshed after the Q4 section is folded into the final narrative.
+- `sections/q4.tex` now contains a direct capped comparison between the Q4 pretrained transformer reference and the custom seq2seq baseline.
+- `sections/conclusion.tex` is drafted and now reflects the current Q1/Q2/Q3/Q4/Q5 comparison state, while later matched reruns may still refine the final narrative.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
-- `references.bib` now contains an initial set of foundational dataset and model citations used by the drafted sections.
+- `references.bib` now contains the foundational dataset and model citations used by the drafted sections, including the current GPT-style Q5 reference.
 
 ## Compile Prerequisites
 
@@ -68,8 +68,9 @@ pdflatex main.tex
 ### Question 4
 
 - Pretrained transformer baseline artifact: `outputs/q4/run_20260413_212828`
-- `sections/q4.tex` now documents the stable pretrained baseline with BLEU/ChrF metrics from the capped Multi30k export.
-- A future seq2seq+attention run should be compared against the same artifact contract rather than replacing it.
+- Seq2Seq baseline artifact: `outputs/q4/run_20260413_214538`
+- Comparison summary artifact: `outputs/q4/run_20260413_215201`
+- `sections/q4.tex` now uses the direct capped transformer-versus-seq2seq comparison while explicitly noting that the train budgets are not perfectly matched because the transformer is a pretrained reference.
 
 ### Question 5
 
@@ -91,8 +92,6 @@ pdflatex main.tex
 ## Suggested Next Steps
 
 - Finalize `sections/q1.tex` after the active larger-budget Q1 neural runs are summarized.
-- Expand `sections/introduction.tex` once Q1 and Q2 write-ups stabilize.
-- Fill `references.bib` when citations are added to the final prose.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
-- Refresh `sections/introduction.tex` and `sections/conclusion.tex` so they reflect the now-drafted Q4 section and the updated overall report state.
+- Only reopen Q4 if a more budget-matched seq2seq rerun or transformer fine-tuning becomes necessary.
 - Only reopen `sections/q5.tex` if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.

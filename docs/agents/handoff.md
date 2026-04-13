@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:51
+Last updated: 2026-04-13 21:57
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -335,4 +335,28 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q5 GPT-style summary/report refresh
   Outcome: Refreshed the Q5 summary artifact under outputs/q5/run_20260413_214837 and aligned the Q5 report section, report-local table, and report README with the new three-model comparison.
   Next: Only reopen Q5 if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.
+  Blocker: None
+- Agent: copilot-q4-report
+  Date: 2026-04-13
+  Scope: Q4 report summary
+  Outcome: Built scripts/q4_report_summary.py and exported the comparison artifact to outputs/q4/run_20260413_215201.
+  Next: Refresh the Q4 report draft and table from that artifact in a separate slice.
+  Blocker: None
+- Agent: copilot-report-q5-gpt-refresh
+  Date: 2026-04-13
+  Scope: Report Q5 GPT refresh
+  Outcome: The report now consistently reflects the finished three-model Q5 comparison, including updated top-level framing and a GPT-2 family citation.
+  Next: Only revisit the report framing if the active Q4 comparison work or a later Q5 fine-tuning slice materially changes the final narrative.
+  Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics rather than a full BibTeX/PDF compile.
+- Agent: copilot-report-build
+  Date: 2026-04-13
+  Scope: Report build validation
+  Outcome: A working LaTeX toolchain is now present and the full report compiles to PDF; the remaining issues are layout warnings, not blocking build failures.
+  Next: Use Tectonic for future report builds, and optionally claim a narrow layout-cleanup slice to reduce the remaining overfull-box warnings after content stabilizes.
+  Blocker: None
+- Agent: copilot-q4-writeup-refresh
+  Date: 2026-04-13
+  Scope: Q4 report draft refresh
+  Outcome: Refreshed the Q4 report section, report-local table, README, and report framing from outputs/q4/run_20260413_215201.
+  Next: Only reopen Q4 if a more budget-matched rerun or report-build issue requires another write-up pass.
   Blocker: None

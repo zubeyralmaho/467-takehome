@@ -1,6 +1,6 @@
 # Agent: copilot-q4-report
 
-Last updated: 2026-04-13 21:51
+Last updated: 2026-04-13 21:57
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q4-report
 - Related area: q4_report_summary
 - Depends on: -
@@ -31,11 +31,11 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Add a reusable Q4 summary builder and generate comparison-ready Markdown, JSON, and LaTeX outputs from the finished transformer and seq2seq runs.
+- None.
 
 ### Completed
 
-- None.
+- Added scripts/q4_report_summary.py and generated outputs/q4/run_20260413_215201 with JSON, Markdown, and LaTeX comparison artifacts from the tracker-approved transformer and seq2seq runs.
 
 ---
 
@@ -53,4 +53,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Create the Q4 summary builder, validate it on the transformer and seq2seq run pair, and export a refreshed comparison summary artifact.
+1. Use outputs/q4/run_20260413_215201 to refresh the Q4 report draft in a separate slice once report-section ownership is clear.

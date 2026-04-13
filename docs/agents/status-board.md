@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:51
+Last updated: 2026-04-13 21:57
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -17,7 +17,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q4 Machine Translation | unassigned | in_progress | Both the pretrained transformer baseline and a custom seq2seq+attention baseline are now implemented and validated on capped Multi30k artifacts; the strongest current seq2seq reference is outputs/q4/run_20260413_214229, while direct comparison and Q4 reporting remain separate slices. |
 | Q5 Language Modeling | unassigned | in_progress | The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a practical distilgpt2 baseline under outputs/q5/run_20260413_213856 now exist; refreshed three-model Q5 summary artifacts are ready under outputs/q5/run_20260413_214837. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
-| Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, report/references.bib now contains foundational citations, and compilation still awaits a LaTeX toolchain. |
+| Report preparation | unassigned | in_progress | The report now compiles successfully with Tectonic and produces a PDF, while a small set of non-blocking overfull-box warnings remain in the introduction table plus parts of Q3/Q4/Q5. |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
 | Q2 CRF baseline | copilot-q2-crf | done | Self-contained CoNLL CRF baseline implemented and validated on a capped run; any larger-budget experiment can now be claimed as a separate slice |
 | Q2 CRF experiment | copilot-q2-crf | done | Full-split CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_141702 |
@@ -40,7 +40,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 report draft | copilot-q1-writeup | review | report/sections/q1.tex plus report-local Q1 tables and figure assets now reflect the stable 4k-train/2k-test Q1 artifacts; PDF compilation remains pending because no LaTeX toolchain is installed |
 | Q1 report summary refresh | copilot-q1-summary-refresh | review | Refreshed Q1 summary artifacts were generated under outputs/q1/run_20260413_185011 using the matched 4k-train/2k-test comparison and the finished preprocessing sweep |
 | Q3 TextRank baseline | copilot-q3-textrank | review | Self-contained extractive TextRank baseline plus lexical evaluation/export pipeline implemented and validated by the capped run under outputs/q3/run_20260413_185438. |
-| Report introduction draft | copilot-report-intro | review | report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope and current report organization, including drafted Q3/Q4/Q5 sections and provisional later extensions. |
+| Report introduction draft | copilot-report-intro | review | report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope and current report organization, including the finished Q5 trigram-versus-LSTM-versus-GPT-style comparison. |
 | Q3 report draft | copilot-q3-report-refresh | review | report/sections/q3.tex and report/tables/q3_overall_results.tex now reflect the capped direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426; larger-budget Q3 work remains optional follow-up. |
 | Q3 BART baseline | copilot-q3-bart | review | Pretrained abstractive Q3 summarizer validated on CNN/DailyMail with a direct 20-validation/20-test comparison run under outputs/q3/run_20260413_192426, where distilBART outperformed TextRank on all exported lexical metrics. |
 | Q5 N-gram baseline | copilot-q5-ngram | review | Self-contained trigram add-k language model validated on capped WikiText-2 under outputs/q5/run_20260413_202258 with validation/test perplexity 1392.54/1388.72 plus exported generation samples. |
@@ -49,16 +49,18 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q5 report draft | copilot-q5-writeup | review | report/sections/q5.tex plus report/tables/q5_overall_results.tex now reflect the matched trigram-versus-LSTM comparison sourced from outputs/q5/run_20260413_212315, while the later smaller LSTM rerun remains a separate reference artifact. |
 | Q5 report summary refresh | copilot-q5-summary-gpt2-refresh | review | Refreshed Q5 summary artifacts were generated under outputs/q5/run_20260413_214837 using the matched trigram, LSTM, and GPT-style runs. |
 | Q4 Transformer baseline | copilot-q4-transformer | review | Pretrained Helsinki-NLP/opus-mt-en-de baseline validated on capped Multi30k under outputs/q4/run_20260413_212828 with validation/test BLEU 0.4008/0.3572 and ChrF 0.6569/0.6380 plus exported translation predictions. |
-| Report conclusion draft | copilot-report-conclusion | review | report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, treating Q4 as a baseline-first section and the overall conclusion as provisional where later comparisons may still extend the report. |
+| Report conclusion draft | copilot-report-conclusion | review | report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, including the GPT-style Q5 reference while still treating Q4 as the main remaining comparison gap. |
 | Q5 report draft refresh | copilot-q5-writeup-gpt2-refresh | review | report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md now reflect the matched trigram-versus-LSTM-versus-GPT-style comparison sourced from outputs/q5/run_20260413_214837. |
 | Q5 GPT-2 baseline | copilot-q5-gpt2 | review | Practical distilgpt2 baseline validated on matched 3000/400/400 WikiText-2 splits under outputs/q5/run_20260413_213856 with validation/test perplexity 109.78/106.44 plus seeded generation samples. |
-| Q4 report draft | copilot-q4-writeup | review | report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the stable pretrained transformer baseline artifact under outputs/q4/run_20260413_212828; any seq2seq comparison remains separate. |
+| Q4 report draft | copilot-q4-writeup-refresh | review | report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the direct transformer-versus-seq2seq comparison sourced from outputs/q4/run_20260413_215201. |
 | Q4 Seq2Seq baseline | copilot-q4-seq2seq | review | Custom seq2seq+attention baseline validated on capped Multi30k, with the strongest current reference artifact at outputs/q4/run_20260413_214229 reaching validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions. |
 | Report framing refresh | copilot-report-refresh | review | report/sections/introduction.tex and report/sections/conclusion.tex now reflect the drafted Q3/Q4/Q5 sections and the current report-wide baseline/comparison state. |
 | Report bibliography refresh | copilot-report-bib | review | Foundational dataset and model citations are now added across the drafted report sections, and report/references.bib is populated with the matching BibTeX entries. |
-| Q4 report summary | copilot-q4-report | in_progress | Building report-ready Q4 comparison artifacts from the finished transformer and seq2seq runs without editing q4.tex directly in this slice. |
-| Report build validation | copilot-report-build | in_progress | Validating and, if necessary, installing a usable LaTeX toolchain so report/main.tex can be compiled end to end without touching active question-specific content slices. |
-| Report Q5 GPT refresh | copilot-report-q5-gpt-refresh | in_progress | Refreshing report-wide Q5 framing and bibliography so the drafted report consistently reflects the finished distilGPT2 comparison without touching active Q4 summary work. |
+| Q4 report summary | copilot-q4-report | review | Report-ready comparison summary exported to outputs/q4/run_20260413_215201 from the tracker-approved transformer and seq2seq runs. |
+| Report build validation | copilot-report-build | review | Installed Tectonic and compiled the full report successfully to PDF; remaining issues are non-blocking overfull-box warnings rather than TeX or BibTeX failures. |
+| Report Q5 GPT refresh | copilot-report-q5-gpt-refresh | review | Q5 report framing, citations, and top-level report text now reflect the finished trigram-versus-LSTM-versus-distilGPT2 comparison without modifying active Q4 summary work. |
+| Q4 report draft refresh | copilot-q4-writeup-refresh | review | Q4 report section, report-local table, README, and report framing were refreshed from outputs/q4/run_20260413_215201 without reopening Q4 model training. |
+| Report layout cleanup | copilot-report-layout | in_progress | Reducing the remaining non-blocking overfull-box warnings in the compiled report without reopening finished content or active question-summary slices. |
 
 ---
 

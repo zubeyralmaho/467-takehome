@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:51"
+    "last_updated": "2026-04-13 21:57"
   },
   "areas": [
     {
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, report/references.bib now contains foundational citations, and compilation still awaits a LaTeX toolchain."
+      "notes": "The report now compiles successfully with Tectonic and produces a PDF, while a small set of non-blocking overfull-box warnings remain in the introduction table plus parts of Q3/Q4/Q5."
     },
     {
       "key": "project_state_sync",
@@ -218,7 +218,7 @@
       "label": "Report introduction draft",
       "owner": "copilot-report-intro",
       "status": "review",
-      "notes": "report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope and current report organization, including drafted Q3/Q4/Q5 sections and provisional later extensions."
+      "notes": "report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope and current report organization, including the finished Q5 trigram-versus-LSTM-versus-GPT-style comparison."
     },
     {
       "key": "q3_report_draft",
@@ -281,7 +281,7 @@
       "label": "Report conclusion draft",
       "owner": "copilot-report-conclusion",
       "status": "review",
-      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, treating Q4 as a baseline-first section and the overall conclusion as provisional where later comparisons may still extend the report."
+      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, including the GPT-style Q5 reference while still treating Q4 as the main remaining comparison gap."
     },
     {
       "key": "q5_report_draft_refresh",
@@ -300,9 +300,9 @@
     {
       "key": "q4_report_draft",
       "label": "Q4 report draft",
-      "owner": "copilot-q4-writeup",
+      "owner": "copilot-q4-writeup-refresh",
       "status": "review",
-      "notes": "report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the stable pretrained transformer baseline artifact under outputs/q4/run_20260413_212828; any seq2seq comparison remains separate."
+      "notes": "report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the direct transformer-versus-seq2seq comparison sourced from outputs/q4/run_20260413_215201."
     },
     {
       "key": "q4_seq2seq_baseline",
@@ -329,22 +329,36 @@
       "key": "q4_report_summary",
       "label": "Q4 report summary",
       "owner": "copilot-q4-report",
-      "status": "in_progress",
-      "notes": "Building report-ready Q4 comparison artifacts from the finished transformer and seq2seq runs without editing q4.tex directly in this slice."
+      "status": "review",
+      "notes": "Report-ready comparison summary exported to outputs/q4/run_20260413_215201 from the tracker-approved transformer and seq2seq runs."
     },
     {
       "key": "report_build_validation",
       "label": "Report build validation",
       "owner": "copilot-report-build",
-      "status": "in_progress",
-      "notes": "Validating and, if necessary, installing a usable LaTeX toolchain so report/main.tex can be compiled end to end without touching active question-specific content slices."
+      "status": "review",
+      "notes": "Installed Tectonic and compiled the full report successfully to PDF; remaining issues are non-blocking overfull-box warnings rather than TeX or BibTeX failures."
     },
     {
       "key": "report_q5_gpt_refresh",
       "label": "Report Q5 GPT refresh",
       "owner": "copilot-report-q5-gpt-refresh",
+      "status": "review",
+      "notes": "Q5 report framing, citations, and top-level report text now reflect the finished trigram-versus-LSTM-versus-distilGPT2 comparison without modifying active Q4 summary work."
+    },
+    {
+      "key": "q4_report_draft_refresh",
+      "label": "Q4 report draft refresh",
+      "owner": "copilot-q4-writeup-refresh",
+      "status": "review",
+      "notes": "Q4 report section, report-local table, README, and report framing were refreshed from outputs/q4/run_20260413_215201 without reopening Q4 model training."
+    },
+    {
+      "key": "report_layout_cleanup",
+      "label": "Report layout cleanup",
+      "owner": "copilot-report-layout",
       "status": "in_progress",
-      "notes": "Refreshing report-wide Q5 framing and bibliography so the drafted report consistently reflects the finished distilGPT2 comparison without touching active Q4 summary work."
+      "notes": "Reducing the remaining non-blocking overfull-box warnings in the compiled report without reopening finished content or active question-summary slices."
     }
   ],
   "priorities": [
@@ -771,6 +785,38 @@
         "scope": "Q5 GPT-style summary/report refresh",
         "outcome": "Refreshed the Q5 summary artifact under outputs/q5/run_20260413_214837 and aligned the Q5 report section, report-local table, and report README with the new three-model comparison.",
         "next": "Only reopen Q5 if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-report",
+        "date": "2026-04-13",
+        "scope": "Q4 report summary",
+        "outcome": "Built scripts/q4_report_summary.py and exported the comparison artifact to outputs/q4/run_20260413_215201.",
+        "next": "Refresh the Q4 report draft and table from that artifact in a separate slice.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-q5-gpt-refresh",
+        "date": "2026-04-13",
+        "scope": "Report Q5 GPT refresh",
+        "outcome": "The report now consistently reflects the finished three-model Q5 comparison, including updated top-level framing and a GPT-2 family citation.",
+        "next": "Only revisit the report framing if the active Q4 comparison work or a later Q5 fine-tuning slice materially changes the final narrative.",
+        "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics rather than a full BibTeX/PDF compile."
+      },
+      {
+        "agent": "copilot-report-build",
+        "date": "2026-04-13",
+        "scope": "Report build validation",
+        "outcome": "A working LaTeX toolchain is now present and the full report compiles to PDF; the remaining issues are layout warnings, not blocking build failures.",
+        "next": "Use Tectonic for future report builds, and optionally claim a narrow layout-cleanup slice to reduce the remaining overfull-box warnings after content stabilizes.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-writeup-refresh",
+        "date": "2026-04-13",
+        "scope": "Q4 report draft refresh",
+        "outcome": "Refreshed the Q4 report section, report-local table, README, and report framing from outputs/q4/run_20260413_215201.",
+        "next": "Only reopen Q4 if a more budget-matched rerun or report-build issue requires another write-up pass.",
         "blocker": "None"
       }
     ]
@@ -1953,7 +1999,7 @@
       "name": "copilot-q4-report",
       "date": "2026-04-13",
       "scope": "Q4 report summary",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q4-report",
       "related_area": "q4_report_summary",
       "depends_on": [],
@@ -1961,17 +2007,17 @@
         "started": [
           "Claimed a Q4 artifact-only summary slice after the baseline-only report draft and the new seq2seq comparison artifact both became available."
         ],
-        "in_progress": [
-          "Add a reusable Q4 summary builder and generate comparison-ready Markdown, JSON, and LaTeX outputs from the finished transformer and seq2seq runs."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added scripts/q4_report_summary.py and generated outputs/q4/run_20260413_215201 with JSON, Markdown, and LaTeX comparison artifacts from the tracker-approved transformer and seq2seq runs."
+        ]
       },
       "decisions": [
         "Keep this slice artifact-only so a later q4.tex refresh can consume the summary without overlapping report prose changes."
       ],
       "blockers": [],
       "next_actions": [
-        "Create the Q4 summary builder, validate it on the transformer and seq2seq run pair, and export a refreshed comparison summary artifact."
+        "Use outputs/q4/run_20260413_215201 to refresh the Q4 report draft in a separate slice once report-section ownership is clear."
       ]
     },
     {
@@ -2024,7 +2070,7 @@
       "name": "copilot-report-build",
       "date": "2026-04-13",
       "scope": "Install or validate a LaTeX toolchain and compile the drafted report",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-build",
       "related_area": "report_build_validation",
       "depends_on": [],
@@ -2032,22 +2078,27 @@
         "started": [
           "Claimed the unowned report build-validation gap after the question-level report sections and bibliography reached a mostly drafted state."
         ],
-        "in_progress": [
-          "Checking which LaTeX builders are already available and whether a lightweight install path exists on this machine."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Confirmed that no local LaTeX builder was available but Homebrew was installed.",
+          "Installed the lightweight Tectonic engine via Homebrew instead of a full TeX distribution.",
+          "Compiled the full report successfully and generated a PDF, including a successful BibTeX pass through Tectonic.",
+          "Verified that the remaining build issues are limited to non-blocking overfull-box warnings in the introduction table and parts of Q3/Q4/Q5."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept this slice focused on end-to-end build validation and did not edit question-specific report content that is already owned by separate review slices."
+      ],
       "blockers": [],
       "next_actions": [
-        "Find or install a usable builder, compile report/main.tex, and hand off any remaining TeX or BibTeX issues precisely."
+        "Re-run the Tectonic build after future report edits, and only claim a separate layout-cleanup slice if the overfull warnings need to be reduced."
       ]
     },
     {
       "name": "copilot-report-q5-gpt-refresh",
       "date": "2026-04-13",
       "scope": "Refresh report framing and citations after the Q5 GPT-style comparison",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-q5-gpt-refresh",
       "related_area": "report_q5_gpt_refresh",
       "depends_on": [],
@@ -2055,14 +2106,70 @@
         "started": [
           "Claimed a narrow report-consistency slice after the finished Q5 GPT-style comparison made the top-level framing and citation coverage stale."
         ],
+        "in_progress": [],
+        "completed": [
+          "Reviewed the updated Q5 section, top-level report text, bibliography, and report workspace notes to identify the remaining GPT-style consistency gaps.",
+          "Updated report/sections/q5.tex, introduction.tex, and conclusion.tex so the written report consistently reflects the finished trigram-versus-LSTM-versus-GPT-style Q5 comparison.",
+          "Added a GPT-2 family citation to the Q5 section and bibliography, and refreshed the introduction task-overview table plus report/README.md.",
+          "Validated the edited report files with editor diagnostics."
+        ]
+      },
+      "decisions": [
+        "Keep the refresh focused on Q5-driven report consistency and citations without touching the active Q4 comparison-summary lane."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Revisit the top-level framing only if the active Q4 comparison-summary slice materially changes the report-wide conclusion."
+      ]
+    },
+    {
+      "name": "copilot-q4-writeup-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh the Q4 report draft from the finished comparison summary",
+      "status": "review",
+      "owner": "copilot-q4-writeup-refresh",
+      "related_area": "q4_report_draft_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q4 write-up refresh slice after the comparison summary artifact under outputs/q4/run_20260413_215201 reached review."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Refreshed report/sections/q4.tex and report/tables/q4_overall_results.tex so Q4 now presents the transformer-versus-seq2seq comparison and the train-budget caveat.",
+          "Updated report/README.md, report/sections/introduction.tex, and report/sections/conclusion.tex so the report-wide framing no longer describes Q4 as baseline-only."
+        ]
+      },
+      "decisions": [
+        "Consume the finished Q4 summary artifact rather than re-deriving metrics from raw run files inside the report prose."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only reopen Q4 report prose if a more budget-matched translation comparison becomes available or report compilation surfaces formatting issues."
+      ]
+    },
+    {
+      "name": "copilot-report-layout",
+      "date": "2026-04-13",
+      "scope": "Reduce non-blocking LaTeX layout warnings in the compiled report",
+      "status": "in_progress",
+      "owner": "copilot-report-layout",
+      "related_area": "report_layout_cleanup",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed the unowned post-build cleanup slice after the report compiled successfully with Tectonic."
+        ],
         "in_progress": [
-          "Updating the Q5 section, report framing, and bibliography so they consistently reflect the trigram-versus-LSTM-versus-GPT-style comparison."
+          "Inspecting the remaining overfull-box warnings in the introduction table plus Q3/Q4/Q5 to make focused layout fixes only."
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
-      "next_actions": []
+      "next_actions": [
+        "Adjust the affected tables or paragraphs, rebuild the PDF with Tectonic, and leave the warning delta in the handoff."
+      ]
     }
   ]
 }

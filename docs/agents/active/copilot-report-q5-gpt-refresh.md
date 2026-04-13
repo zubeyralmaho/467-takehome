@@ -1,6 +1,6 @@
 # Agent: copilot-report-q5-gpt-refresh
 
-Last updated: 2026-04-13 21:51
+Last updated: 2026-04-13 21:57
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-report-q5-gpt-refresh
 - Related area: report_q5_gpt_refresh
 - Depends on: -
@@ -31,17 +31,20 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Updating the Q5 section, report framing, and bibliography so they consistently reflect the trigram-versus-LSTM-versus-GPT-style comparison.
+- None.
 
 ### Completed
 
-- None.
+- Reviewed the updated Q5 section, top-level report text, bibliography, and report workspace notes to identify the remaining GPT-style consistency gaps.
+- Updated report/sections/q5.tex, introduction.tex, and conclusion.tex so the written report consistently reflects the finished trigram-versus-LSTM-versus-GPT-style Q5 comparison.
+- Added a GPT-2 family citation to the Q5 section and bibliography, and refreshed the introduction task-overview table plus report/README.md.
+- Validated the edited report files with editor diagnostics.
 
 ---
 
 ## Decisions
 
-- None.
+- Keep the refresh focused on Q5-driven report consistency and citations without touching the active Q4 comparison-summary lane.
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. None.
+1. Revisit the top-level framing only if the active Q4 comparison-summary slice materially changes the report-wide conclusion.
