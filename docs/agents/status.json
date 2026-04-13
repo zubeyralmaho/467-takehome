@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:58"
+    "last_updated": "2026-04-13 15:03"
   },
   "areas": [
     {
@@ -135,6 +135,13 @@
       "owner": "copilot-q1-preprocessing",
       "status": "review",
       "notes": "The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting"
+    },
+    {
+      "key": "q1_report_summary",
+      "label": "Q1 report summary",
+      "owner": "copilot-q1-report",
+      "status": "review",
+      "notes": "Report-ready Q1 smoke-test summary artifacts were generated under outputs/q1/run_20260413_150237 from the completed comparison and preprocessing runs"
     }
   ],
   "priorities": [
@@ -257,6 +264,14 @@
         "scope": "Q1 preprocessing comparison",
         "outcome": "The documented TF-IDF + LR preprocessing sweep now runs end to end and exports a ranked comparison artifact; the existing lowercase+keep-stopwords default remains a best validation setting",
         "next": "Carry the current preprocessing default into larger-budget BiLSTM and DistilBERT experiments; only reopen preprocessing if those neural runs expose a concrete failure mode",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-report",
+        "date": "2026-04-13",
+        "scope": "Q1 report summary",
+        "outcome": "A report-ready Q1 smoke-test summary now exists with Markdown, JSON, and LaTeX outputs derived from the completed comparison and preprocessing artifacts",
+        "next": "Use outputs/q1/run_20260413_150237 for interim reporting, then rerun the summary builder after larger-budget neural experiments complete",
         "blocker": "None"
       }
     ]
@@ -643,6 +658,32 @@
       "blockers": [],
       "next_actions": [
         "Reuse the current default preprocessing for larger-budget Q1 neural experiments, or extend the comparison slice later if character n-gram or stopword-heavy variants become necessary"
+      ]
+    },
+    {
+      "name": "copilot-q1-report",
+      "date": "2026-04-13",
+      "scope": "Build report-ready Q1 summary artifacts from the completed comparison and preprocessing outputs",
+      "status": "review",
+      "owner": "copilot-q1-report",
+      "related_area": "q1_report_summary",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the live tracker and selected a report-only Q1 slice that avoids the active Q2 experiment areas"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Added a reusable Q1 report-summary generator that combines the completed smoke-test comparison and preprocessing outputs into Markdown, JSON, and LaTeX artifacts",
+          "Validated report-ready Q1 summary files under outputs/q1/run_20260413_150237 with model ranking, preprocessing findings, and discussion prompts aligned to the report structure"
+        ]
+      },
+      "decisions": [
+        "Kept this slice on the completed smoke-test artifacts so it remains stable while larger-budget Q1 neural experiments are still pending"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Reuse the generated summary for a smoke-test subsection now, then regenerate it after larger-budget BiLSTM and DistilBERT runs are available"
       ]
     }
   ]

@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 14:58
+Last updated: 2026-04-13 15:03
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -29,6 +29,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 BiLSTM-CRF experiment | copilot-q2-bilstm-crf-experiment | in_progress | Larger-budget BiLSTM-CRF experiment claimed on top of the implemented Q2 neural baseline |
 | Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
 | Q1 preprocessing comparison | copilot-q1-preprocessing | review | The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting |
+| Q1 report summary | copilot-q1-report | review | Report-ready Q1 smoke-test summary artifacts were generated under outputs/q1/run_20260413_150237 from the completed comparison and preprocessing runs |
 
 ---
 
