@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 14:55
+Last updated: 2026-04-13 14:58
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -11,7 +11,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Area | Owner | Status | Notes |
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
-| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison and larger-budget neural runs remain open while smoke-test comparison artifacts are ready |
+| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison artifacts are now ready while larger-budget neural runs remain open |
 | Q2 Named Entity Recognition | unassigned | in_progress | The Q2 CRF baseline and a BERT smoke-test path are in place; BiLSTM-CRF remains unclaimed and larger-budget BERT training/comparison remain open |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
@@ -28,7 +28,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 BERT experiment | copilot-q2-bert | in_progress | A full-split 2-epoch BERT experiment is actively running under outputs/q2/run_20260413_144742; metrics and comparison analysis are pending when the run finishes |
 | Q2 BiLSTM-CRF experiment | copilot-q2-bilstm-crf-experiment | in_progress | Larger-budget BiLSTM-CRF experiment claimed on top of the implemented Q2 neural baseline |
 | Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
-| Q1 preprocessing comparison | copilot-q1-preprocessing | in_progress | Scoped to the documented TF-IDF + LR preprocessing sweep and its exported comparison artifact |
+| Q1 preprocessing comparison | copilot-q1-preprocessing | review | The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting |
 
 ---
 

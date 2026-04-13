@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 14:55
+Last updated: 2026-04-13 14:58
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -101,4 +101,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 BERT experiment
   Outcome: A full-split 2-epoch BERT experiment is currently running on the completed Q2 BERT baseline path; the run directory already exists at outputs/q2/run_20260413_144742
   Next: When metrics.json appears under outputs/q2/run_20260413_144742, compare the finished BERT results against outputs/q2/run_20260413_141702 and decide whether the slice can move to review or needs a focused tuning follow-up
+  Blocker: None
+- Agent: copilot-q1-preprocessing
+  Date: 2026-04-13
+  Scope: Q1 preprocessing comparison
+  Outcome: The documented TF-IDF + LR preprocessing sweep now runs end to end and exports a ranked comparison artifact; the existing lowercase+keep-stopwords default remains a best validation setting
+  Next: Carry the current preprocessing default into larger-budget BiLSTM and DistilBERT experiments; only reopen preprocessing if those neural runs expose a concrete failure mode
   Blocker: None

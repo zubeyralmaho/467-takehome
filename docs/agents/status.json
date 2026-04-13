@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:55"
+    "last_updated": "2026-04-13 14:58"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison and larger-budget neural runs remain open while smoke-test comparison artifacts are ready"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison artifacts are now ready while larger-budget neural runs remain open"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -133,8 +133,8 @@
       "key": "q1_preprocessing_comparison",
       "label": "Q1 preprocessing comparison",
       "owner": "copilot-q1-preprocessing",
-      "status": "in_progress",
-      "notes": "Scoped to the documented TF-IDF + LR preprocessing sweep and its exported comparison artifact"
+      "status": "review",
+      "notes": "The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting"
     }
   ],
   "priorities": [
@@ -249,6 +249,14 @@
         "scope": "Q2 BERT experiment",
         "outcome": "A full-split 2-epoch BERT experiment is currently running on the completed Q2 BERT baseline path; the run directory already exists at outputs/q2/run_20260413_144742",
         "next": "When metrics.json appears under outputs/q2/run_20260413_144742, compare the finished BERT results against outputs/q2/run_20260413_141702 and decide whether the slice can move to review or needs a focused tuning follow-up",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-preprocessing",
+        "date": "2026-04-13",
+        "scope": "Q1 preprocessing comparison",
+        "outcome": "The documented TF-IDF + LR preprocessing sweep now runs end to end and exports a ranked comparison artifact; the existing lowercase+keep-stopwords default remains a best validation setting",
+        "next": "Carry the current preprocessing default into larger-budget BiLSTM and DistilBERT experiments; only reopen preprocessing if those neural runs expose a concrete failure mode",
         "blocker": "None"
       }
     ]
@@ -614,7 +622,7 @@
       "name": "copilot-q1-preprocessing",
       "date": "2026-04-13",
       "scope": "Implement and validate the documented Q1 preprocessing sweep for TF-IDF + LR",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-preprocessing",
       "related_area": "q1_preprocessing_comparison",
       "depends_on": [],
@@ -622,15 +630,19 @@
         "started": [
           "Reviewed the current Q1 preprocessor, the documented sweep settings, and the available config hooks"
         ],
-        "in_progress": [
-          "Adding a reusable preprocessing-comparison runner that exports CSV and JSON artifacts for the documented A-D sweep"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added a reusable Q1 preprocessing-comparison runner that executes the documented TF-IDF + LR A-D sweep and exports CSV plus JSON artifacts",
+          "Validated the preprocessing sweep on a capped 1000-example training subset and exported artifacts under outputs/q1/run_20260413_145735",
+          "Confirmed that the current lowercase+keep-stopwords default ties for the best validation macro-F1, so no config change is needed"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept the sweep validation-only so the held-out Q1 test split remains untouched for later final model comparison"
+      ],
       "blockers": [],
       "next_actions": [
-        "Implement the sweep script, run the capped TF-IDF+LR preprocessing comparison, and validate the exported artifact set"
+        "Reuse the current default preprocessing for larger-budget Q1 neural experiments, or extend the comparison slice later if character n-gram or stopword-heavy variants become necessary"
       ]
     }
   ]

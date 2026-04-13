@@ -7,9 +7,4 @@ try:
 except ImportError:  # pragma: no cover - optional dependency during bootstrap
 	BiLSTMClassifier = None
 
-try:
-	from src.q1_classification.models.distilbert import DistilBERTClassifier
-except ImportError:  # pragma: no cover - optional dependency during bootstrap
-	DistilBERTClassifier = None
-
-__all__ = ["TFIDFClassifier", "BiLSTMClassifier", "DistilBERTClassifier"]
+__all__ = ["TFIDFClassifier", "BiLSTMClassifier"]

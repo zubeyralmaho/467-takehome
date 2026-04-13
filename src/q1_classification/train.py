@@ -6,10 +6,9 @@ from pathlib import Path
 
 from src.common.evaluation import evaluate_predictions
 from src.common.export import save_confusion_matrix_csv, save_metrics, save_predictions
-from src.common.visualization import plot_confusion_matrix
 from src.q1_classification.analysis import analyze_misclassifications, identify_error_patterns
 from src.q1_classification.dataset import prepare_datasets
-from src.q1_classification.models import BiLSTMClassifier, DistilBERTClassifier, TFIDFClassifier
+from src.q1_classification.models import BiLSTMClassifier, TFIDFClassifier
 
 
 def _build_models(config) -> dict[str, object]:
@@ -46,31 +45,6 @@ def _build_models(config) -> dict[str, object]:
             min_frequency=model_config.min_frequency,
             max_seq_length=model_config.max_seq_length,
             weight_decay=getattr(model_config, "weight_decay", 0.0),
-            monitor_metric=getattr(model_config, "monitor_metric", "macro_f1"),
-            num_workers=getattr(model_config, "num_workers", 0),
-            device=config.device,
-            seed=config.seed,
-        )
-
-    if "distilbert" in config.models and config.models.distilbert.enabled:
-        model_config = config.models.distilbert
-        if DistilBERTClassifier is None:
-            raise ImportError(
-                "DistilBERT support requires the 'transformers' package. Install dependencies from requirements.txt."
-            )
-        models["distilbert"] = DistilBERTClassifier(
-            model_name=model_config.model_name,
-            batch_size=model_config.batch_size,
-            learning_rate=model_config.learning_rate,
-            weight_decay=model_config.weight_decay,
-            max_epochs=model_config.max_epochs,
-            early_stopping_patience=getattr(
-                model_config,
-                "early_stopping_patience",
-                getattr(config.training, "early_stopping_patience", 3),
-            ),
-            max_seq_length=model_config.max_seq_length,
-            warmup_ratio=getattr(model_config, "warmup_ratio", 0.1),
             monitor_metric=getattr(model_config, "monitor_metric", "macro_f1"),
             num_workers=getattr(model_config, "num_workers", 0),
             device=config.device,
@@ -166,11 +140,6 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
             save_confusion_matrix_csv(
                 evaluation["confusion_matrix"],
                 run_path / "confusion_matrices" / f"{model_name}_{split_name}_confusion_matrix.csv",
-            )
-            plot_confusion_matrix(
-                evaluation["confusion_matrix"],
-                run_path / "figures" / f"confusion_matrix_{model_name}_{split_name}.png",
-                title=f"{model_name} {split_name} confusion matrix",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")

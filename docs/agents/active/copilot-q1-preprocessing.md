@@ -1,6 +1,6 @@
 # Agent: copilot-q1-preprocessing
 
-Last updated: 2026-04-13 14:55
+Last updated: 2026-04-13 14:58
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-preprocessing
 - Related area: q1_preprocessing_comparison
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Adding a reusable preprocessing-comparison runner that exports CSV and JSON artifacts for the documented A-D sweep
+- None.
 
 ### Completed
 
-- None.
+- Added a reusable Q1 preprocessing-comparison runner that executes the documented TF-IDF + LR A-D sweep and exports CSV plus JSON artifacts
+- Validated the preprocessing sweep on a capped 1000-example training subset and exported artifacts under outputs/q1/run_20260413_145735
+- Confirmed that the current lowercase+keep-stopwords default ties for the best validation macro-F1, so no config change is needed
 
 ---
 
 ## Decisions
 
-- None.
+- Kept the sweep validation-only so the held-out Q1 test split remains untouched for later final model comparison
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Implement the sweep script, run the capped TF-IDF+LR preprocessing comparison, and validate the exported artifact set
+1. Reuse the current default preprocessing for larger-budget Q1 neural experiments, or extend the comparison slice later if character n-gram or stopword-heavy variants become necessary
