@@ -1,6 +1,6 @@
 # Agent: copilot-q1-compare-refresh
 
-Last updated: 2026-04-13 15:24
+Last updated: 2026-04-13 15:26
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-compare-refresh
 - Related area: q1_large_budget_comparison
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Locating the matching TF-IDF artifact and rebuilding Q1 comparison outputs on the shared 4k-train/2k-test budget
+- None.
 
 ### Completed
 
-- None.
+- Generalized scripts/q1_model_comparison.py so refreshed artifacts are labeled as model comparisons instead of smoke tests
+- Ran a matched 4k-train/2k-test TF-IDF final-eval experiment under outputs/q1/run_20260413_152419 to complete the larger-budget comparison set
+- Generated refreshed Q1 comparison artifacts under outputs/q1/run_20260413_152437, with DistilBERT leading at test macro-F1 0.8793 ahead of TF-IDF + SVM 0.8510, TF-IDF + LR 0.8400, and BiLSTM 0.7011
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice focused on reusable comparison artifacts so a later Q1 report refresh can consume the finished outputs without re-running experiments
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Run scripts/q1_model_comparison.py on the matched TF-IDF, BiLSTM, and DistilBERT outputs and leave a comparison handoff for report work
+1. Use outputs/q1/run_20260413_152437 to refresh Q1 report tables, narrative, and any larger-budget summary artifacts

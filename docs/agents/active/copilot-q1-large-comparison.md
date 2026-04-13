@@ -1,6 +1,6 @@
 # Agent: copilot-q1-large-comparison
 
-Last updated: 2026-04-13 15:24
+Last updated: 2026-04-13 15:26
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: done
 - Owner: copilot-q1-large-comparison
 - Related area: q1_large_budget_comparison
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Running a matched TF-IDF reference experiment and rebuilding the Q1 comparison artifacts on the 4k/2k budget
+- None.
 
 ### Completed
 
-- None.
+- Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152535 so TF-IDF, BiLSTM, and DistilBERT all had aligned larger-budget artifacts
+- Built refreshed Q1 comparison outputs under outputs/q1/run_20260413_152558 from outputs/q1/run_20260413_152535, outputs/q1/run_20260413_151549, and outputs/q1/run_20260413_151402
+- Validated the larger-budget ranking with DistilBERT first at test macro-F1 0.879, TF-IDF + SVM second at 0.851, TF-IDF + LR third at 0.840, and BiLSTM fourth at 0.701
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice artifact-only by reusing the existing comparison builder and generating the one missing matched TF-IDF run instead of editing the stable reporting scripts
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Generate updated comparison outputs from the matched larger-budget Q1 runs and leave them ready for a report-summary refresh
+1. Use outputs/q1/run_20260413_152558 as the larger-budget Q1 comparison source, or claim a report-summary refresh slice to turn it into final write-up artifacts

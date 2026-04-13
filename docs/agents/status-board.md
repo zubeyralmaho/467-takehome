@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 15:24
+Last updated: 2026-04-13 15:26
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -11,7 +11,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Area | Owner | Status | Notes |
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
-| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; a larger-budget DistilBERT run is complete while larger-budget BiLSTM and final matched comparison remain open |
+| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched 4k-train/2k-test BiLSTM and DistilBERT runs plus refreshed larger-budget comparison artifacts now exist, while a report-summary refresh remains open |
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
@@ -36,7 +36,8 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 report draft | copilot-q2-writeup | review | A minimal report scaffold now exists and q2.tex is drafted from the completed Q2 summary artifacts, including report-local tables and the entity-F1 comparison figure |
 | Q1 BiLSTM experiment | copilot-q1-bilstm-experiment | review | Matched 4000-train/2000-test BiLSTM final-eval run completed under outputs/q1/run_20260413_151549 with validation/test macro-F1 0.7386/0.7011 for later Q1 comparison |
 | Report build docs | copilot-report-docs | review | report/README.md now documents the scaffold layout, compile prerequisites, section-to-artifact mapping, and the recommended report-writing workflow |
-| Q1 large-budget comparison | copilot-q1-large-comparison | in_progress | Refreshing Q1 comparison artifacts using matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs without editing the active Q2 report slices |
+| Q1 larger-budget comparison | copilot-q1-large-comparison | done | Refreshed larger-budget Q1 comparison artifacts generated under outputs/q1/run_20260413_152558 from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs |
+| Q1 report draft | copilot-q1-writeup | in_progress | Drafting report/sections/q1.tex plus report-local tables and figure assets from the stable larger-budget Q1 artifacts without changing active comparison ownership |
 
 ---
 

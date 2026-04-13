@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:24"
+    "last_updated": "2026-04-13 15:26"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; a larger-budget DistilBERT run is complete while larger-budget BiLSTM and final matched comparison remain open"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched 4k-train/2k-test BiLSTM and DistilBERT runs plus refreshed larger-budget comparison artifacts now exist, while a report-summary refresh remains open"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -187,10 +187,17 @@
     },
     {
       "key": "q1_large_budget_comparison",
-      "label": "Q1 large-budget comparison",
+      "label": "Q1 larger-budget comparison",
       "owner": "copilot-q1-large-comparison",
+      "status": "done",
+      "notes": "Refreshed larger-budget Q1 comparison artifacts generated under outputs/q1/run_20260413_152558 from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs"
+    },
+    {
+      "key": "q1_report_draft",
+      "label": "Q1 report draft",
+      "owner": "copilot-q1-writeup",
       "status": "in_progress",
-      "notes": "Refreshing Q1 comparison artifacts using matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs without editing the active Q2 report slices"
+      "notes": "Drafting report/sections/q1.tex plus report-local tables and figure assets from the stable larger-budget Q1 artifacts without changing active comparison ownership"
     }
   ],
   "priorities": [
@@ -206,9 +213,9 @@
       "Whether optional GPT-2 fine-tuning will be included in Q5."
     ],
     "next_recommended_actions": [
-      "Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs",
-      "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
-      "Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting, and only reopen BiLSTM-CRF if a focused tuning slice is justified"
+      "Use outputs/q1/run_20260413_152558 as the refreshed larger-budget Q1 comparison artifact source, then rebuild the Q1 report summary from it plus the finished preprocessing sweep",
+      "Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting; only reopen Q2 modeling if a focused tuning slice is justified",
+      "Only claim new model-training work if a concrete comparison or report gap remains after consuming the finished Q1 and Q2 artifacts"
     ],
     "entries": [
       {
@@ -385,6 +392,22 @@
         "scope": "Q1 DistilBERT experiment",
         "outcome": "A larger-budget DistilBERT run completed successfully after restoring the Q1 trainer wiring, and the resulting 4k-train/2k-test artifact is strong enough to feed the next Q1 comparison pass",
         "next": "Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused BiLSTM experiment so the neural models can be compared on a closer footing",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-compare-refresh",
+        "date": "2026-04-13",
+        "scope": "Q1 larger-budget comparison",
+        "outcome": "A matched larger-budget Q1 comparison now exists and shows DistilBERT as the strongest finished model on the shared 4k-train/2k-test budget",
+        "next": "Refresh the Q1 report summary and q1.tex using outputs/q1/run_20260413_152437 together with the stable preprocessing comparison artifacts",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-large-comparison",
+        "date": "2026-04-13",
+        "scope": "Q1 large-budget comparison",
+        "outcome": "A refreshed larger-budget Q1 comparison now exists with matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT results plus report-ready table/figure artifacts",
+        "next": "Use outputs/q1/run_20260413_152558 to refresh the Q1 report summary and drafting artifacts, or only reopen modeling if a concrete metric gap still needs explanation",
         "blocker": "None"
       }
     ]
@@ -968,7 +991,7 @@
       "name": "copilot-q1-compare-refresh",
       "date": "2026-04-13",
       "scope": "Q1 larger-budget comparison",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-compare-refresh",
       "related_area": "q1_large_budget_comparison",
       "depends_on": [],
@@ -976,22 +999,26 @@
         "started": [
           "Claimed a fresh Q1 comparison slice after the larger-budget BiLSTM and DistilBERT runs became available"
         ],
-        "in_progress": [
-          "Locating the matching TF-IDF artifact and rebuilding Q1 comparison outputs on the shared 4k-train/2k-test budget"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Generalized scripts/q1_model_comparison.py so refreshed artifacts are labeled as model comparisons instead of smoke tests",
+          "Ran a matched 4k-train/2k-test TF-IDF final-eval experiment under outputs/q1/run_20260413_152419 to complete the larger-budget comparison set",
+          "Generated refreshed Q1 comparison artifacts under outputs/q1/run_20260413_152437, with DistilBERT leading at test macro-F1 0.8793 ahead of TF-IDF + SVM 0.8510, TF-IDF + LR 0.8400, and BiLSTM 0.7011"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept this slice focused on reusable comparison artifacts so a later Q1 report refresh can consume the finished outputs without re-running experiments"
+      ],
       "blockers": [],
       "next_actions": [
-        "Run scripts/q1_model_comparison.py on the matched TF-IDF, BiLSTM, and DistilBERT outputs and leave a comparison handoff for report work"
+        "Use outputs/q1/run_20260413_152437 to refresh Q1 report tables, narrative, and any larger-budget summary artifacts"
       ]
     },
     {
       "name": "copilot-q1-large-comparison",
       "date": "2026-04-13",
       "scope": "Build refreshed Q1 comparison artifacts from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs",
-      "status": "in_progress",
+      "status": "done",
       "owner": "copilot-q1-large-comparison",
       "related_area": "q1_large_budget_comparison",
       "depends_on": [],
@@ -999,15 +1026,42 @@
         "started": [
           "Claimed a separate Q1 comparison-refresh slice once matched larger-budget BiLSTM and DistilBERT runs were available"
         ],
+        "in_progress": [],
+        "completed": [
+          "Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152535 so TF-IDF, BiLSTM, and DistilBERT all had aligned larger-budget artifacts",
+          "Built refreshed Q1 comparison outputs under outputs/q1/run_20260413_152558 from outputs/q1/run_20260413_152535, outputs/q1/run_20260413_151549, and outputs/q1/run_20260413_151402",
+          "Validated the larger-budget ranking with DistilBERT first at test macro-F1 0.879, TF-IDF + SVM second at 0.851, TF-IDF + LR third at 0.840, and BiLSTM fourth at 0.701"
+        ]
+      },
+      "decisions": [
+        "Kept this slice artifact-only by reusing the existing comparison builder and generating the one missing matched TF-IDF run instead of editing the stable reporting scripts"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Use outputs/q1/run_20260413_152558 as the larger-budget Q1 comparison source, or claim a report-summary refresh slice to turn it into final write-up artifacts"
+      ]
+    },
+    {
+      "name": "copilot-q1-writeup",
+      "date": "2026-04-13",
+      "scope": "Q1 report draft",
+      "status": "in_progress",
+      "owner": "copilot-q1-writeup",
+      "related_area": "q1_report_draft",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Selected a report-only Q1 slice after the larger-budget TF-IDF, BiLSTM, and DistilBERT artifacts became stable enough for prose and tables"
+        ],
         "in_progress": [
-          "Running a matched TF-IDF reference experiment and rebuilding the Q1 comparison artifacts on the 4k/2k budget"
+          "Writing q1.tex and creating report-local Q1 tables and confusion-matrix figures from the finished 4k-train/2k-test runs"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Generate updated comparison outputs from the matched larger-budget Q1 runs and leave them ready for a report-summary refresh"
+        "Finish the Q1 write-up and leave the section ready for later report compilation"
       ]
     }
   ]

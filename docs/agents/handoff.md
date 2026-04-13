@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:24
+Last updated: 2026-04-13 15:26
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -22,9 +22,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 ## Next Recommended Actions
 
-1. Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs
-2. Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized
-3. Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting, and only reopen BiLSTM-CRF if a focused tuning slice is justified
+1. Use outputs/q1/run_20260413_152558 as the refreshed larger-budget Q1 comparison artifact source, then rebuild the Q1 report summary from it plus the finished preprocessing sweep
+2. Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting; only reopen Q2 modeling if a focused tuning slice is justified
+3. Only claim new model-training work if a concrete comparison or report gap remains after consuming the finished Q1 and Q2 artifacts
 
 ---
 
@@ -161,4 +161,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q1 DistilBERT experiment
   Outcome: A larger-budget DistilBERT run completed successfully after restoring the Q1 trainer wiring, and the resulting 4k-train/2k-test artifact is strong enough to feed the next Q1 comparison pass
   Next: Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused BiLSTM experiment so the neural models can be compared on a closer footing
+  Blocker: None
+- Agent: copilot-q1-compare-refresh
+  Date: 2026-04-13
+  Scope: Q1 larger-budget comparison
+  Outcome: A matched larger-budget Q1 comparison now exists and shows DistilBERT as the strongest finished model on the shared 4k-train/2k-test budget
+  Next: Refresh the Q1 report summary and q1.tex using outputs/q1/run_20260413_152437 together with the stable preprocessing comparison artifacts
+  Blocker: None
+- Agent: copilot-q1-large-comparison
+  Date: 2026-04-13
+  Scope: Q1 large-budget comparison
+  Outcome: A refreshed larger-budget Q1 comparison now exists with matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT results plus report-ready table/figure artifacts
+  Next: Use outputs/q1/run_20260413_152558 to refresh the Q1 report summary and drafting artifacts, or only reopen modeling if a concrete metric gap still needs explanation
   Blocker: None
