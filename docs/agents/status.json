@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:26"
+    "last_updated": "2026-04-13 18:44"
   },
   "areas": [
     {
@@ -189,15 +189,22 @@
       "key": "q1_large_budget_comparison",
       "label": "Q1 larger-budget comparison",
       "owner": "copilot-q1-large-comparison",
-      "status": "done",
-      "notes": "Refreshed larger-budget Q1 comparison artifacts generated under outputs/q1/run_20260413_152558 from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs"
+      "status": "review",
+      "notes": "Matched 4k-train/2k-test Q1 comparison artifacts are complete under outputs/q1/run_20260413_152437, ranking DistilBERT ahead of TF-IDF + SVM, TF-IDF + LR, and BiLSTM on test macro-F1"
     },
     {
       "key": "q1_report_draft",
       "label": "Q1 report draft",
       "owner": "copilot-q1-writeup",
       "status": "in_progress",
-      "notes": "Drafting report/sections/q1.tex plus report-local tables and figure assets from the stable larger-budget Q1 artifacts without changing active comparison ownership"
+      "notes": "Drafting the Q1 report section from the stable 4k-train/2k-test comparison and existing preprocessing sweep without reopening model-training ownership"
+    },
+    {
+      "key": "q1_report_summary_refresh",
+      "label": "Q1 report summary refresh",
+      "owner": "copilot-q1-summary-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing the Q1 summary artifact from the stable 4k-train/2k-test comparison and the finished preprocessing sweep without overlapping the active q1.tex drafting slice"
     }
   ],
   "priorities": [
@@ -408,6 +415,14 @@
         "scope": "Q1 large-budget comparison",
         "outcome": "A refreshed larger-budget Q1 comparison now exists with matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT results plus report-ready table/figure artifacts",
         "next": "Use outputs/q1/run_20260413_152558 to refresh the Q1 report summary and drafting artifacts, or only reopen modeling if a concrete metric gap still needs explanation",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-large-comparison",
+        "date": "2026-04-13",
+        "scope": "Q1 large-budget comparison",
+        "outcome": "A stable matched 4k-train/2k-test Q1 comparison now exists with report-ready CSV, LaTeX, and figure artifacts showing DistilBERT as the strongest model",
+        "next": "Use outputs/q1/run_20260413_152437 and outputs/q1/run_20260413_145735 to draft the final Q1 report section and report-local tables or figures",
         "blocker": "None"
       }
     ]
@@ -1018,7 +1033,7 @@
       "name": "copilot-q1-large-comparison",
       "date": "2026-04-13",
       "scope": "Build refreshed Q1 comparison artifacts from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs",
-      "status": "done",
+      "status": "review",
       "owner": "copilot-q1-large-comparison",
       "related_area": "q1_large_budget_comparison",
       "depends_on": [],
@@ -1028,40 +1043,63 @@
         ],
         "in_progress": [],
         "completed": [
-          "Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152535 so TF-IDF, BiLSTM, and DistilBERT all had aligned larger-budget artifacts",
-          "Built refreshed Q1 comparison outputs under outputs/q1/run_20260413_152558 from outputs/q1/run_20260413_152535, outputs/q1/run_20260413_151549, and outputs/q1/run_20260413_151402",
-          "Validated the larger-budget ranking with DistilBERT first at test macro-F1 0.879, TF-IDF + SVM second at 0.851, TF-IDF + LR third at 0.840, and BiLSTM fourth at 0.701"
+          "Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152419",
+          "Built refreshed Q1 comparison artifacts under outputs/q1/run_20260413_152437 from the matched TF-IDF, BiLSTM, and DistilBERT runs",
+          "Validated the comparison CSV, LaTeX table, figure, and manifest with DistilBERT leading test macro-F1 at 0.8793"
         ]
       },
       "decisions": [
-        "Kept this slice artifact-only by reusing the existing comparison builder and generating the one missing matched TF-IDF run instead of editing the stable reporting scripts"
+        "Kept the comparison slice artifact-only so the report refresh could be claimed separately without mixing ownership"
       ],
       "blockers": [],
       "next_actions": [
-        "Use outputs/q1/run_20260413_152558 as the larger-budget Q1 comparison source, or claim a report-summary refresh slice to turn it into final write-up artifacts"
+        "Claim the Q1 report draft separately and consume outputs/q1/run_20260413_152437 plus the existing preprocessing sweep artifacts"
       ]
     },
     {
       "name": "copilot-q1-writeup",
       "date": "2026-04-13",
-      "scope": "Q1 report draft",
+      "scope": "Draft the Q1 report section, tables, and figure references from the stable larger-budget artifacts",
       "status": "in_progress",
       "owner": "copilot-q1-writeup",
       "related_area": "q1_report_draft",
       "depends_on": [],
       "summary": {
         "started": [
-          "Selected a report-only Q1 slice after the larger-budget TF-IDF, BiLSTM, and DistilBERT artifacts became stable enough for prose and tables"
+          "Reviewed the stable Q1 large-budget comparison artifact, existing preprocessing sweep, and current report scaffold"
         ],
         "in_progress": [
-          "Writing q1.tex and creating report-local Q1 tables and confusion-matrix figures from the finished 4k-train/2k-test runs"
+          "Refreshing the Q1 summary artifact and replacing the placeholder report section with report-ready prose"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Finish the Q1 write-up and leave the section ready for later report compilation"
+        "Copy the stable comparison figure into report/, create report-local Q1 tables, and draft report/sections/q1.tex from the finished artifacts"
+      ]
+    },
+    {
+      "name": "copilot-q1-summary-refresh",
+      "date": "2026-04-13",
+      "scope": "Q1 report summary refresh",
+      "status": "in_progress",
+      "owner": "copilot-q1-summary-refresh",
+      "related_area": "q1_report_summary_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate Q1 summary-refresh slice after the larger-budget comparison artifact became stable and q1.tex drafting was already owned elsewhere"
+        ],
+        "in_progress": [
+          "Updating the reusable Q1 summary builder and regenerating Markdown, JSON, and LaTeX summary outputs from the larger-budget comparison"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Generalize the summary script away from smoke-test wording and generate a refreshed summary from outputs/q1/run_20260413_152558 plus the preprocessing sweep artifacts"
       ]
     }
   ]

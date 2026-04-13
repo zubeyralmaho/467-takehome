@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:26
+Last updated: 2026-04-13 18:44
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -173,4 +173,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q1 large-budget comparison
   Outcome: A refreshed larger-budget Q1 comparison now exists with matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT results plus report-ready table/figure artifacts
   Next: Use outputs/q1/run_20260413_152558 to refresh the Q1 report summary and drafting artifacts, or only reopen modeling if a concrete metric gap still needs explanation
+  Blocker: None
+- Agent: copilot-q1-large-comparison
+  Date: 2026-04-13
+  Scope: Q1 large-budget comparison
+  Outcome: A stable matched 4k-train/2k-test Q1 comparison now exists with report-ready CSV, LaTeX, and figure artifacts showing DistilBERT as the strongest model
+  Next: Use outputs/q1/run_20260413_152437 and outputs/q1/run_20260413_145735 to draft the final Q1 report section and report-local tables or figures
   Blocker: None

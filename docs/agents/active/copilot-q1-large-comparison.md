@@ -1,6 +1,6 @@
 # Agent: copilot-q1-large-comparison
 
-Last updated: 2026-04-13 15:26
+Last updated: 2026-04-13 18:44
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: done
+- Status: review
 - Owner: copilot-q1-large-comparison
 - Related area: q1_large_budget_comparison
 - Depends on: -
@@ -35,15 +35,15 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Completed
 
-- Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152535 so TF-IDF, BiLSTM, and DistilBERT all had aligned larger-budget artifacts
-- Built refreshed Q1 comparison outputs under outputs/q1/run_20260413_152558 from outputs/q1/run_20260413_152535, outputs/q1/run_20260413_151549, and outputs/q1/run_20260413_151402
-- Validated the larger-budget ranking with DistilBERT first at test macro-F1 0.879, TF-IDF + SVM second at 0.851, TF-IDF + LR third at 0.840, and BiLSTM fourth at 0.701
+- Ran a matched 4k-train/2k-test TF-IDF reference experiment under outputs/q1/run_20260413_152419
+- Built refreshed Q1 comparison artifacts under outputs/q1/run_20260413_152437 from the matched TF-IDF, BiLSTM, and DistilBERT runs
+- Validated the comparison CSV, LaTeX table, figure, and manifest with DistilBERT leading test macro-F1 at 0.8793
 
 ---
 
 ## Decisions
 
-- Kept this slice artifact-only by reusing the existing comparison builder and generating the one missing matched TF-IDF run instead of editing the stable reporting scripts
+- Kept the comparison slice artifact-only so the report refresh could be claimed separately without mixing ownership
 
 ---
 
@@ -55,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Use outputs/q1/run_20260413_152558 as the larger-budget Q1 comparison source, or claim a report-summary refresh slice to turn it into final write-up artifacts
+1. Claim the Q1 report draft separately and consume outputs/q1/run_20260413_152437 plus the existing preprocessing sweep artifacts

@@ -83,10 +83,17 @@ def _build_findings(model_rows: list[dict[str, Any]], preprocessing_summary: dic
     best_model = model_rows[0]
     runner_up = model_rows[1] if len(model_rows) > 1 else best_model
     best_preprocessing = preprocessing_summary["best_experiment"]
+    train_limit = best_model.get("train_limit")
+    test_limit = best_model.get("test_limit")
+    budget_label = (
+        f"the matched {train_limit}-train/{test_limit}-test runs"
+        if train_limit and test_limit
+        else "the matched completed runs"
+    )
 
     findings = [
         (
-            f"On the matched smoke-test runs, {best_model['display_name']} achieved the best test macro-F1 "
+            f"On {budget_label}, {best_model['display_name']} achieved the best test macro-F1 "
             f"({best_model['macro_f1']:.3f}) and accuracy ({best_model['accuracy']:.3f})."
         ),
         (
@@ -100,7 +107,7 @@ def _build_findings(model_rows: list[dict[str, Any]], preprocessing_summary: dic
         weakest_neural = max(neural_rows, key=lambda row: best_model["macro_f1"] - row["macro_f1"])
         findings.append(
             (
-                f"The neural smoke-test runs remain behind the sparse baselines; for example, "
+                f"The weaker neural run still trails the strongest model materially; for example, "
                 f"{weakest_neural['display_name']} trails the best model by "
                 f"{best_model['macro_f1'] - weakest_neural['macro_f1']:.3f} macro-F1 points."
             )
@@ -108,12 +115,11 @@ def _build_findings(model_rows: list[dict[str, Any]], preprocessing_summary: dic
 
     discussion = [
         (
-            f"Sparse representations are currently strongest under the capped 200/100 smoke-test budget, with "
-            f"{best_model['display_name']} outperforming {runner_up['display_name']} by "
+            f"Under the matched larger-budget comparison, {best_model['display_name']} outperforms {runner_up['display_name']} by "
             f"{best_model['macro_f1'] - runner_up['macro_f1']:.3f} macro-F1 points."
         ),
         "The current lowercase + keep-stopwords preprocessing default is already a best validation setting, so further Q1 gains should come from model budget rather than immediate text-normalization changes.",
-        "These artifacts are report-ready for a smoke-test subsection, but the final Q1 narrative should be refreshed after larger-budget BiLSTM and DistilBERT runs complete.",
+        "These artifacts are now suitable as the main Q1 comparison summary because the larger-budget TF-IDF, BiLSTM, and DistilBERT runs are all complete on the same budget.",
     ]
     return findings, discussion
 
@@ -149,7 +155,7 @@ def _build_markdown(
     )
 
     lines = [
-        "# Q1 Smoke-Test Report Summary",
+        "# Q1 Report Summary",
         "",
         "## Source Artifacts",
         "",
@@ -176,7 +182,7 @@ def _build_markdown(
         "",
         "## Recommendation",
         "",
-        "- Keep the current Q1 preprocessing default and spend the next budget on larger matched BiLSTM and DistilBERT runs before rewriting the representation comparison claims.",
+        "- Keep the current Q1 preprocessing default and treat the refreshed larger-budget comparison as the main source for Q1 report tables, narrative, and model-ranking claims.",
         "",
     ]
     return "\n".join(lines)
@@ -204,8 +210,8 @@ def main() -> None:
     model_table_tex = generate_latex_table(
         model_rows,
         columns=["display_name", "accuracy", "macro_f1", "source_run"],
-        caption="Q1 matched smoke-test model comparison on the test split.",
-        label="tab:q1_smoke_results",
+        caption="Q1 matched model comparison on the test split.",
+        label="tab:q1_model_results",
     )
     preprocessing_table_tex = generate_latex_table(
         preprocessing_summary["rows"],
@@ -227,14 +233,14 @@ def main() -> None:
 
     summary_payload = {
         "question": "q1",
-        "summary_type": "report_ready_smoke_summary",
+        "summary_type": "report_ready_model_summary",
         "comparison_run": str(comparison_run),
         "preprocessing_run": str(preprocessing_run),
         "model_rows": model_rows,
         "best_preprocessing": preprocessing_summary["best_experiment"],
         "findings": findings,
         "discussion": discussion,
-        "recommended_next_step": "Run larger-budget matched BiLSTM and DistilBERT experiments, then rebuild the comparison artifacts.",
+        "recommended_next_step": "Use the refreshed larger-budget comparison and the preprocessing sweep to update the Q1 report prose, tables, and figure references.",
     }
 
     save_environment_info(output_dir)

@@ -1,6 +1,6 @@
 # Agent: copilot-q1-writeup
 
-Last updated: 2026-04-13 15:26
+Last updated: 2026-04-13 18:44
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -10,7 +10,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 - Agent name: copilot-q1-writeup
 - Date: 2026-04-13
-- Scope: Q1 report draft
+- Scope: Draft the Q1 report section, tables, and figure references from the stable larger-budget artifacts
 
 ---
 
@@ -27,11 +27,11 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Started
 
-- Selected a report-only Q1 slice after the larger-budget TF-IDF, BiLSTM, and DistilBERT artifacts became stable enough for prose and tables
+- Reviewed the stable Q1 large-budget comparison artifact, existing preprocessing sweep, and current report scaffold
 
 ### In Progress
 
-- Writing q1.tex and creating report-local Q1 tables and confusion-matrix figures from the finished 4k-train/2k-test runs
+- Refreshing the Q1 summary artifact and replacing the placeholder report section with report-ready prose
 
 ### Completed
 
@@ -53,4 +53,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Finish the Q1 write-up and leave the section ready for later report compilation
+1. Copy the stable comparison figure into report/, create report-local Q1 tables, and draft report/sections/q1.tex from the finished artifacts
