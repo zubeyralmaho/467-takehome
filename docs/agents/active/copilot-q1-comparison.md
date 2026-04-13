@@ -1,6 +1,6 @@
 # Agent: copilot-q1-comparison
 
-Last updated: 2026-04-13 14:54
+Last updated: 2026-04-13 14:55
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-comparison
 - Related area: q1_model_comparison
 - Depends on: -
@@ -31,17 +31,21 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Creating a matched 200/100 BiLSTM companion run and a reusable comparison artifact builder for Q1
+- None.
 
 ### Completed
 
-- None.
+- Ran a matched 200/100 BiLSTM smoke test under outputs/q1/run_20260413_144941 so TF-IDF, BiLSTM, and DistilBERT had comparable Q1 smoke-test runs
+- Added shared metric-comparison plotting and LaTeX table helpers for report-ready comparison outputs
+- Added a reusable Q1 comparison builder script that aggregates existing runs into JSON, CSV, LaTeX, and figure artifacts
+- Validated matched Q1 smoke-test comparison artifacts under outputs/q1/run_20260413_145244 with TF-IDF + SVM leading the test macro-F1 ranking
+- Synced the Q1 expected outputs doc with the new model_comparison CSV and LaTeX artifacts
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice on matched 200/100 smoke-test runs instead of mixing metrics from runs with different dataset caps
 
 ---
 
@@ -53,4 +57,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Run the matched BiLSTM smoke test, generate the Q1 comparison outputs, and validate the comparison figure plus table artifacts
+1. Run larger-budget matched BiLSTM and DistilBERT experiments, then rebuild the comparison artifacts for a report-quality Q1 table and figure

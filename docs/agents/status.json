@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:54"
+    "last_updated": "2026-04-13 14:55"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched smoke-test comparison artifacts are ready while preprocessing sweeps and larger-budget neural runs remain open"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison and larger-budget neural runs remain open while smoke-test comparison artifacts are ready"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -128,6 +128,13 @@
       "owner": "copilot-q1-comparison",
       "status": "review",
       "notes": "Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice"
+    },
+    {
+      "key": "q1_preprocessing_comparison",
+      "label": "Q1 preprocessing comparison",
+      "owner": "copilot-q1-preprocessing",
+      "status": "in_progress",
+      "notes": "Scoped to the documented TF-IDF + LR preprocessing sweep and its exported comparison artifact"
     }
   ],
   "priorities": [
@@ -578,7 +585,7 @@
       "name": "copilot-q1-comparison",
       "date": "2026-04-13",
       "scope": "Build matched Q1 smoke-test comparison artifacts for TF-IDF, BiLSTM, and DistilBERT",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-comparison",
       "related_area": "q1_model_comparison",
       "depends_on": [],
@@ -586,15 +593,44 @@
         "started": [
           "Reviewed the tracker, current Q1 runs, and report expectations for comparison tables and figures"
         ],
+        "in_progress": [],
+        "completed": [
+          "Ran a matched 200/100 BiLSTM smoke test under outputs/q1/run_20260413_144941 so TF-IDF, BiLSTM, and DistilBERT had comparable Q1 smoke-test runs",
+          "Added shared metric-comparison plotting and LaTeX table helpers for report-ready comparison outputs",
+          "Added a reusable Q1 comparison builder script that aggregates existing runs into JSON, CSV, LaTeX, and figure artifacts",
+          "Validated matched Q1 smoke-test comparison artifacts under outputs/q1/run_20260413_145244 with TF-IDF + SVM leading the test macro-F1 ranking",
+          "Synced the Q1 expected outputs doc with the new model_comparison CSV and LaTeX artifacts"
+        ]
+      },
+      "decisions": [
+        "Kept this slice on matched 200/100 smoke-test runs instead of mixing metrics from runs with different dataset caps"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Run larger-budget matched BiLSTM and DistilBERT experiments, then rebuild the comparison artifacts for a report-quality Q1 table and figure"
+      ]
+    },
+    {
+      "name": "copilot-q1-preprocessing",
+      "date": "2026-04-13",
+      "scope": "Implement and validate the documented Q1 preprocessing sweep for TF-IDF + LR",
+      "status": "in_progress",
+      "owner": "copilot-q1-preprocessing",
+      "related_area": "q1_preprocessing_comparison",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the current Q1 preprocessor, the documented sweep settings, and the available config hooks"
+        ],
         "in_progress": [
-          "Creating a matched 200/100 BiLSTM companion run and a reusable comparison artifact builder for Q1"
+          "Adding a reusable preprocessing-comparison runner that exports CSV and JSON artifacts for the documented A-D sweep"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Run the matched BiLSTM smoke test, generate the Q1 comparison outputs, and validate the comparison figure plus table artifacts"
+        "Implement the sweep script, run the capped TF-IDF+LR preprocessing comparison, and validate the exported artifact set"
       ]
     }
   ]
