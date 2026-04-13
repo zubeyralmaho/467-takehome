@@ -8,7 +8,7 @@ from src.common.export import save_metrics, save_predictions
 from src.q3_summarization.analysis import qualitative_comparison
 from src.q3_summarization.dataset import prepare_datasets
 from src.q3_summarization.evaluation import evaluate_predictions
-from src.q3_summarization.models import BARTSummarizer, TextRankSummarizer
+from src.q3_summarization.models import BARTSummarizer, Lead3Summarizer, TextRankSummarizer
 
 
 def _build_models(config) -> dict[str, object]:
@@ -36,6 +36,13 @@ def _build_models(config) -> dict[str, object]:
             no_repeat_ngram_size=getattr(model_config, "no_repeat_ngram_size", 3),
             early_stopping=getattr(model_config, "early_stopping", True),
             device=config.device,
+        )
+
+    if "lead3" in config.models and config.models.lead3.enabled:
+        model_config = config.models.lead3
+        models["lead3"] = Lead3Summarizer(
+            num_sentences=getattr(model_config, "num_sentences", 3),
+            min_sentence_words=getattr(config.preprocess, "min_sentence_words", 4),
         )
 
     if not models:

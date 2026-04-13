@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-14 00:10"
+    "last_updated": "2026-04-14 00:12"
   },
   "areas": [
     {
@@ -420,8 +420,8 @@
       "key": "root_readme_refresh",
       "label": "Root README refresh",
       "owner": "copilot-root-readme",
-      "status": "in_progress",
-      "notes": "Refreshing the stale top-level README so it reflects the finished five-task project, the clean report build, and the current reproducible entrypoints instead of the older Q1-only state."
+      "status": "review",
+      "notes": "Refreshed the stale top-level README so it now reflects the finished five-task project, current CLI entrypoints, the clean Tectonic report workflow, and the report-local comparison figure regeneration path."
     }
   ],
   "priorities": [
@@ -959,6 +959,14 @@
         "scope": "Report submission metadata",
         "outcome": "The placeholder student ID has been replaced in report/main.tex and the compiled PDF now shows the final student ID on the title page.",
         "next": "Use the rebuilt PDF as the submission baseline and only revisit the front matter if additional metadata changes are still required.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-root-readme",
+        "date": "2026-04-14",
+        "scope": "Root README refresh",
+        "outcome": "The top-level README now reflects the finished five-task repository, current run commands, and the clean report build workflow instead of the earlier Q1-only state.",
+        "next": "Use README.md as the main landing page for setup and run commands, and only revisit it if the submission workflow or top-level project scope changes.",
         "blocker": "None"
       }
     ]
@@ -2561,7 +2569,7 @@
       "name": "copilot-root-readme",
       "date": "2026-04-14",
       "scope": "Refresh the stale top-level README for the final project state",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-root-readme",
       "related_area": "root_readme_refresh",
       "depends_on": [],
@@ -2569,15 +2577,20 @@
         "started": [
           "Claimed the unowned repository documentation slice after a consistency audit showed that README.md still described only the earlier Q1 classification pipeline."
         ],
-        "in_progress": [
-          "Updating the root README to cover all five tasks, the final report workflow, and the current CLI entrypoints without reopening model or report content."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Replaced the older Q1-only README overview with the current five-task project scope and implemented baseline summary.",
+          "Documented the shared experiment entrypoint pattern plus concrete Q1-Q5 commands and the verified Tectonic report workflow.",
+          "Added the report comparison figure regeneration command and updated the repository-layout summary so the landing page matches the finished repo structure.",
+          "Validated README.md with editor diagnostics after the refresh."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Keep this slice focused on the root landing-page documentation rather than reopening the report-facing docs or design notes."
+      ],
       "blockers": [],
       "next_actions": [
-        "Capture the current entrypoints and stable artifact/report commands, rewrite README.md, then validate the documentation and close the slice."
+        "Only reopen the root README if the top-level run commands, report workflow, or project scope changes again before submission."
       ]
     }
   ]

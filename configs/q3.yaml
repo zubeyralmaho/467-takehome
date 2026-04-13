@@ -35,6 +35,10 @@ models:
     no_repeat_ngram_size: 3
     early_stopping: true
 
+  lead3:
+    enabled: false
+    num_sentences: 3
+
 evaluation:
   metrics:
     - rouge1

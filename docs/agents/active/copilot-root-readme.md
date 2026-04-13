@@ -1,6 +1,6 @@
 # Agent: copilot-root-readme
 
-Last updated: 2026-04-14 00:10
+Last updated: 2026-04-14 00:12
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-root-readme
 - Related area: root_readme_refresh
 - Depends on: -
@@ -31,17 +31,20 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Updating the root README to cover all five tasks, the final report workflow, and the current CLI entrypoints without reopening model or report content.
+- None.
 
 ### Completed
 
-- None.
+- Replaced the older Q1-only README overview with the current five-task project scope and implemented baseline summary.
+- Documented the shared experiment entrypoint pattern plus concrete Q1-Q5 commands and the verified Tectonic report workflow.
+- Added the report comparison figure regeneration command and updated the repository-layout summary so the landing page matches the finished repo structure.
+- Validated README.md with editor diagnostics after the refresh.
 
 ---
 
 ## Decisions
 
-- None.
+- Keep this slice focused on the root landing-page documentation rather than reopening the report-facing docs or design notes.
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Capture the current entrypoints and stable artifact/report commands, rewrite README.md, then validate the documentation and close the slice.
+1. Only reopen the root README if the top-level run commands, report workflow, or project scope changes again before submission.

@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-14 00:10
+Last updated: 2026-04-14 00:12
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -418,4 +418,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Report submission metadata
   Outcome: The placeholder student ID has been replaced in report/main.tex and the compiled PDF now shows the final student ID on the title page.
   Next: Use the rebuilt PDF as the submission baseline and only revisit the front matter if additional metadata changes are still required.
+  Blocker: None
+- Agent: copilot-root-readme
+  Date: 2026-04-14
+  Scope: Root README refresh
+  Outcome: The top-level README now reflects the finished five-task repository, current run commands, and the clean report build workflow instead of the earlier Q1-only state.
+  Next: Use README.md as the main landing page for setup and run commands, and only revisit it if the submission workflow or top-level project scope changes.
   Blocker: None
