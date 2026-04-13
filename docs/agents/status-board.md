@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 18:44
+Last updated: 2026-04-13 19:14
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -11,9 +11,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Area | Owner | Status | Notes |
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
-| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched 4k-train/2k-test BiLSTM and DistilBERT runs plus refreshed larger-budget comparison artifacts now exist, while a report-summary refresh remains open |
+| Q1 Text Classification | unassigned | in_progress | All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts and a refreshed report summary; the remaining open work is report drafting |
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
-| Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
+| Q3 Summarization | unassigned | in_progress | TextRank baseline is implemented and validated under outputs/q3/run_20260413_185438; abstractive summarization remains unclaimed. |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
 | Q5 Language Modeling | unassigned | todo | N-gram + LSTM + optional GPT-2 |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
@@ -29,7 +29,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 BiLSTM-CRF experiment | copilot-q2-bilstm-crf-experiment | done | Full-split BiLSTM-CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_144913; current test F1 0.714 trails the CRF baseline |
 | Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
 | Q1 preprocessing comparison | copilot-q1-preprocessing | review | The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting |
-| Q1 report summary | copilot-q1-report | review | Report-ready Q1 smoke-test summary artifacts were generated under outputs/q1/run_20260413_150237 from the completed comparison and preprocessing runs |
+| Q1 report summary | copilot-q1-report | review | Report-ready Q1 summary artifacts were refreshed under outputs/q1/run_20260413_185011 from the stable larger-budget comparison and preprocessing runs |
 | Q2 report summary | copilot-q2-report | review | Report-ready Q2 summary artifacts were generated under outputs/q2/run_20260413_151034 from the completed CRF, BiLSTM-CRF, and BERT full-data runs |
 | Q2 model comparison | copilot-q2-comparison | review | Report-ready Q2 comparison artifacts were generated under outputs/q2/run_20260413_151143, ranking BERT ahead of the CRF baseline and BiLSTM-CRF on overall and per-entity test F1 |
 | Q1 DistilBERT experiment | copilot-q1-distilbert-experiment | done | Larger-budget DistilBERT experiment completed under outputs/q1/run_20260413_151402; validation/test macro-F1 0.875/0.879 on the 4k-train/2k-test run and no one-class collapse |
@@ -37,14 +37,18 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 BiLSTM experiment | copilot-q1-bilstm-experiment | review | Matched 4000-train/2000-test BiLSTM final-eval run completed under outputs/q1/run_20260413_151549 with validation/test macro-F1 0.7386/0.7011 for later Q1 comparison |
 | Report build docs | copilot-report-docs | review | report/README.md now documents the scaffold layout, compile prerequisites, section-to-artifact mapping, and the recommended report-writing workflow |
 | Q1 larger-budget comparison | copilot-q1-large-comparison | review | Matched 4k-train/2k-test Q1 comparison artifacts are complete under outputs/q1/run_20260413_152437, ranking DistilBERT ahead of TF-IDF + SVM, TF-IDF + LR, and BiLSTM on test macro-F1 |
-| Q1 report draft | copilot-q1-writeup | in_progress | Drafting the Q1 report section from the stable 4k-train/2k-test comparison and existing preprocessing sweep without reopening model-training ownership |
-| Q1 report summary refresh | copilot-q1-summary-refresh | in_progress | Refreshing the Q1 summary artifact from the stable 4k-train/2k-test comparison and the finished preprocessing sweep without overlapping the active q1.tex drafting slice |
+| Q1 report draft | copilot-q1-writeup | review | report/sections/q1.tex plus report-local Q1 tables and figure assets now reflect the stable 4k-train/2k-test Q1 artifacts; PDF compilation remains pending because no LaTeX toolchain is installed |
+| Q1 report summary refresh | copilot-q1-summary-refresh | review | Refreshed Q1 summary artifacts were generated under outputs/q1/run_20260413_185011 using the matched 4k-train/2k-test comparison and the finished preprocessing sweep |
+| Q3 TextRank baseline | copilot-q3-textrank | review | Self-contained extractive TextRank baseline plus lexical evaluation/export pipeline implemented and validated by the capped run under outputs/q3/run_20260413_185438. |
+| Report introduction draft | copilot-report-intro | review | report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope, current technical setup, and report organization based on the finished Q1/Q2 state |
+| Q3 report draft | copilot-q3-writeup | review | report/sections/q3.tex and report/tables/q3_overall_results.tex now document the finished TextRank baseline honestly as a provisional extractive-only Q3 section |
+| Q3 BART baseline | copilot-q3-bart | in_progress | Implementing a self-contained abstractive Q3 summarization path that reuses the existing CNN/DailyMail dataset, metrics, and export contract without reopening the TextRank baseline |
 
 ---
 
 ## Current Priorities
 
-1. Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.
+1. Use the finished larger-budget Q1 artifacts and refreshed summary to complete the Q1 report prose, tables, and figures.
 2. Use the finished Q2 artifacts and the new report scaffold to turn Q2 into final report prose, tables, and figures.
 3. Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations.
 

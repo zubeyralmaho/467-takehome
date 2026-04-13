@@ -1,6 +1,6 @@
 # Agent: copilot-q1-writeup
 
-Last updated: 2026-04-13 18:44
+Last updated: 2026-04-13 19:14
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-writeup
 - Related area: q1_report_draft
 - Depends on: -
@@ -31,17 +31,20 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Refreshing the Q1 summary artifact and replacing the placeholder report section with report-ready prose
+- None.
 
 ### Completed
 
-- None.
+- Drafted report/sections/q1.tex from the stable larger-budget Q1 comparison and preprocessing artifacts
+- Created report-local Q1 tables for overall results and the preprocessing sweep
+- Verified the report-local model-comparison and DistilBERT confusion-matrix figures are present under report/figures/q1
+- Checked the Q1 report files for editor diagnostics and confirmed no file-level errors
 
 ---
 
 ## Decisions
 
-- None.
+- Used the matched 4k-train/2k-test Q1 artifacts as the report source of truth while leaving the separate summary-refresh slice independent
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Copy the stable comparison figure into report/, create report-local Q1 tables, and draft report/sections/q1.tex from the finished artifacts
+1. Compile report/main.tex once a LaTeX toolchain is available and then merge the refreshed Q1 summary artifact if it adds any wording worth reusing

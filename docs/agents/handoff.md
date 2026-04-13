@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 18:44
+Last updated: 2026-04-13 19:14
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -22,7 +22,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 ## Next Recommended Actions
 
-1. Use outputs/q1/run_20260413_152558 as the refreshed larger-budget Q1 comparison artifact source, then rebuild the Q1 report summary from it plus the finished preprocessing sweep
+1. Use outputs/q1/run_20260413_185011, outputs/q1/run_20260413_152558, and the finished preprocessing sweep while finalizing the Q1 report draft
 2. Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting; only reopen Q2 modeling if a focused tuning slice is justified
 3. Only claim new model-training work if a concrete comparison or report gap remains after consuming the finished Q1 and Q2 artifacts
 
@@ -180,3 +180,39 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: A stable matched 4k-train/2k-test Q1 comparison now exists with report-ready CSV, LaTeX, and figure artifacts showing DistilBERT as the strongest model
   Next: Use outputs/q1/run_20260413_152437 and outputs/q1/run_20260413_145735 to draft the final Q1 report section and report-local tables or figures
   Blocker: None
+- Agent: copilot-q1-writeup
+  Date: 2026-04-13
+  Scope: Q1 report draft
+  Outcome: The Q1 report section is now drafted with larger-budget results, local tables, and figure assets that match the finished Q1 comparison artifacts
+  Next: Use report/sections/q1.tex together with the copied Q1 figures and tables during final report assembly, then run a real LaTeX compile when pdflatex or latexmk becomes available
+  Blocker: The current environment does not have pdflatex or latexmk, so PDF compilation could not be verified here
+- Agent: copilot-q1-writeup
+  Date: 2026-04-13
+  Scope: Q1 report draft
+  Outcome: The Q1 report section, report-local tables, and figure references now reflect the stable larger-budget artifacts and are ready for report compilation
+  Next: Install or provide latexmk/pdflatex, compile report/main.tex, and incorporate the separate Q1 summary-refresh outputs only if they improve wording or reuse
+  Blocker: No LaTeX toolchain is installed in the current workspace environment
+- Agent: copilot-q1-summary-refresh
+  Date: 2026-04-13
+  Scope: Q1 report summary refresh
+  Outcome: A refreshed larger-budget Q1 summary now exists with Markdown, JSON, and LaTeX outputs that reflect the finished 4k-train/2k-test comparison and the preprocessing sweep
+  Next: Consume outputs/q1/run_20260413_185011 in the active Q1 report-draft slice and keep the preprocessing recommendation unchanged unless a later report pass needs more detail
+  Blocker: None
+- Agent: copilot-report-intro
+  Date: 2026-04-13
+  Scope: Report introduction draft
+  Outcome: The introduction now matches the current project state and gives the report a proper overview section instead of a placeholder paragraph
+  Next: Use report/sections/introduction.tex and report/tables/introduction_task_overview.tex during final report assembly, or update only if the remaining question scopes change materially
+  Blocker: None
+- Agent: copilot-q3-textrank
+  Date: 2026-04-13
+  Scope: Q3 TextRank baseline + evaluation/export pipeline
+  Outcome: Implemented the first Q3 baseline and exported capped validation/test artifacts at outputs/q3/run_20260413_185438.
+  Next: Use outputs/q3/run_20260413_185438 as the extractive baseline reference, then claim BART/T5 or a larger-budget Q3 slice separately.
+  Blocker: None
+- Agent: copilot-q3-writeup
+  Date: 2026-04-13
+  Scope: Q3 report draft
+  Outcome: The Q3 section now has a stable baseline-only write-up tied to the finished TextRank run and a report-local metric table
+  Next: Use report/sections/q3.tex as the extractive baseline subsection now, then refresh it after a BART or T5 slice is completed
+  Blocker: The main comparative Q3 claim remains incomplete until an abstractive model is implemented and evaluated

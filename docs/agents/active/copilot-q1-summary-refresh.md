@@ -1,6 +1,6 @@
 # Agent: copilot-q1-summary-refresh
 
-Last updated: 2026-04-13 18:44
+Last updated: 2026-04-13 19:14
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-summary-refresh
 - Related area: q1_report_summary_refresh
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Updating the reusable Q1 summary builder and regenerating Markdown, JSON, and LaTeX summary outputs from the larger-budget comparison
+- None.
 
 ### Completed
 
-- None.
+- Generalized scripts/q1_report_summary.py away from smoke-test wording so it can summarize the completed larger-budget comparison
+- Generated refreshed Q1 summary artifacts under outputs/q1/run_20260413_185011 from outputs/q1/run_20260413_152558 and outputs/q1/run_20260413_145735
+- Validated the refreshed summary with DistilBERT first at test macro-F1 0.8793, TF-IDF + SVM second at 0.8510, TF-IDF + LR third at 0.8400, and BiLSTM fourth at 0.7011
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice artifact-only so the active q1.tex drafting lane can consume the new summary without ownership overlap
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Generalize the summary script away from smoke-test wording and generate a refreshed summary from outputs/q1/run_20260413_152558 plus the preprocessing sweep artifacts
+1. Use outputs/q1/run_20260413_185011 together with outputs/q1/run_20260413_152558 while finishing report/sections/q1.tex and any report-local Q1 tables

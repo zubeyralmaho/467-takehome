@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{cllccc}
+\toprule
+Exp. & Stopwords & Lowercase & Max Features & Val. Acc. & Val. Macro-F1 \\
+\midrule
+B & Keep & Yes & 50{,}000 & 0.8200 & 0.8178 \\
+D & Keep & No & 50{,}000 & 0.8200 & 0.8178 \\
+C & Remove & Yes & 100{,}000 & 0.8150 & 0.8125 \\
+A & Remove & Yes & 50{,}000 & 0.8000 & 0.7980 \\
+\bottomrule
+\end{tabular}
+\caption{Validation-only TF-IDF + Logistic Regression preprocessing sweep on a capped 800-train/200-validation subset.}
+\label{tab:q1_preprocessing_results}
+\end{table}

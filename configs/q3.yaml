@@ -1,0 +1,33 @@
+question: q3
+task: summarization
+
+dataset:
+  name: cnn_dailymail
+  version: 3.0.0
+  article_column: article
+  summary_column: highlights
+  id_column: id
+  limit_train_samples: 10000
+  limit_validation_samples: 1000
+  limit_test_samples: 1000
+
+preprocess:
+  max_article_words: 900
+  min_sentence_words: 4
+
+models:
+  textrank:
+    enabled: true
+    similarity_method: tfidf
+    damping: 0.85
+    num_sentences: 3
+    max_sentences: 40
+
+evaluation:
+  metrics:
+    - rouge1
+    - rouge2
+    - rougeL
+    - bleu
+    - meteor
+  num_qualitative_examples: 3

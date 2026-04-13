@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Val. Acc. & Val. Macro-F1 & Test Acc. & Test Macro-F1 \\
+\midrule
+DistilBERT & 0.8750 & 0.8749 & 0.8795 & 0.8793 \\
+TF-IDF + SVM & 0.8638 & 0.8637 & 0.8510 & 0.8510 \\
+TF-IDF + LR & 0.8650 & 0.8650 & 0.8400 & 0.8400 \\
+BiLSTM & 0.7413 & 0.7386 & 0.7025 & 0.7011 \\
+\bottomrule
+\end{tabular}
+\caption{Overall Q1 performance on the matched larger-budget setting with a 4{,}000-example capped train split, an 800-example validation split, and a 2{,}000-example test split.}
+\label{tab:q1_overall_results}
+\end{table}

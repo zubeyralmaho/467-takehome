@@ -1,3 +1,33 @@
 \section{Question 3: Text Summarization}
 
-Question 3 has not been drafted yet. This section is reserved for the TextRank and abstractive summarization experiments once the implementation and evaluation artifacts are available.
+\subsection{Dataset Description}
+
+Question 3 targets abstractive and extractive summarization on CNN/DailyMail, a news summarization benchmark pairing long-form articles with multi-sentence highlights written by editors. The architecture notes propose a 10{,}000/1{,}000/1{,}000 subset for efficient experimentation, but the currently finished baseline is a smaller capped validation pass intended to stabilize the extractive pipeline first. The completed TextRank run uses 100 training, 100 validation, and 100 test examples and therefore should be interpreted as a baseline reference rather than a final headline result.
+
+Even with that limitation, the dataset is still appropriate for early qualitative analysis because articles are substantially longer than their reference summaries and require sentence selection that balances salience, redundancy, and brevity. This makes it a good fit for an extractive baseline such as TextRank, while also leaving room for a later abstractive model to improve fluency and compression.
+
+\subsection{Preprocessing and Method}
+
+The current Q3 pipeline performs lightweight article cleanup, truncates long inputs to 900 words, filters very short candidate sentences, and then applies a TF-IDF based TextRank summarizer. Sentences are treated as graph nodes, pairwise cosine similarities define weighted edges, and PageRank scores determine which three sentences are selected for the final extractive summary. The configuration uses damping 0.85 and allows up to 40 candidate sentences per article.
+
+This design intentionally keeps the baseline simple and self-contained. Because the future abstractive slice will likely use BART or T5 with different input tokenization and generation controls, the current report section should be read as an extractive baseline subsection that establishes the output and evaluation contract rather than as the final Q3 comparison.
+
+\subsection{Results}
+
+Table~\ref{tab:q3_overall_results} summarizes the completed TextRank baseline metrics. On the capped test split, the extractive baseline reaches ROUGE-1 0.3445, ROUGE-2 0.1357, ROUGE-L 0.2255, BLEU 0.0904, and METEOR 0.3353. The validation and test numbers are close, which suggests the baseline is reasonably stable on this small subset even though the absolute scores remain modest.
+
+\input{tables/q3_overall_results}
+
+These values are best interpreted as a lower bound for Question 3. They show that unsupervised sentence ranking can recover some lexical content from the reference summaries, especially at the unigram level, but its ability to match reference phrasing and summary structure is limited. The gap between ROUGE-1 and ROUGE-2, together with the low BLEU score, reflects the fact that TextRank selects salient source sentences rather than rewriting them into concise reference-style summaries.
+
+\subsection{Qualitative Analysis}
+
+The qualitative examples in the exported analysis reinforce this interpretation. In the strongest sampled case, TextRank produces a mostly relevant summary for the Leeds United injury story, correctly preserving the core entities and the central event, and it achieves the highest sample-level METEOR among the inspected test examples. In the weakest case, however, the system latches onto repetitive social-media phrasing in the virtual travel story and produces a nearly irrelevant summary with almost zero lexical overlap against the reference. A second example on the Hiroshima auction story shows an intermediate behavior: the summary is broadly on-topic but too long, too extractive, and overly tied to the article's original sentence structure.
+
+Taken together, these examples show the classic strength and weakness of extractive summarization. TextRank can preserve factual spans directly from the source and sometimes captures the main event with minimal engineering, but it cannot reliably compress information, remove redundancy, or prefer editor-style framing over whichever sentences happen to be central in the similarity graph.
+
+\subsection{Discussion}
+
+At the current stage, Question 3 should be treated as a baseline-only section rather than a finished comparison. The completed TextRank pipeline is useful because it establishes the evaluation/export path and provides a lexical-overlap reference point for later abstractive work. However, it does not yet answer the main comparative question from the assignment, which is how extractive and abstractive methods differ in quality and behavior.
+
+The most justified next step is therefore not more prose about TextRank alone, but a separate BART or T5 slice that can be evaluated against the same metrics. Once that model exists, this section can be expanded into a full comparison with stronger claims about fluency, factual consistency, and compression. Until then, the current draft provides a stable and honest baseline description that can remain in the report without overstating what has been completed.
