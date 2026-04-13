@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:43
+Last updated: 2026-04-13 21:44
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -300,3 +300,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: The report introduction and conclusion now align with the drafted Q3/Q4/Q5 sections, including the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.
   Next: Only revisit the top-level framing if later Q4 or Q5 comparisons materially change the report-wide conclusions.
   Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics.
+- Agent: copilot-q4-seq2seq
+  Date: 2026-04-13
+  Scope: Q4 seq2seq+attention baseline
+  Outcome: A stable classical Q4 seq2seq baseline now exists under outputs/q4/run_20260413_214229 and can be compared directly against the finished transformer baseline.
+  Next: Use outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 for a Q4 comparison summary or report-draft slice; only reopen Q4 modeling if a larger-budget seq2seq run is justified.
+  Blocker: None

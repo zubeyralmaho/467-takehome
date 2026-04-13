@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:43
+Last updated: 2026-04-13 21:44
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -14,7 +14,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 Text Classification | unassigned | in_progress | All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts and a refreshed report summary; the remaining open work is report drafting |
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
 | Q3 Summarization | unassigned | in_progress | TextRank and a capped distilBART comparison now exist under outputs/q3/run_20260413_192426, and report/sections/q3.tex now reflects that direct comparison; only larger-budget Q3 work remains separate. |
-| Q4 Machine Translation | unassigned | in_progress | A pretrained transformer translation baseline is now implemented under outputs/q4/run_20260413_212828 and report/sections/q4.tex now documents that baseline; a custom seq2seq+attention comparison remains a separate slice. |
+| Q4 Machine Translation | unassigned | in_progress | Pretrained transformer and seq2seq+attention baselines now exist under outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229; Q4 comparison/reporting remains the next clean follow-up. |
 | Q5 Language Modeling | unassigned | in_progress | The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a later smaller LSTM rerun under outputs/q5/run_20260413_212022 now exist; refreshed Q5 comparison summary artifacts are ready under outputs/q5/run_20260413_212315. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
 | Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, and report/README.md documents the current artifact mapping; compilation still awaits a LaTeX toolchain. |
@@ -53,7 +53,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q5 report draft refresh | copilot-q5-writeup-refresh | review | Refreshed the Q5 report section, local table, and report README mapping from the matched trigram-versus-LSTM summary artifact under outputs/q5/run_20260413_212315 without reopening model-training ownership. |
 | Q5 GPT-2 baseline | copilot-q5-gpt2 | in_progress | Implementing a practical GPT-2 Q5 baseline on top of the existing language-modeling package so Question 5 can include a transformer-style comparison beyond the matched trigram-versus-LSTM result. |
 | Q4 report draft | copilot-q4-writeup | review | report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the stable pretrained transformer baseline artifact under outputs/q4/run_20260413_212828; any seq2seq comparison remains separate. |
-| Q4 Seq2Seq baseline | copilot-q4-seq2seq | in_progress | Implementing a self-contained seq2seq+attention translation baseline on top of the finished Q4 dataset, metric, and export contract. |
+| Q4 Seq2Seq baseline | copilot-q4-seq2seq | review | Compact GRU seq2seq+attention baseline validated on capped Multi30k under outputs/q4/run_20260413_214229 with validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions. |
 | Report framing refresh | copilot-report-refresh | review | report/sections/introduction.tex and report/sections/conclusion.tex now reflect the drafted Q3/Q4/Q5 sections and the current report-wide baseline/comparison state. |
 | Report bibliography refresh | copilot-report-bib | in_progress | Adding foundational dataset/model citations to the drafted report sections and populating report/references.bib without touching active modeling slices. |
 

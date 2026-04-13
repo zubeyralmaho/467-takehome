@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:43"
+    "last_updated": "2026-04-13 21:44"
   },
   "areas": [
     {
@@ -36,7 +36,7 @@
       "label": "Q4 Machine Translation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A pretrained transformer translation baseline is now implemented under outputs/q4/run_20260413_212828 and report/sections/q4.tex now documents that baseline; a custom seq2seq+attention comparison remains a separate slice."
+      "notes": "Pretrained transformer and seq2seq+attention baselines now exist under outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229; Q4 comparison/reporting remains the next clean follow-up."
     },
     {
       "key": "q5_language_modeling",
@@ -308,8 +308,8 @@
       "key": "q4_seq2seq_baseline",
       "label": "Q4 Seq2Seq baseline",
       "owner": "copilot-q4-seq2seq",
-      "status": "in_progress",
-      "notes": "Implementing a self-contained seq2seq+attention translation baseline on top of the finished Q4 dataset, metric, and export contract."
+      "status": "review",
+      "notes": "Compact GRU seq2seq+attention baseline validated on capped Multi30k under outputs/q4/run_20260413_214229 with validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions."
     },
     {
       "key": "report_framing_refresh",
@@ -703,6 +703,14 @@
         "outcome": "The report introduction and conclusion now align with the drafted Q3/Q4/Q5 sections, including the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.",
         "next": "Only revisit the top-level framing if later Q4 or Q5 comparisons materially change the report-wide conclusions.",
         "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics."
+      },
+      {
+        "agent": "copilot-q4-seq2seq",
+        "date": "2026-04-13",
+        "scope": "Q4 seq2seq+attention baseline",
+        "outcome": "A stable classical Q4 seq2seq baseline now exists under outputs/q4/run_20260413_214229 and can be compared directly against the finished transformer baseline.",
+        "next": "Use outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 for a Q4 comparison summary or report-draft slice; only reopen Q4 modeling if a larger-budget seq2seq run is justified.",
+        "blocker": "None"
       }
     ]
   },
@@ -1797,7 +1805,7 @@
       "name": "copilot-q4-seq2seq",
       "date": "2026-04-13",
       "scope": "Q4 seq2seq+attention baseline",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q4-seq2seq",
       "related_area": "q4_seq2seq_baseline",
       "depends_on": [],
@@ -1805,17 +1813,18 @@
         "started": [
           "Claimed the missing Q4 seq2seq slice after confirming the current Q4 package is transformer-only and the design doc expects a classical seq2seq-versus-transformer comparison."
         ],
-        "in_progress": [
-          "Add a compact word-level encoder-decoder with attention that reuses the current Multi30k loader, BLEU/ChrF evaluator, and translation export path."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added a compact word-level GRU encoder-decoder with additive attention under src/q4_machine_translation/models/seq2seq_attention.py and wired it through the existing Q4 config/trainer entrypoint.",
+          "Validated the first seq2seq export path on a 500/100/100 smoke run under outputs/q4/run_20260413_214121, then improved the classical baseline with lowercased preprocessing and min token frequency 1 on outputs/q4/run_20260413_214229."
+        ]
       },
       "decisions": [
-        "Keep the first classical Q4 slice to a compact GRU-based seq2seq+attention model with greedy decoding so it stays trainable on the current environment."
+        "Use the lowercased 2000/100/100 seq2seq artifact as the initial classical Q4 reference because the smaller case-sensitive smoke run was dominated by unk-heavy translations."
       ],
       "blockers": [],
       "next_actions": [
-        "Implement the seq2seq model path, validate it on a capped Multi30k run, and compare it qualitatively against the finished transformer baseline."
+        "Claim a Q4 comparison/report-summary or q4.tex drafting slice next, using outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 as the direct comparison inputs."
       ]
     },
     {
