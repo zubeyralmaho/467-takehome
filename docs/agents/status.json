@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:13"
+    "last_updated": "2026-04-13 15:15"
   },
   "areas": [
     {
@@ -56,8 +56,8 @@
       "key": "report_preparation",
       "label": "Report preparation",
       "owner": "unassigned",
-      "status": "todo",
-      "notes": "LaTeX report structure and results write-up"
+      "status": "in_progress",
+      "notes": "Initial LaTeX scaffold and section drafting have started; individual question write-up slices can proceed without blocking each other"
     },
     {
       "key": "project_state_sync",
@@ -163,6 +163,20 @@
       "owner": "copilot-q1-distilbert-experiment",
       "status": "in_progress",
       "notes": "Larger-budget DistilBERT experiment claimed on top of the implemented Q1 baseline without changing active comparison/report ownership"
+    },
+    {
+      "key": "q2_report_draft",
+      "label": "Q2 report draft",
+      "owner": "copilot-q2-writeup",
+      "status": "in_progress",
+      "notes": "Drafting the LaTeX Q2 section and minimal report scaffold from completed Q2 summary artifacts without reopening model-comparison ownership"
+    },
+    {
+      "key": "q1_bilstm_experiment",
+      "label": "Q1 BiLSTM experiment",
+      "owner": "copilot-q1-bilstm-experiment",
+      "status": "in_progress",
+      "notes": "Running a larger-budget Q1 BiLSTM experiment on a matched 4000-train/2000-test slice so later Q1 comparison artifacts can use comparable neural runs"
     }
   ],
   "priorities": [
@@ -820,6 +834,52 @@
       "blockers": [],
       "next_actions": [
         "Execute the larger-budget DistilBERT run and inspect whether it still collapses to one class before deciding on any tuning follow-up"
+      ]
+    },
+    {
+      "name": "copilot-q2-writeup",
+      "date": "2026-04-13",
+      "scope": "Q2 report draft",
+      "status": "in_progress",
+      "owner": "copilot-q2-writeup",
+      "related_area": "q2_report_draft",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q2 write-up slice after report-ready Q2 comparison artifacts were available and no report scaffold existed yet"
+        ],
+        "in_progress": [
+          "Scaffolding the report directory and drafting q2.tex from the finished Q2 summary outputs"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Create report/main.tex, preamble, section placeholders, and a filled Q2 LaTeX section aligned to the documented report structure"
+      ]
+    },
+    {
+      "name": "copilot-q1-bilstm-experiment",
+      "date": "2026-04-13",
+      "scope": "Q1 BiLSTM experiment",
+      "status": "in_progress",
+      "owner": "copilot-q1-bilstm-experiment",
+      "related_area": "q1_bilstm_experiment",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the live tracker and selected the unowned Q1 BiLSTM larger-budget experiment as the clean parallel follow-up to the active DistilBERT experiment"
+        ],
+        "in_progress": [
+          "Running a matched 4000-train/2000-test BiLSTM final-eval run for later Q1 comparison"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Inspect the finished BiLSTM metrics and hand them off as a comparison-ready Q1 neural artifact"
       ]
     }
   ]
