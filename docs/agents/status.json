@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:18"
+    "last_updated": "2026-04-13 14:20"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF baselines and the BiLSTM path are implemented; the DistilBERT slice is now claimed separately while preprocessing sweeps and any larger-budget neural runs remain unclaimed"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparisons, larger-budget neural runs, and final model comparison remain unclaimed"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -84,8 +84,8 @@
       "key": "q1_distilbert_baseline",
       "label": "Q1 DistilBERT baseline",
       "owner": "copilot-q1-distilbert",
-      "status": "in_progress",
-      "notes": "DistilBERT sequence-classification slice claimed; integrate a Hugging Face baseline into the existing Q1 training/export path"
+      "status": "review",
+      "notes": "Self-contained DistilBERT baseline implemented and smoke-tested on IMDb; larger-budget training and comparison analysis remain"
     }
   ],
   "priorities": [
@@ -160,6 +160,14 @@
         "scope": "Q2 CRF experiment",
         "outcome": "Full-data CRF experiment completed with a stable exported baseline at outputs/q2/run_20260413_141702",
         "next": "Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against the exported CRF metrics plus error_analysis artifacts",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-distilbert",
+        "date": "2026-04-13",
+        "scope": "Q1 DistilBERT baseline",
+        "outcome": "A self-contained DistilBERT baseline now runs end to end through the existing Q1 pipeline and exports the same metrics and artifact set as the other Q1 models",
+        "next": "Run a larger-budget DistilBERT experiment for a meaningful comparison against TF-IDF and BiLSTM; if it still predicts one class, claim a focused preprocessing or optimization slice",
         "blocker": "None"
       }
     ]
@@ -338,7 +346,7 @@
       "name": "copilot-q1-distilbert",
       "date": "2026-04-13",
       "scope": "Implement a self-contained Q1 DistilBERT baseline on top of the existing IMDb pipeline and Q1 export flow",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-distilbert",
       "related_area": "q1_distilbert_baseline",
       "depends_on": [],
@@ -346,15 +354,20 @@
         "started": [
           "Reviewed the board, Q1 design doc, current model interfaces, and environment dependencies"
         ],
-        "in_progress": [
-          "Adding a DistilBERT classifier wrapper and wiring it into the existing Q1 training flow"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added a DistilBERT sequence-classification wrapper with fit, predict, probability, and confidence interfaces compatible with the existing Q1 pipeline",
+          "Wired DistilBERT into the Q1 model registry, config, and training factory without changing the existing evaluation/export contract",
+          "Added the transformers dependency and extended shared environment export so DistilBERT runs record the transformer package version",
+          "Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept the slice on the existing Q1 preprocessing and export flow instead of widening scope into model-specific raw-text dataset paths"
+      ],
       "blockers": [],
       "next_actions": [
-        "Implement the minimal DistilBERT path, install missing transformer dependencies, and validate on a capped IMDb run"
+        "Run a larger-budget DistilBERT experiment and compare it against the existing TF-IDF and BiLSTM outputs; revisit model-specific preprocessing only if the larger run still collapses to one class"
       ]
     }
   ]

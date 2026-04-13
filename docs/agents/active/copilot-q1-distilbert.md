@@ -1,6 +1,6 @@
 # Agent: copilot-q1-distilbert
 
-Last updated: 2026-04-13 14:18
+Last updated: 2026-04-13 14:20
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-distilbert
 - Related area: q1_distilbert_baseline
 - Depends on: -
@@ -31,17 +31,20 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Adding a DistilBERT classifier wrapper and wiring it into the existing Q1 training flow
+- None.
 
 ### Completed
 
-- None.
+- Added a DistilBERT sequence-classification wrapper with fit, predict, probability, and confidence interfaces compatible with the existing Q1 pipeline
+- Wired DistilBERT into the Q1 model registry, config, and training factory without changing the existing evaluation/export contract
+- Added the transformers dependency and extended shared environment export so DistilBERT runs record the transformer package version
+- Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817
 
 ---
 
 ## Decisions
 
-- None.
+- Kept the slice on the existing Q1 preprocessing and export flow instead of widening scope into model-specific raw-text dataset paths
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Implement the minimal DistilBERT path, install missing transformer dependencies, and validate on a capped IMDb run
+1. Run a larger-budget DistilBERT experiment and compare it against the existing TF-IDF and BiLSTM outputs; revisit model-specific preprocessing only if the larger run still collapses to one class

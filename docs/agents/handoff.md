@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 14:18
+Last updated: 2026-04-13 14:20
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -71,4 +71,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 CRF experiment
   Outcome: Full-data CRF experiment completed with a stable exported baseline at outputs/q2/run_20260413_141702
   Next: Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against the exported CRF metrics plus error_analysis artifacts
+  Blocker: None
+- Agent: copilot-q1-distilbert
+  Date: 2026-04-13
+  Scope: Q1 DistilBERT baseline
+  Outcome: A self-contained DistilBERT baseline now runs end to end through the existing Q1 pipeline and exports the same metrics and artifact set as the other Q1 models
+  Next: Run a larger-budget DistilBERT experiment for a meaningful comparison against TF-IDF and BiLSTM; if it still predicts one class, claim a focused preprocessing or optimization slice
   Blocker: None
