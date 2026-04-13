@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:20"
+    "last_updated": "2026-04-13 14:41"
   },
   "areas": [
     {
@@ -8,7 +8,7 @@
       "label": "Shared infrastructure",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "Initial config, seed, dataset split, metrics, and export scaffold implemented; trainer, evaluator, vocab, and visualization remain"
+      "notes": "Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain"
     },
     {
       "key": "q1_text_classification",
@@ -22,7 +22,7 @@
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The Q2 CRF baseline and larger-budget run are complete; BiLSTM-CRF and BERT slices remain unclaimed"
+      "notes": "The Q2 CRF baseline and a BERT smoke-test path are in place; BiLSTM-CRF remains unclaimed and larger-budget BERT training/comparison remain open"
     },
     {
       "key": "q3_summarization",
@@ -50,7 +50,7 @@
       "label": "Evaluation and analysis",
       "owner": "copilot-q1-eval",
       "status": "review",
-      "notes": "Shared Q1 evaluation now exports confusion-matrix data in metrics.json and per-split confusion_matrices CSVs; visualization figures remain a separate slice"
+      "notes": "Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices"
     },
     {
       "key": "report_preparation",
@@ -86,12 +86,33 @@
       "owner": "copilot-q1-distilbert",
       "status": "review",
       "notes": "Self-contained DistilBERT baseline implemented and smoke-tested on IMDb; larger-budget training and comparison analysis remain"
+    },
+    {
+      "key": "q2_bilstm_crf_baseline",
+      "label": "Q2 BiLSTM-CRF baseline",
+      "owner": "copilot-q2-bilstm-crf",
+      "status": "review",
+      "notes": "BiLSTM-CRF path is implemented and smoke-tested on a capped Q2 run; a larger-budget neural experiment is still needed before comparison against the CRF baseline"
+    },
+    {
+      "key": "q2_bert_baseline",
+      "label": "Q2 BERT baseline",
+      "owner": "copilot-q2-bert",
+      "status": "review",
+      "notes": "Self-contained BERT token-classification baseline implemented and smoke-tested on a capped CoNLL run; larger-budget training and anti-collapse tuning remain"
+    },
+    {
+      "key": "q1_visualization",
+      "label": "Q1 visualization",
+      "owner": "copilot-q1-visualization",
+      "status": "review",
+      "notes": "Shared confusion-matrix figure export is implemented and validated on Q1; training curves and model-comparison figures remain separate visualization slices"
     }
   ],
   "priorities": [
-    "Extend the shared scaffold only where Q1 needs it next.",
-    "Implement BiLSTM and DistilBERT on top of the verified Q1 classical baselines.",
-    "Freeze broader evaluation and export conventions before scaling Q2-Q5."
+    "Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.",
+    "Claim the next Q2 neural slice against the stabilized CRF baseline.",
+    "Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations."
   ],
   "handoff": {
     "current_blockers": [],
@@ -101,9 +122,9 @@
       "Whether optional GPT-2 fine-tuning will be included in Q5."
     ],
     "next_recommended_actions": [
-      "Claim the DistilBERT Q1 slice as the next separate owner and reuse the verified Q1 export flow",
+      "Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs",
       "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
-      "Extend shared evaluation/export only if DistilBERT reveals a concrete gap"
+      "Claim BiLSTM-CRF or BERT as the next Q2 slice using outputs/q2/run_20260413_141702 as the baseline"
     ],
     "entries": [
       {
@@ -168,6 +189,30 @@
         "scope": "Q1 DistilBERT baseline",
         "outcome": "A self-contained DistilBERT baseline now runs end to end through the existing Q1 pipeline and exports the same metrics and artifact set as the other Q1 models",
         "next": "Run a larger-budget DistilBERT experiment for a meaningful comparison against TF-IDF and BiLSTM; if it still predicts one class, claim a focused preprocessing or optimization slice",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-bilstm-crf",
+        "date": "2026-04-13",
+        "scope": "Q2 BiLSTM-CRF baseline",
+        "outcome": "A self-contained BiLSTM-CRF path now runs end to end through the Q2 pipeline and exports the same metrics plus error-analysis artifacts as the CRF baseline",
+        "next": "Run a larger-budget BiLSTM-CRF experiment against outputs/q2/run_20260413_141702; if performance remains O-heavy, claim a focused tuning slice rather than widening this baseline scope",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-visualization",
+        "date": "2026-04-13",
+        "scope": "Q1 confusion-matrix figures",
+        "outcome": "Q1 runs now export confusion-matrix PNG figures alongside the existing metrics, CSV, and analysis artifacts",
+        "next": "Consume the new figures in reporting work; if broader charts are needed, claim a separate visualization slice for model-comparison or training-curve plots",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-bert",
+        "date": "2026-04-13",
+        "scope": "Q2 BERT baseline",
+        "outcome": "A self-contained Q2 BERT token-classification path now runs end to end and exports the same artifact set as the CRF baseline, but the capped smoke test collapsed to O-tag predictions",
+        "next": "Run a larger-budget BERT experiment against outputs/q2/run_20260413_141702; if entity F1 stays at 0, claim a focused tuning slice for schedule, batch size, or label-alignment strategy",
         "blocker": "None"
       }
     ]
@@ -359,7 +404,8 @@
           "Added a DistilBERT sequence-classification wrapper with fit, predict, probability, and confidence interfaces compatible with the existing Q1 pipeline",
           "Wired DistilBERT into the Q1 model registry, config, and training factory without changing the existing evaluation/export contract",
           "Added the transformers dependency and extended shared environment export so DistilBERT runs record the transformer package version",
-          "Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817"
+          "Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817",
+          "Synced the Q1 DistilBERT doc section and shared handoff priorities with the implemented slice"
         ]
       },
       "decisions": [
@@ -368,6 +414,89 @@
       "blockers": [],
       "next_actions": [
         "Run a larger-budget DistilBERT experiment and compare it against the existing TF-IDF and BiLSTM outputs; revisit model-specific preprocessing only if the larger run still collapses to one class"
+      ]
+    },
+    {
+      "name": "copilot-q2-bilstm-crf",
+      "date": "2026-04-13",
+      "scope": "Implement and validate a self-contained Q2 BiLSTM-CRF baseline using the existing CoNLL data and Q2 evaluation/export flow",
+      "status": "review",
+      "owner": "copilot-q2-bilstm-crf",
+      "related_area": "q2_bilstm_crf_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the board and claimed the next Q2 neural slice after the CRF baseline was stabilized"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Added an opt-in Q2 BiLSTM-CRF model path with token vocabulary building, padded sequence batching, neural CRF decoding, and early-stopping support on the existing CoNLL data/evaluation scaffold",
+          "Added the pytorch-crf dependency, exposed BiLSTM-CRF hyperparameters in configs/q2.yaml, and extended environment export to record the CRF-layer package version",
+          "Validated a capped BiLSTM-CRF-only final-eval run on Q2 and confirmed metrics, prediction CSVs, and error analysis under outputs/q2/run_20260413_142615"
+        ]
+      },
+      "decisions": [
+        "Kept the Q2 default config CRF-only and made BiLSTM-CRF opt-in so the existing baseline run remains stable while the neural slice is tuned"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Run a larger-budget BiLSTM-CRF experiment and compare it directly against outputs/q2/run_20260413_141702; revisit optimization only if the larger run still collapses toward O-heavy tagging"
+      ]
+    },
+    {
+      "name": "copilot-q2-bert",
+      "date": "2026-04-13",
+      "scope": "Implement and smoke-test a self-contained Q2 BERT token-classification baseline on top of the existing Q2 scaffold",
+      "status": "review",
+      "owner": "copilot-q2-bert",
+      "related_area": "q2_bert_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the live tracker, existing Q2 CRF scaffold, and Q2 model requirements before claiming the next neural slice"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Added a BERT token-classification wrapper with fit, predict, and token-confidence interfaces compatible with the existing Q2 training/export flow",
+          "Wired the BERT model into the Q2 model registry, config, and training factory without touching shared modules",
+          "Validated a capped BERT-only final-eval run on CoNLL under outputs/q2/run_20260413_144034 and confirmed metrics, error analysis, and prediction CSV exports"
+        ]
+      },
+      "decisions": [
+        "Kept the BERT path on the existing Q2 token-list pipeline and added word-level alignment guards so truncated tokenizer outputs cannot break seqeval evaluation",
+        "The capped one-epoch smoke test collapses to O tags, so the slice should stay in review until a larger-budget run or targeted tuning confirms meaningful entity predictions"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Run a larger-budget BERT experiment with more epochs and compare it against outputs/q2/run_20260413_141702; if it still collapses to O tags, claim a focused optimization slice for training schedule or token-label handling"
+      ]
+    },
+    {
+      "name": "copilot-q1-visualization",
+      "date": "2026-04-13",
+      "scope": "Implement shared confusion-matrix figure generation and wire it into the existing Q1 export flow",
+      "status": "review",
+      "owner": "copilot-q1-visualization",
+      "related_area": "q1_visualization",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the board, visualization expectations in the docs, and the current Q1 export artifacts"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Added a shared visualization helper that renders confusion-matrix heatmaps to PNG files using the exported metrics payload",
+          "Wired Q1 training to export per-model, per-split confusion-matrix figures under the run figures directory",
+          "Added the matplotlib dependency and extended shared environment export so figure-producing runs record the visualization package version",
+          "Validated the figure export path on a capped Q1 final-eval run and confirmed PNG outputs under outputs/q1/run_20260413_144017/figures"
+        ]
+      },
+      "decisions": [
+        "Kept this slice limited to confusion-matrix figures so training curves and model-comparison plots can be claimed separately if needed"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Use the generated Q1 confusion-matrix figures in analysis/reporting work, or claim a separate visualization slice for training curves and comparison plots"
       ]
     }
   ]

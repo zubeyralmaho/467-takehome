@@ -190,11 +190,11 @@ class DistilBERTClassifier:
     def get_tokenizer(self):
         """Returns DistilBertTokenizer."""
 
-    def create_dataset(self, texts, labels, max_length=512):
+    def create_dataset(self, texts, labels, max_length=256):
         """HuggingFace Dataset + tokenization."""
 
     def train(self, train_dataset, val_dataset, config):
-        """Fine-tuning with HuggingFace Trainer or custom loop."""
+      """Fine-tuning with a custom torch loop."""
 
     def predict(self, texts):
         """Inference."""
@@ -218,7 +218,7 @@ class DistilBERTClassifier:
 | Parameter | Value |
 |-----------|-------|
 | model_name | distilbert-base-uncased |
-| max_seq_length | 512 |
+| max_seq_length | 256 |
 | batch_size | 16 |
 | learning_rate | 2e-5 |
 | weight_decay | 0.01 |

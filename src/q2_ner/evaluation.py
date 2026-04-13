@@ -24,11 +24,20 @@ def evaluate_predictions(
     references: Sequence[Sequence[str]],
     metrics: Sequence[str] | None = None,
 ) -> dict[str, Any]:
+    entity_precision = float(precision_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0))
+    entity_recall = float(recall_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0))
+    entity_f1 = float(f1_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0))
+    token_accuracy = _compute_token_accuracy(references, predictions)
+
     available = {
-        "entity_precision": float(precision_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0)),
-        "entity_recall": float(recall_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0)),
-        "entity_f1": float(f1_score(references, predictions, mode="strict", scheme=IOB2, zero_division=0)),
-        "token_accuracy": _compute_token_accuracy(references, predictions),
+        "entity_precision": entity_precision,
+        "precision": entity_precision,
+        "entity_recall": entity_recall,
+        "recall": entity_recall,
+        "entity_f1": entity_f1,
+        "f1": entity_f1,
+        "token_accuracy": token_accuracy,
+        "accuracy": token_accuracy,
     }
     selected_metrics = available if not metrics else {name: available[name] for name in metrics if name in available}
     report = classification_report(

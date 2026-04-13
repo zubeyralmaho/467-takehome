@@ -9,6 +9,22 @@ def labels_from_ids(label_ids: Sequence[int], label_names: Sequence[str]) -> lis
     return [str(label_names[int(label_id)]) for label_id in label_ids]
 
 
+def align_labels_with_tokens(label_ids: Sequence[int], word_ids: Sequence[int | None]) -> list[int]:
+    aligned: list[int] = []
+    previous_word_id: int | None = None
+
+    for word_id in word_ids:
+        if word_id is None:
+            aligned.append(-100)
+        elif word_id != previous_word_id:
+            aligned.append(int(label_ids[word_id]))
+        else:
+            aligned.append(-100)
+        previous_word_id = word_id
+
+    return aligned
+
+
 def _token_features(tokens: Sequence[str], index: int) -> dict[str, object]:
     token = tokens[index]
     features: dict[str, object] = {

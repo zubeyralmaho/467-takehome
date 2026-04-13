@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.common.evaluation import evaluate_predictions
 from src.common.export import save_confusion_matrix_csv, save_metrics, save_predictions
+from src.common.visualization import plot_confusion_matrix
 from src.q1_classification.analysis import analyze_misclassifications, identify_error_patterns
 from src.q1_classification.dataset import prepare_datasets
 from src.q1_classification.models import BiLSTMClassifier, DistilBERTClassifier, TFIDFClassifier
@@ -165,6 +166,11 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
             save_confusion_matrix_csv(
                 evaluation["confusion_matrix"],
                 run_path / "confusion_matrices" / f"{model_name}_{split_name}_confusion_matrix.csv",
+            )
+            plot_confusion_matrix(
+                evaluation["confusion_matrix"],
+                run_path / "figures" / f"confusion_matrix_{model_name}_{split_name}.png",
+                title=f"{model_name} {split_name} confusion matrix",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")

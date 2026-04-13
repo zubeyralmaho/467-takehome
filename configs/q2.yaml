@@ -19,6 +19,35 @@ models:
     max_iterations: 100
     all_possible_transitions: true
 
+  bilstm_crf:
+    enabled: false
+    embedding_dim: 100
+    hidden_dim: 128
+    num_layers: 1
+    dropout: 0.3
+    batch_size: 32
+    learning_rate: 0.001
+    weight_decay: 0.0
+    max_epochs: 8
+    early_stopping_patience: 2
+    max_vocab_size: 30000
+    min_frequency: 1
+    num_workers: 0
+    monitor_metric: f1
+
+  bert:
+    enabled: false
+    model_name: bert-base-cased
+    batch_size: 8
+    learning_rate: 0.00005
+    weight_decay: 0.01
+    max_epochs: 3
+    early_stopping_patience: 2
+    max_seq_length: 128
+    warmup_ratio: 0.1
+    num_workers: 0
+    monitor_metric: f1
+
 evaluation:
   metrics: [precision, recall, f1, accuracy]
   num_error_examples: 5

@@ -83,7 +83,17 @@ def save_config_copy(config: Config, run_dir: str | Path) -> None:
 
 def save_environment_info(run_dir: str | Path) -> None:
     packages: dict[str, str] = {}
-    for package_name in ["datasets", "numpy", "PyYAML", "scikit-learn", "torch", "tqdm", "transformers"]:
+    for package_name in [
+        "datasets",
+        "matplotlib",
+        "numpy",
+        "PyYAML",
+        "pytorch-crf",
+        "scikit-learn",
+        "torch",
+        "tqdm",
+        "transformers",
+    ]:
         try:
             packages[package_name] = metadata.version(package_name)
         except metadata.PackageNotFoundError:

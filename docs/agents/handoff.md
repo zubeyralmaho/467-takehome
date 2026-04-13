@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 14:20
+Last updated: 2026-04-13 14:41
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -22,9 +22,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 ## Next Recommended Actions
 
-1. Claim the DistilBERT Q1 slice as the next separate owner and reuse the verified Q1 export flow
+1. Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs
 2. Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized
-3. Extend shared evaluation/export only if DistilBERT reveals a concrete gap
+3. Claim BiLSTM-CRF or BERT as the next Q2 slice using outputs/q2/run_20260413_141702 as the baseline
 
 ---
 
@@ -77,4 +77,22 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q1 DistilBERT baseline
   Outcome: A self-contained DistilBERT baseline now runs end to end through the existing Q1 pipeline and exports the same metrics and artifact set as the other Q1 models
   Next: Run a larger-budget DistilBERT experiment for a meaningful comparison against TF-IDF and BiLSTM; if it still predicts one class, claim a focused preprocessing or optimization slice
+  Blocker: None
+- Agent: copilot-q2-bilstm-crf
+  Date: 2026-04-13
+  Scope: Q2 BiLSTM-CRF baseline
+  Outcome: A self-contained BiLSTM-CRF path now runs end to end through the Q2 pipeline and exports the same metrics plus error-analysis artifacts as the CRF baseline
+  Next: Run a larger-budget BiLSTM-CRF experiment against outputs/q2/run_20260413_141702; if performance remains O-heavy, claim a focused tuning slice rather than widening this baseline scope
+  Blocker: None
+- Agent: copilot-q1-visualization
+  Date: 2026-04-13
+  Scope: Q1 confusion-matrix figures
+  Outcome: Q1 runs now export confusion-matrix PNG figures alongside the existing metrics, CSV, and analysis artifacts
+  Next: Consume the new figures in reporting work; if broader charts are needed, claim a separate visualization slice for model-comparison or training-curve plots
+  Blocker: None
+- Agent: copilot-q2-bert
+  Date: 2026-04-13
+  Scope: Q2 BERT baseline
+  Outcome: A self-contained Q2 BERT token-classification path now runs end to end and exports the same artifact set as the CRF baseline, but the capped smoke test collapsed to O-tag predictions
+  Next: Run a larger-budget BERT experiment against outputs/q2/run_20260413_141702; if entity F1 stays at 0, claim a focused tuning slice for schedule, batch size, or label-alignment strategy
   Blocker: None

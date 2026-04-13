@@ -22,7 +22,7 @@ except ImportError:
 from src.common.export import save_metrics, save_predictions
 from src.q2_ner.analysis import analyze_sequence_errors, summarize_label_confusions
 from src.q2_ner.dataset import prepare_datasets
-from src.q2_ner.models import FeatureBasedCRF
+from src.q2_ner.models import BERTNERModel, BiLSTMCRFTagger, FeatureBasedCRF
 
 
 def _ensure_seqeval_available() -> None:
@@ -30,7 +30,7 @@ def _ensure_seqeval_available() -> None:
         raise ImportError("NER evaluation requires the 'seqeval' package. Install dependencies from requirements.txt.")
 
 
-def _build_models(config) -> dict[str, object]:
+def _build_models(config, label_names: list[str]) -> dict[str, object]:
     models: dict[str, object] = {}
     if "crf" in config.models and config.models.crf.enabled:
         if FeatureBasedCRF is None:
@@ -45,6 +45,59 @@ def _build_models(config) -> dict[str, object]:
             c2=model_config.c2,
             max_iterations=model_config.max_iterations,
             all_possible_transitions=getattr(model_config, "all_possible_transitions", True),
+        )
+
+    if "bilstm_crf" in config.models and config.models.bilstm_crf.enabled:
+        if BiLSTMCRFTagger is None:
+            raise ImportError(
+                "BiLSTM-CRF support requires the 'pytorch-crf' package. Install dependencies from requirements.txt."
+            )
+
+        model_config = config.models.bilstm_crf
+        models["bilstm_crf"] = BiLSTMCRFTagger(
+            label_names=label_names,
+            embedding_dim=model_config.embedding_dim,
+            hidden_dim=model_config.hidden_dim,
+            num_layers=model_config.num_layers,
+            dropout=model_config.dropout,
+            batch_size=model_config.batch_size,
+            learning_rate=model_config.learning_rate,
+            weight_decay=getattr(model_config, "weight_decay", 0.0),
+            max_epochs=model_config.max_epochs,
+            early_stopping_patience=getattr(
+                model_config,
+                "early_stopping_patience",
+                getattr(config.training, "early_stopping_patience", 3),
+            ),
+            max_vocab_size=model_config.max_vocab_size,
+            min_frequency=model_config.min_frequency,
+            num_workers=getattr(model_config, "num_workers", 0),
+            monitor_metric=getattr(model_config, "monitor_metric", "f1"),
+            device=config.device,
+            seed=config.seed,
+        )
+
+    if "bert" in config.models and config.models.bert.enabled:
+        if BERTNERModel is None:
+            raise ImportError(
+                "BERT NER support requires the 'transformers' package. Install dependencies from requirements.txt."
+            )
+
+        model_config = config.models.bert
+        models["bert"] = BERTNERModel(
+            label_names=label_names,
+            model_name=model_config.model_name,
+            batch_size=model_config.batch_size,
+            learning_rate=model_config.learning_rate,
+            weight_decay=model_config.weight_decay,
+            max_epochs=model_config.max_epochs,
+            early_stopping_patience=getattr(model_config, "early_stopping_patience", 2),
+            max_seq_length=model_config.max_seq_length,
+            warmup_ratio=getattr(model_config, "warmup_ratio", 0.1),
+            monitor_metric=getattr(model_config, "monitor_metric", "f1"),
+            num_workers=getattr(model_config, "num_workers", 0),
+            device=config.device,
+            seed=config.seed,
         )
 
     if not models:
@@ -133,7 +186,7 @@ def _evaluate_model(config, model, split_data: dict[str, list]) -> dict:
 
 def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, object]:
     datasets = prepare_datasets(config)
-    models = _build_models(config)
+    models = _build_models(config, label_names=datasets["label_names"])
     run_path = Path(run_dir)
 
     split_names = ["validation"]
@@ -152,7 +205,11 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
     }
 
     for model_name, model in models.items():
-        model.fit(datasets["train"]["tokens"], datasets["train"]["labels"])
+        model.fit(
+            datasets["train"]["tokens"],
+            datasets["train"]["labels"],
+            validation_data=datasets["validation"],
+        )
 
         metrics_output["models"][model_name] = {}
         analysis_output["models"][model_name] = {}
