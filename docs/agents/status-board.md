@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 15:05
+Last updated: 2026-04-13 15:08
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -12,7 +12,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
 | Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison artifacts are now ready while larger-budget neural runs remain open |
-| Q2 Named Entity Recognition | unassigned | in_progress | CRF and BiLSTM-CRF full-data runs are complete; the BiLSTM-CRF model is a valid neural baseline but still trails CRF, and BERT remains unclaimed |
+| Q2 Named Entity Recognition | unassigned | in_progress | CRF, BERT, and BiLSTM-CRF full-data runs are complete; BERT currently leads, CRF remains the strongest non-transformer baseline, and any BiLSTM-CRF tuning is a separate slice |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
 | Q5 Language Modeling | unassigned | todo | N-gram + LSTM + optional GPT-2 |
@@ -30,6 +30,8 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
 | Q1 preprocessing comparison | copilot-q1-preprocessing | review | The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting |
 | Q1 report summary | copilot-q1-report | review | Report-ready Q1 smoke-test summary artifacts were generated under outputs/q1/run_20260413_150237 from the completed comparison and preprocessing runs |
+| Q2 report summary | copilot-q2-report | in_progress | Report-only Q2 slice claimed to summarize the completed CRF, BiLSTM-CRF, and BERT full-data artifacts into report-ready outputs |
+| Q2 model comparison | copilot-q2-comparison | in_progress | Building report-ready comparison artifacts across the completed CRF, BiLSTM-CRF, and BERT Q2 runs without changing the active experiment ownership |
 
 ---
 

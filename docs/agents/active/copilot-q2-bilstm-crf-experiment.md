@@ -1,6 +1,6 @@
 # Agent: copilot-q2-bilstm-crf-experiment
 
-Last updated: 2026-04-13 15:05
+Last updated: 2026-04-13 15:08
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -55,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Claim Q2 BERT as the next slice, or claim a focused BiLSTM-CRF tuning slice if the recurrent model still needs improvement
+1. Compare outputs/q2/run_20260413_144913 against the finished CRF and BERT runs in analysis/reporting, or claim a focused BiLSTM-CRF tuning slice if the recurrent model still needs improvement
