@@ -5,9 +5,10 @@ This directory contains the LaTeX scaffold for the final take-home report.
 ## Current State
 
 - `main.tex` wires together the full report structure from `docs/11-report-structure.md`.
-- `sections/q1.tex`, `sections/q2.tex`, `sections/q3.tex`, and `sections/q5.tex` are drafted from stable experiment artifacts.
+- `sections/q1.tex`, `sections/q2.tex`, `sections/q3.tex`, `sections/q4.tex`, and `sections/q5.tex` are drafted from stable experiment artifacts.
 - `sections/q3.tex` now contains a direct capped comparison between TextRank and a pretrained DistilBART baseline.
-- `sections/q4.tex` and `sections/conclusion.tex` remain placeholders for later slices.
+- `sections/q4.tex` now contains a baseline-first write-up for the pretrained Q4 transformer artifact.
+- `sections/conclusion.tex` is drafted, but it still reflects the pre-Q4 report state and should be refreshed after the Q4 section is folded into the final narrative.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
 - `references.bib` is currently an empty placeholder.
@@ -66,7 +67,9 @@ pdflatex main.tex
 
 ### Question 4
 
-- This section remains a placeholder until machine-translation implementations and experiment artifacts exist.
+- Pretrained transformer baseline artifact: `outputs/q4/run_20260413_212828`
+- `sections/q4.tex` now documents the stable pretrained baseline with BLEU/ChrF metrics from the capped Multi30k export.
+- A future seq2seq+attention run should be compared against the same artifact contract rather than replacing it.
 
 ### Question 5
 
@@ -90,5 +93,5 @@ pdflatex main.tex
 - Expand `sections/introduction.tex` once Q1 and Q2 write-ups stabilize.
 - Fill `references.bib` when citations are added to the final prose.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
-- Draft `sections/q4.tex` after machine-translation outputs are available.
+- Refresh `sections/introduction.tex` and `sections/conclusion.tex` so they reflect the now-drafted Q4 section and the updated overall report state.
 - Only reopen `sections/q5.tex` if a GPT-2 style Q5 baseline or a larger matched LSTM comparison becomes available.

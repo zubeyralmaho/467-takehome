@@ -8,7 +8,7 @@ from src.common.export import save_metrics, save_predictions
 from src.q5_language_modeling.analysis import generate_samples
 from src.q5_language_modeling.dataset import prepare_datasets
 from src.q5_language_modeling.evaluation import evaluate_language_model
-from src.q5_language_modeling.models import LSTMLanguageModel, NGramLanguageModel
+from src.q5_language_modeling.models import GPT2LanguageModel, LSTMLanguageModel, NGramLanguageModel
 
 
 def _build_model(config) -> tuple[str, object, dict[str, object]]:
@@ -68,6 +68,25 @@ def _build_model(config) -> tuple[str, object, dict[str, object]]:
             "gradient_clip": model.gradient_clip,
         }
         return "lstm", model, model_config
+
+    if model_type == "gpt2":
+        if GPT2LanguageModel is None:
+            raise ImportError("Q5 GPT-2 support requires the 'transformers' package. Install dependencies from requirements.txt.")
+
+        model = GPT2LanguageModel(
+            model_name=getattr(config.model, "model_name", "distilgpt2"),
+            max_input_length=getattr(config.model, "max_input_length", 256),
+            eval_batch_size=getattr(config.model, "eval_batch_size", 8),
+            top_k=getattr(config.model, "top_k", 50),
+            device=config.device,
+        )
+        model_config = {
+            "model_name": model.model_name,
+            "max_input_length": model.max_input_length,
+            "eval_batch_size": model.eval_batch_size,
+            "top_k": model.top_k,
+        }
+        return "gpt2", model, model_config
 
     raise ValueError(f"Unsupported Q5 model type: {model_type}")
 

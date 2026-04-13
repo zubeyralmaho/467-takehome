@@ -1,3 +1,33 @@
 \section{Question 4: Machine Translation}
 
-Question 4 has not been drafted yet. This section will compare the planned seq2seq and transformer translation systems after experiment outputs are generated.
+\subsection{Dataset Description}
+
+Question 4 currently uses the English-to-German Multi30k translation benchmark through the Hugging Face mirror \texttt{bentrevett/multi30k}. Multi30k consists of short image-caption style sentence pairs, which makes it a useful benchmark for testing whether a model can produce fluent target-language sentences while preserving compact visual descriptions from the source caption. The currently stable artifact is a capped baseline run with 100 examples each for train, validation, and test so that the report can document a finished Q4 export path without waiting for a full model comparison.
+
+Because the finished Q4 evidence currently consists of only one pretrained model, this section should be read as a baseline-first write-up rather than a final classical-versus-neural comparison. The train split is retained in the capped configuration so that a later seq2seq-plus-attention slice can reuse the same dataset contract, but the completed baseline reported below does not perform task-specific fine-tuning.
+
+\subsection{Preprocessing and Model}
+
+The finished Q4 system uses the pretrained \texttt{Helsinki-NLP/opus-mt-en-de} machine-translation checkpoint. Source and target casing are preserved, inputs and decoded outputs are capped at 96 tokens, and generation uses beam search with 4 beams and length penalty 1.0. This keeps the first Q4 baseline simple: instead of training a custom translation model, the pipeline evaluates a strong pretrained transformer directly on the capped Multi30k split.
+
+Evaluation uses BLEU and ChrF on both validation and test. BLEU gives a familiar n-gram precision view of translation quality, while ChrF is more tolerant of inflectional and morphological variation and is often informative for German output. Together, the two metrics provide a lightweight but credible baseline suite for the current stage of Q4.
+
+\subsection{Results}
+
+Table~\ref{tab:q4_overall_results} summarizes the finished baseline metrics. The pretrained transformer reaches validation BLEU 0.4008 and test BLEU 0.3572, with validation/test ChrF 0.6569/0.6380. On a capped 100-example validation/test setup, these values indicate that the model is already a strong practical baseline and gives the report a stable Q4 reference point before any custom seq2seq comparison is added.
+
+\input{tables/q4_overall_results}
+
+Because the current section contains only one model, the main interpretation is not relative ranking but baseline strength. The model is clearly capable of producing fluent German captions on many examples, yet the gap between validation and test BLEU also suggests that the current capped split is still small enough for example-level phrasing differences to matter materially.
+
+\subsection{Qualitative Analysis}
+
+The qualitative examples show both the strengths and the remaining limitations of the pretrained system. On validation example \texttt{validation\_87}, the model exactly matches the reference translation for \textit{A medium sized group of people pose in front of the camera.}, which is the ideal behavior for a short caption translation task. A similar perfect match appears on test example \texttt{test\_63}, where \textit{Two men playing guitar in front of a large audience.} is translated exactly as the reference.
+
+The weaker examples are also informative. On \texttt{test\_84}, the model leaves the English adjective \textit{silhouetted} untranslated inside an otherwise fluent German sentence, which lowers BLEU while still preserving most of the source meaning. On \texttt{test\_8}, it translates the running-man caption into a longer relative-clause construction that remains understandable but is less concise and less reference-like than the gold translation. The validation examples show a similar pattern: the system often stays semantically close to the source, but lexical choice and sentence framing can drift away from the reference even when the output remains grammatical.
+
+\subsection{Discussion}
+
+The current Q4 evidence supports a narrower conclusion than the other mature sections: a pretrained transformer baseline is already strong enough to anchor the machine-translation task, but the direct seq2seq-versus-transformer comparison is still missing. That matters because the assignment question is not only whether translation works, but also how a custom encoder-decoder model with attention compares against a pretrained transformer under the same evaluation contract.
+
+For the current report state, \texttt{Helsinki-NLP/opus-mt-en-de} should be presented as the strongest finished Q4 system and as the reference point that any later custom seq2seq model needs to match. The next meaningful extension is therefore a matched seq2seq-plus-attention comparison rather than further baseline exploration. Even before that comparison exists, this section is still useful because it documents the dataset, evaluation metrics, qualitative behavior, and a stable pretrained baseline for Question 4.

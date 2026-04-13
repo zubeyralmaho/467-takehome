@@ -33,6 +33,10 @@ model:
   tie_weights: true
   gradient_clip: 1.0
   num_workers: 0
+  model_name: distilgpt2
+  max_input_length: 256
+  eval_batch_size: 8
+  top_k: 50
 
 generation:
   max_length: 25

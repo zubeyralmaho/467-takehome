@@ -14,6 +14,24 @@ preprocess:
   lowercase_target: false
 
 models:
+  seq2seq:
+    enabled: false
+    embedding_dim: 128
+    hidden_dim: 128
+    num_layers: 1
+    dropout: 0.2
+    batch_size: 32
+    learning_rate: 0.001
+    weight_decay: 0.0
+    max_epochs: 8
+    early_stopping_patience: 2
+    teacher_forcing_ratio: 0.5
+    max_vocab_size: 8000
+    min_token_frequency: 2
+    max_output_length: 32
+    gradient_clip: 1.0
+    num_workers: 0
+
   transformer:
     enabled: true
     model_name: Helsinki-NLP/opus-mt-en-de

@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:29
+Last updated: 2026-04-13 21:39
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -288,3 +288,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: A stable Q4 transformer baseline now exists under outputs/q4/run_20260413_212828 with capped validation/test BLEU and ChrF plus translation CSV exports.
   Next: Reuse the Q4 package and artifact for a seq2seq+attention comparison slice or for a future Q4 report-summary/write-up slice.
   Blocker: None
+- Agent: copilot-q4-writeup
+  Date: 2026-04-13
+  Scope: Q4 report draft
+  Outcome: The Q4 report section and a local BLEU/ChrF table now document the stable pretrained transformer baseline under outputs/q4/run_20260413_212828, and report/README.md now treats Q4 as drafted rather than empty.
+  Next: Refresh sections/introduction.tex and sections/conclusion.tex for report-wide consistency, or compare the baseline against a later seq2seq+attention run.
+  Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics.

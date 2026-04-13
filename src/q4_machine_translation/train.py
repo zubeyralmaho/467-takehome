@@ -8,11 +8,36 @@ from src.common.export import save_metrics, save_predictions
 from src.q4_machine_translation.analysis import qualitative_translation_examples
 from src.q4_machine_translation.dataset import prepare_datasets
 from src.q4_machine_translation.evaluation import evaluate_predictions
-from src.q4_machine_translation.models import PretrainedTransformerMT
+from src.q4_machine_translation.models import PretrainedTransformerMT, Seq2SeqAttentionMT
 
 
 def _build_models(config) -> dict[str, object]:
     models: dict[str, object] = {}
+    if "seq2seq" in config.models and config.models.seq2seq.enabled:
+        if Seq2SeqAttentionMT is None:
+            raise ImportError("Q4 seq2seq support requires the 'torch' package. Install dependencies from requirements.txt.")
+
+        model_config = config.models.seq2seq
+        models["seq2seq"] = Seq2SeqAttentionMT(
+            embedding_dim=getattr(model_config, "embedding_dim", 128),
+            hidden_dim=getattr(model_config, "hidden_dim", 128),
+            num_layers=getattr(model_config, "num_layers", 1),
+            dropout=getattr(model_config, "dropout", 0.2),
+            batch_size=getattr(model_config, "batch_size", 32),
+            learning_rate=getattr(model_config, "learning_rate", 1e-3),
+            weight_decay=getattr(model_config, "weight_decay", 0.0),
+            max_epochs=getattr(model_config, "max_epochs", 8),
+            early_stopping_patience=getattr(model_config, "early_stopping_patience", 2),
+            teacher_forcing_ratio=getattr(model_config, "teacher_forcing_ratio", 0.5),
+            max_vocab_size=getattr(model_config, "max_vocab_size", 8000),
+            min_token_frequency=getattr(model_config, "min_token_frequency", 2),
+            max_output_length=getattr(model_config, "max_output_length", 32),
+            gradient_clip=getattr(model_config, "gradient_clip", 1.0),
+            num_workers=getattr(model_config, "num_workers", 0),
+            device=config.device,
+            seed=config.seed,
+        )
+
     if "transformer" in config.models and config.models.transformer.enabled:
         model_config = config.models.transformer
         models["transformer"] = PretrainedTransformerMT(
@@ -95,7 +120,11 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
     }
 
     for model_name, model in models.items():
-        model.fit(None)
+        model.fit(
+            datasets["train"]["sources"],
+            datasets["train"]["references"],
+            validation_data=datasets.get("validation"),
+        )
         metrics_output["models"][model_name] = {}
         qualitative_output["models"][model_name] = {}
 

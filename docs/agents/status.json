@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:29"
+    "last_updated": "2026-04-13 21:39"
   },
   "areas": [
     {
@@ -36,7 +36,7 @@
       "label": "Q4 Machine Translation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A pretrained transformer translation baseline is now implemented and validated under outputs/q4/run_20260413_212828; a custom seq2seq+attention comparison and any Q4 reporting work remain separate slices."
+      "notes": "A pretrained transformer translation baseline is now implemented under outputs/q4/run_20260413_212828 and report/sections/q4.tex now documents that baseline; a custom seq2seq+attention comparison remains a separate slice."
     },
     {
       "key": "q5_language_modeling",
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q5 sections are drafted from stable artifacts, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available"
+      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections are drafted from stable artifacts, and report/README.md documents the current artifact mapping; introduction and conclusion refreshes remain separate cleanup slices."
     },
     {
       "key": "project_state_sync",
@@ -289,6 +289,34 @@
       "owner": "copilot-q5-writeup-refresh",
       "status": "review",
       "notes": "Refreshed the Q5 report section, local table, and report README mapping from the matched trigram-versus-LSTM summary artifact under outputs/q5/run_20260413_212315 without reopening model-training ownership."
+    },
+    {
+      "key": "q5_gpt2_baseline",
+      "label": "Q5 GPT-2 baseline",
+      "owner": "copilot-q5-gpt2",
+      "status": "in_progress",
+      "notes": "Implementing a practical GPT-2 Q5 baseline on top of the existing language-modeling package so Question 5 can include a transformer-style comparison beyond the matched trigram-versus-LSTM result."
+    },
+    {
+      "key": "q4_report_draft",
+      "label": "Q4 report draft",
+      "owner": "copilot-q4-writeup",
+      "status": "review",
+      "notes": "report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the stable pretrained transformer baseline artifact under outputs/q4/run_20260413_212828; any seq2seq comparison remains separate."
+    },
+    {
+      "key": "q4_seq2seq_baseline",
+      "label": "Q4 Seq2Seq baseline",
+      "owner": "copilot-q4-seq2seq",
+      "status": "in_progress",
+      "notes": "Implementing a self-contained seq2seq+attention translation baseline on top of the finished Q4 dataset, metric, and export contract."
+    },
+    {
+      "key": "report_framing_refresh",
+      "label": "Report framing refresh",
+      "owner": "copilot-report-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing report/sections/introduction.tex and report/sections/conclusion.tex so they reflect the drafted Q3/Q4/Q5 sections and the current report state."
     }
   ],
   "priorities": [
@@ -652,6 +680,14 @@
         "outcome": "A stable Q4 transformer baseline now exists under outputs/q4/run_20260413_212828 with capped validation/test BLEU and ChrF plus translation CSV exports.",
         "next": "Reuse the Q4 package and artifact for a seq2seq+attention comparison slice or for a future Q4 report-summary/write-up slice.",
         "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-writeup",
+        "date": "2026-04-13",
+        "scope": "Q4 report draft",
+        "outcome": "The Q4 report section and a local BLEU/ChrF table now document the stable pretrained transformer baseline under outputs/q4/run_20260413_212828, and report/README.md now treats Q4 as drafted rather than empty.",
+        "next": "Refresh sections/introduction.tex and sections/conclusion.tex for report-wide consistency, or compare the baseline against a later seq2seq+attention run.",
+        "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics."
       }
     ]
   },
@@ -1690,6 +1726,103 @@
       "next_actions": [
         "Compile the report when a LaTeX toolchain is available, or add a GPT-2 baseline later if Q5 needs a transformer comparison before final submission."
       ]
+    },
+    {
+      "name": "copilot-q5-gpt2",
+      "date": "2026-04-13",
+      "scope": "Implement and validate a Q5 GPT-2 baseline",
+      "status": "in_progress",
+      "owner": "copilot-q5-gpt2",
+      "related_area": "q5_gpt2_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Selected a GPT-2 Q5 slice after confirming that the matched trigram-versus-LSTM comparison and Q5 report refresh were already complete and unowned GPT-style modeling remained the main open Q5 question."
+        ],
+        "in_progress": [
+          "Extending src/q5_language_modeling with a practical GPT-2 evaluation path and validating it on capped WikiText-2 splits."
+        ],
+        "completed": []
+      },
+      "decisions": [
+        "Prefer a practical pretrained-or-lightweight GPT-2 baseline over heavy fine-tuning so the transformer comparison remains feasible in the current environment."
+      ],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "name": "copilot-q4-writeup",
+      "date": "2026-04-13",
+      "scope": "Draft the Q4 report section from the stable transformer baseline artifact",
+      "status": "review",
+      "owner": "copilot-q4-writeup",
+      "related_area": "q4_report_draft",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q4 report-writing slice after the pretrained baseline artifact became available and q4.tex remained a placeholder."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Read the stable Q4 transformer artifact and the current report section style before drafting the section.",
+          "Replaced the placeholder report/sections/q4.tex with a baseline-first write-up grounded in the capped Multi30k transformer artifact.",
+          "Added report/tables/q4_overall_results.tex and updated report/README.md so Q4 is no longer described as a placeholder.",
+          "Validated the edited Q4 report files with editor diagnostics."
+        ]
+      },
+      "decisions": [
+        "Keep the first Q4 report section baseline-only until a matched seq2seq+attention comparison exists, rather than speculating about an unfinished model comparison."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Refresh the report introduction and conclusion so they reflect the drafted Q4 section, or add a seq2seq+attention comparison if Q4 modeling continues."
+      ]
+    },
+    {
+      "name": "copilot-q4-seq2seq",
+      "date": "2026-04-13",
+      "scope": "Q4 seq2seq+attention baseline",
+      "status": "in_progress",
+      "owner": "copilot-q4-seq2seq",
+      "related_area": "q4_seq2seq_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed the missing Q4 seq2seq slice after confirming the current Q4 package is transformer-only and the design doc expects a classical seq2seq-versus-transformer comparison."
+        ],
+        "in_progress": [
+          "Add a compact word-level encoder-decoder with attention that reuses the current Multi30k loader, BLEU/ChrF evaluator, and translation export path."
+        ],
+        "completed": []
+      },
+      "decisions": [
+        "Keep the first classical Q4 slice to a compact GRU-based seq2seq+attention model with greedy decoding so it stays trainable on the current environment."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Implement the seq2seq model path, validate it on a capped Multi30k run, and compare it qualitatively against the finished transformer baseline."
+      ]
+    },
+    {
+      "name": "copilot-report-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh the report introduction and conclusion after the Q4 write-up",
+      "status": "in_progress",
+      "owner": "copilot-report-refresh",
+      "related_area": "report_framing_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow report-wide refresh slice after the Q4 section was drafted and the top-level framing became stale."
+        ],
+        "in_progress": [
+          "Re-reading the introduction and conclusion to update the report framing around the current Q3/Q4/Q5 state."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": []
     }
   ]
 }
