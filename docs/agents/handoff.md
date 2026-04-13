@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 14:15
+Last updated: 2026-04-13 14:18
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -59,4 +59,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 CRF baseline
   Outcome: Self-contained Q2 CRF baseline is implemented, smoke-tested end to end, and exports metrics plus token-level prediction CSVs
   Next: Claim a separate larger-budget CRF experiment slice, reuse configs/q2.yaml, and compare future neural Q2 models against the exported CRF artifacts
+  Blocker: None
+- Agent: copilot-q2-crf-experiment
+  Date: 2026-04-13
+  Scope: Q2 CRF experiment
+  Outcome: Full-split CRF baseline run is complete with strong validation metrics and exported validation/test artifacts
+  Next: Claim a separate BiLSTM-CRF or BERT Q2 slice and compare it directly against outputs/q2/run_20260413_141549
+  Blocker: None
+- Agent: copilot-q2-crf-experiment
+  Date: 2026-04-13
+  Scope: Q2 CRF experiment
+  Outcome: Full-data CRF experiment completed with a stable exported baseline at outputs/q2/run_20260413_141702
+  Next: Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against the exported CRF metrics plus error_analysis artifacts
   Blocker: None

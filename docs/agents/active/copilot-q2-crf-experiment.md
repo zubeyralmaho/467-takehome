@@ -1,6 +1,6 @@
 # Agent: copilot-q2-crf-experiment
 
-Last updated: 2026-04-13 14:15
+Last updated: 2026-04-13 14:18
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: done
 - Owner: copilot-q2-crf
 - Related area: q2_crf_experiment
 - Depends on: -
@@ -31,17 +31,21 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Running a larger-budget CRF experiment and reviewing the resulting validation/test artifacts
+- None.
 
 ### Completed
 
-- None.
+- Ran a full-split Q2 CRF experiment on tomaarsen/conll2003 with validation and final test evaluation enabled
+- Validated outputs under outputs/q2/run_20260413_141549 with validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976
+- Recorded test performance at precision 0.813, recall 0.777, F1 0.795, accuracy 0.957 and confirmed exported validation/test prediction CSVs
+- Ran the full-config Q2 CRF experiment with final evaluation and exported validation/test artifacts under outputs/q2/run_20260413_141702
+- Observed validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976 and test precision 0.813, recall 0.777, F1 0.795, accuracy 0.957
 
 ---
 
 ## Decisions
 
-- None.
+- The full-data CRF baseline substantially improves over the 500-train smoke run and is now stable enough to serve as the Q2 comparison baseline
 
 ---
 
@@ -53,4 +57,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Execute the larger-budget run and compare its outputs against the earlier smoke test
+1. Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against outputs/q2/run_20260413_141702

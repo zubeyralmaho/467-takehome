@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 14:15
+Last updated: 2026-04-13 14:18
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -12,7 +12,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, and export scaffold implemented; trainer, evaluator, vocab, and visualization remain |
 | Q1 Text Classification | unassigned | in_progress | TF-IDF baselines and the BiLSTM path are implemented; the DistilBERT slice is now claimed separately while preprocessing sweeps and any larger-budget neural runs remain unclaimed |
-| Q2 Named Entity Recognition | unassigned | in_progress | Overall Q2 track is open; the CRF baseline implementation is done while BiLSTM-CRF, BERT, and larger-budget experiment slices remain unclaimed |
+| Q2 Named Entity Recognition | unassigned | in_progress | The Q2 CRF baseline and larger-budget run are complete; BiLSTM-CRF and BERT slices remain unclaimed |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
 | Q5 Language Modeling | unassigned | todo | N-gram + LSTM + optional GPT-2 |
@@ -20,7 +20,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report preparation | unassigned | todo | LaTeX report structure and results write-up |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
 | Q2 CRF baseline | copilot-q2-crf | done | Self-contained CoNLL CRF baseline implemented and validated on a capped run; any larger-budget experiment can now be claimed as a separate slice |
-| Q2 CRF experiment | copilot-q2-crf | in_progress | Larger-budget CRF experiment slice on top of the completed Q2 baseline scaffold |
+| Q2 CRF experiment | copilot-q2-crf | done | Full-split CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_141702 |
 | Q1 DistilBERT baseline | copilot-q1-distilbert | in_progress | DistilBERT sequence-classification slice claimed; integrate a Hugging Face baseline into the existing Q1 training/export path |
 
 ---

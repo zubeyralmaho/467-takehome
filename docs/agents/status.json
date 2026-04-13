@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:15"
+    "last_updated": "2026-04-13 14:18"
   },
   "areas": [
     {
@@ -22,7 +22,7 @@
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "Overall Q2 track is open; the CRF baseline implementation is done while BiLSTM-CRF, BERT, and larger-budget experiment slices remain unclaimed"
+      "notes": "The Q2 CRF baseline and larger-budget run are complete; BiLSTM-CRF and BERT slices remain unclaimed"
     },
     {
       "key": "q3_summarization",
@@ -77,8 +77,8 @@
       "key": "q2_crf_experiment",
       "label": "Q2 CRF experiment",
       "owner": "copilot-q2-crf",
-      "status": "in_progress",
-      "notes": "Larger-budget CRF experiment slice on top of the completed Q2 baseline scaffold"
+      "status": "done",
+      "notes": "Full-split CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_141702"
     },
     {
       "key": "q1_distilbert_baseline",
@@ -144,6 +144,22 @@
         "scope": "Q2 CRF baseline",
         "outcome": "Self-contained Q2 CRF baseline is implemented, smoke-tested end to end, and exports metrics plus token-level prediction CSVs",
         "next": "Claim a separate larger-budget CRF experiment slice, reuse configs/q2.yaml, and compare future neural Q2 models against the exported CRF artifacts",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-crf-experiment",
+        "date": "2026-04-13",
+        "scope": "Q2 CRF experiment",
+        "outcome": "Full-split CRF baseline run is complete with strong validation metrics and exported validation/test artifacts",
+        "next": "Claim a separate BiLSTM-CRF or BERT Q2 slice and compare it directly against outputs/q2/run_20260413_141549",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-crf-experiment",
+        "date": "2026-04-13",
+        "scope": "Q2 CRF experiment",
+        "outcome": "Full-data CRF experiment completed with a stable exported baseline at outputs/q2/run_20260413_141702",
+        "next": "Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against the exported CRF metrics plus error_analysis artifacts",
         "blocker": "None"
       }
     ]
@@ -295,7 +311,7 @@
       "name": "copilot-q2-crf-experiment",
       "date": "2026-04-13",
       "scope": "Run and evaluate a larger-budget Q2 CRF experiment using the existing self-contained baseline scaffold",
-      "status": "in_progress",
+      "status": "done",
       "owner": "copilot-q2-crf",
       "related_area": "q2_crf_experiment",
       "depends_on": [],
@@ -303,15 +319,21 @@
         "started": [
           "Claimed a separate experiment slice after the Q2 CRF baseline implementation was completed"
         ],
-        "in_progress": [
-          "Running a larger-budget CRF experiment and reviewing the resulting validation/test artifacts"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Ran a full-split Q2 CRF experiment on tomaarsen/conll2003 with validation and final test evaluation enabled",
+          "Validated outputs under outputs/q2/run_20260413_141549 with validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976",
+          "Recorded test performance at precision 0.813, recall 0.777, F1 0.795, accuracy 0.957 and confirmed exported validation/test prediction CSVs",
+          "Ran the full-config Q2 CRF experiment with final evaluation and exported validation/test artifacts under outputs/q2/run_20260413_141702",
+          "Observed validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976 and test precision 0.813, recall 0.777, F1 0.795, accuracy 0.957"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "The full-data CRF baseline substantially improves over the 500-train smoke run and is now stable enough to serve as the Q2 comparison baseline"
+      ],
       "blockers": [],
       "next_actions": [
-        "Execute the larger-budget run and compare its outputs against the earlier smoke test"
+        "Claim BiLSTM-CRF or BERT as the next Q2 slice and compare against outputs/q2/run_20260413_141702"
       ]
     },
     {

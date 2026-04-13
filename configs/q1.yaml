@@ -48,6 +48,19 @@ models:
     num_workers: 0
     monitor_metric: macro_f1
 
+  distilbert:
+    enabled: false
+    model_name: distilbert-base-uncased
+    batch_size: 16
+    learning_rate: 0.00002
+    weight_decay: 0.01
+    max_epochs: 3
+    early_stopping_patience: 2
+    max_seq_length: 256
+    warmup_ratio: 0.1
+    num_workers: 0
+    monitor_metric: macro_f1
+
 evaluation:
   metrics: [accuracy, macro_f1]
   num_misclassified_examples: 5
