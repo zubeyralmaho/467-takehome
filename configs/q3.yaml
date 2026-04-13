@@ -23,6 +23,18 @@ models:
     num_sentences: 3
     max_sentences: 40
 
+  bart:
+    enabled: false
+    model_name: sshleifer/distilbart-cnn-12-6
+    batch_size: 2
+    max_input_length: 1024
+    max_output_length: 142
+    min_output_length: 56
+    num_beams: 4
+    length_penalty: 2.0
+    no_repeat_ngram_size: 3
+    early_stopping: true
+
 evaluation:
   metrics:
     - rouge1

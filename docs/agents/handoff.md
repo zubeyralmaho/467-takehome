@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 19:14
+Last updated: 2026-04-13 21:16
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -216,3 +216,27 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: The Q3 section now has a stable baseline-only write-up tied to the finished TextRank run and a report-local metric table
   Next: Use report/sections/q3.tex as the extractive baseline subsection now, then refresh it after a BART or T5 slice is completed
   Blocker: The main comparative Q3 claim remains incomplete until an abstractive model is implemented and evaluated
+- Agent: copilot-q3-bart
+  Date: 2026-04-13
+  Scope: Q3 pretrained abstractive summarizer
+  Outcome: A pretrained abstractive Q3 baseline is now validated and directly comparable to TextRank via outputs/q3/run_20260413_192426.
+  Next: Use outputs/q3/run_20260413_192426 to refresh the provisional Q3 report section or build a report-summary artifact; only reopen modeling if a larger-budget Q3 comparison is justified.
+  Blocker: None
+- Agent: copilot-q3-bart
+  Date: 2026-04-13
+  Scope: Q3 BART baseline
+  Outcome: Implemented and smoke-validated the new abstractive summarization path; the stable smoke artifact is outputs/q3/run_20260413_191614.
+  Next: If outputs/q3/run_20260413_192158 finishes cleanly, use it to refresh report/sections/q3.tex and report/tables/q3_overall_results.tex with a true TextRank-vs-DistilBART comparison.
+  Blocker: None; the longer cached benchmark is still running in the background and may simply take several more minutes on this machine.
+- Agent: copilot-q3-report-refresh
+  Date: 2026-04-13
+  Scope: Q3 report refresh
+  Outcome: The Q3 report section and table now use the direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426, and the report no longer describes Q3 as extractive-only.
+  Next: Only reopen Q3 reporting if a larger matched comparison run is completed or if final report compilation reveals wording or table-format issues.
+  Blocker: None
+- Agent: copilot-q5-ngram
+  Date: 2026-04-13
+  Scope: Q5 trigram baseline
+  Outcome: A stable Q5 trigram n-gram baseline now exists under outputs/q5/run_20260413_202258 with capped validation/test perplexity and generation exports.
+  Next: Reuse configs/q5.yaml and src/q5_language_modeling as the base for a Q5 LSTM slice or a Q5 report-summary slice; do not reopen the classical baseline unless a larger-budget rerun is needed.
+  Blocker: None

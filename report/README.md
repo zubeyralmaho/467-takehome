@@ -6,7 +6,7 @@ This directory contains the LaTeX scaffold for the final take-home report.
 
 - `main.tex` wires together the full report structure from `docs/11-report-structure.md`.
 - `sections/q1.tex` and `sections/q2.tex` are drafted from stable experiment artifacts.
-- `sections/q3.tex` now contains a provisional baseline-only write-up built from the finished TextRank run.
+- `sections/q3.tex` now contains a direct capped comparison between TextRank and a pretrained DistilBART baseline.
 - `sections/q4.tex`, `sections/q5.tex`, and `sections/conclusion.tex` remain placeholders for later slices.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
@@ -60,8 +60,9 @@ pdflatex main.tex
 
 ### Question 3
 
-- TextRank baseline artifact: `outputs/q3/run_20260413_185438`
-- `sections/q3.tex` currently documents the capped extractive baseline only and should be expanded after a BART or T5 slice is completed.
+- Direct comparison artifact: `outputs/q3/run_20260413_192426`
+- Earlier TextRank-only baseline artifact: `outputs/q3/run_20260413_185438`
+- `sections/q3.tex` now uses the direct capped TextRank-versus-DistilBART comparison, while any larger-budget Q3 rerun remains optional follow-up work.
 
 ### Questions 4-5
 
@@ -80,5 +81,5 @@ pdflatex main.tex
 - Finalize `sections/q1.tex` after the active larger-budget Q1 neural runs are summarized.
 - Expand `sections/introduction.tex` once Q1 and Q2 write-ups stabilize.
 - Fill `references.bib` when citations are added to the final prose.
-- Expand `sections/q3.tex` into a full comparison once a BART or T5 summarization slice is available.
+- Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
 - Draft `sections/q4.tex` and `sections/q5.tex` after their experiment outputs are available.

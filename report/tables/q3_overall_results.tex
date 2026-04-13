@@ -1,14 +1,16 @@
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{lccccc}
+\begin{tabular}{llccccc}
 \toprule
-Split & ROUGE-1 & ROUGE-2 & ROUGE-L & BLEU & METEOR \\
+Model & Split & ROUGE-1 & ROUGE-2 & ROUGE-L & BLEU & METEOR \\
 \midrule
-Validation & 0.3527 & 0.1473 & 0.2314 & 0.1016 & 0.3370 \\
-Test & 0.3445 & 0.1357 & 0.2255 & 0.0904 & 0.3353 \\
+TextRank & Validation & 0.3378 & 0.1344 & 0.2267 & 0.0962 & 0.3227 \\
+TextRank & Test & 0.3095 & 0.1042 & 0.2045 & 0.0674 & 0.3041 \\
+DistilBART & Validation & \textbf{0.4221} & \textbf{0.1978} & \textbf{0.2967} & \textbf{0.1782} & \textbf{0.3621} \\
+DistilBART & Test & \textbf{0.4218} & \textbf{0.1948} & \textbf{0.2833} & \textbf{0.1355} & \textbf{0.4254} \\
 \bottomrule
 \end{tabular}
-\caption{TextRank extractive summarization results on the capped 100-validation/100-test Q3 run.}
+\caption{Matched Q3 comparison on the capped 20-validation/20-test TextRank-versus-DistilBART run. DistilBART outperforms TextRank on every exported metric on both splits.}
 \label{tab:q3_overall_results}
 \end{table}

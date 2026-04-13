@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 19:14"
+    "last_updated": "2026-04-13 21:16"
   },
   "areas": [
     {
@@ -29,7 +29,7 @@
       "label": "Q3 Summarization",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TextRank baseline is implemented and validated under outputs/q3/run_20260413_185438; abstractive summarization remains unclaimed."
+      "notes": "TextRank and a capped distilBART comparison now exist under outputs/q3/run_20260413_192426, and report/sections/q3.tex now reflects that direct comparison; only larger-budget Q3 work remains separate."
     },
     {
       "key": "q4_machine_translation",
@@ -42,8 +42,8 @@
       "key": "q5_language_modeling",
       "label": "Q5 Language Modeling",
       "owner": "unassigned",
-      "status": "todo",
-      "notes": "N-gram + LSTM + optional GPT-2"
+      "status": "in_progress",
+      "notes": "A trigram n-gram baseline is now implemented and validated under outputs/q5/run_20260413_202258; neural Q5 baselines such as LSTM or GPT-2 remain separate follow-up slices."
     },
     {
       "key": "evaluation_and_analysis",
@@ -223,16 +223,37 @@
     {
       "key": "q3_report_draft",
       "label": "Q3 report draft",
-      "owner": "copilot-q3-writeup",
+      "owner": "copilot-q3-report-refresh",
       "status": "review",
-      "notes": "report/sections/q3.tex and report/tables/q3_overall_results.tex now document the finished TextRank baseline honestly as a provisional extractive-only Q3 section"
+      "notes": "report/sections/q3.tex and report/tables/q3_overall_results.tex now reflect the capped direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426; larger-budget Q3 work remains optional follow-up."
     },
     {
       "key": "q3_bart_baseline",
       "label": "Q3 BART baseline",
       "owner": "copilot-q3-bart",
+      "status": "review",
+      "notes": "Pretrained abstractive Q3 summarizer validated on CNN/DailyMail with a direct 20-validation/20-test comparison run under outputs/q3/run_20260413_192426, where distilBART outperformed TextRank on all exported lexical metrics."
+    },
+    {
+      "key": "q5_ngram_baseline",
+      "label": "Q5 N-gram baseline",
+      "owner": "copilot-q5-ngram",
+      "status": "review",
+      "notes": "Self-contained trigram add-k language model validated on capped WikiText-2 under outputs/q5/run_20260413_202258 with validation/test perplexity 1392.54/1388.72 plus exported generation samples."
+    },
+    {
+      "key": "q5_report_summary",
+      "label": "Q5 report summary",
+      "owner": "copilot-q5-report",
       "status": "in_progress",
-      "notes": "Implementing a self-contained abstractive Q3 summarization path that reuses the existing CNN/DailyMail dataset, metrics, and export contract without reopening the TextRank baseline"
+      "notes": "Building a report-ready Q5 summary artifact from the finished trigram baseline without overlapping future LSTM or GPT-2 modeling slices"
+    },
+    {
+      "key": "q5_lstm_baseline",
+      "label": "Q5 LSTM baseline",
+      "owner": "copilot-q5-lstm",
+      "status": "in_progress",
+      "notes": "Implementing a self-contained neural Q5 language-model baseline on top of the finished WikiText-2 n-gram scaffold."
     }
   ],
   "priorities": [
@@ -500,6 +521,38 @@
         "outcome": "The Q3 section now has a stable baseline-only write-up tied to the finished TextRank run and a report-local metric table",
         "next": "Use report/sections/q3.tex as the extractive baseline subsection now, then refresh it after a BART or T5 slice is completed",
         "blocker": "The main comparative Q3 claim remains incomplete until an abstractive model is implemented and evaluated"
+      },
+      {
+        "agent": "copilot-q3-bart",
+        "date": "2026-04-13",
+        "scope": "Q3 pretrained abstractive summarizer",
+        "outcome": "A pretrained abstractive Q3 baseline is now validated and directly comparable to TextRank via outputs/q3/run_20260413_192426.",
+        "next": "Use outputs/q3/run_20260413_192426 to refresh the provisional Q3 report section or build a report-summary artifact; only reopen modeling if a larger-budget Q3 comparison is justified.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q3-bart",
+        "date": "2026-04-13",
+        "scope": "Q3 BART baseline",
+        "outcome": "Implemented and smoke-validated the new abstractive summarization path; the stable smoke artifact is outputs/q3/run_20260413_191614.",
+        "next": "If outputs/q3/run_20260413_192158 finishes cleanly, use it to refresh report/sections/q3.tex and report/tables/q3_overall_results.tex with a true TextRank-vs-DistilBART comparison.",
+        "blocker": "None; the longer cached benchmark is still running in the background and may simply take several more minutes on this machine."
+      },
+      {
+        "agent": "copilot-q3-report-refresh",
+        "date": "2026-04-13",
+        "scope": "Q3 report refresh",
+        "outcome": "The Q3 report section and table now use the direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426, and the report no longer describes Q3 as extractive-only.",
+        "next": "Only reopen Q3 reporting if a larger matched comparison run is completed or if final report compilation reveals wording or table-format issues.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q5-ngram",
+        "date": "2026-04-13",
+        "scope": "Q5 trigram baseline",
+        "outcome": "A stable Q5 trigram n-gram baseline now exists under outputs/q5/run_20260413_202258 with capped validation/test perplexity and generation exports.",
+        "next": "Reuse configs/q5.yaml and src/q5_language_modeling as the base for a Q5 LSTM slice or a Q5 report-summary slice; do not reopen the classical baseline unless a larger-budget rerun is needed.",
+        "blocker": "None"
       }
     ]
   },
@@ -1271,26 +1324,131 @@
     {
       "name": "copilot-q3-bart",
       "date": "2026-04-13",
-      "scope": "Q3 BART baseline",
-      "status": "in_progress",
+      "scope": "Q3 pretrained abstractive summarizer",
+      "status": "review",
       "owner": "copilot-q3-bart",
       "related_area": "q3_bart_baseline",
       "depends_on": [],
       "summary": {
         "started": [
-          "Selected the missing abstractive Q3 model as the next high-value unowned slice after the TextRank baseline stabilized"
+          "Claimed a separate Q3 abstractive summarization slice after the TextRank baseline and Q3 report draft reached review."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Validated the existing Q3 BART-style summarizer path end to end with a 5-validation/5-test smoke run using sshleifer/distilbart-cnn-12-6 under outputs/q3/run_20260413_192219.",
+          "Hardened the abstractive path by switching the config default to a practical distilBART checkpoint and keeping T5-compatible input-prefix handling in the model wrapper.",
+          "Produced a capped two-model Q3 comparison run under outputs/q3/run_20260413_192426, where the abstractive model beat TextRank on validation/test ROUGE-1, ROUGE-2, ROUGE-L, BLEU, and METEOR."
+        ]
+      },
+      "decisions": [
+        "Use the lighter distilBART CNN checkpoint as the default pretrained abstractive baseline so Q3 comparison runs stay feasible on the current environment."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only reopen Q3 modeling if a larger-budget Q3 comparison is justified; the current report refresh already consumes outputs/q3/run_20260413_192426."
+      ]
+    },
+    {
+      "name": "copilot-q3-report-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh Q3 report draft from the direct TextRank-vs-distilBART comparison artifact",
+      "status": "review",
+      "owner": "copilot-q3-report-refresh",
+      "related_area": "q3_report_draft",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Picked up the explicit Q3 write-up handoff after the abstractive comparison artifact became available."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Updated report/sections/q3.tex so Question 3 now reports a direct capped comparison between TextRank and DistilBART instead of an extractive-only baseline.",
+          "Replaced report/tables/q3_overall_results.tex with matched validation/test rows for both models from outputs/q3/run_20260413_192426.",
+          "Updated report/README.md so the Q3 artifact mapping and current-state notes point to the direct comparison artifact."
+        ]
+      },
+      "decisions": [
+        "Use the finished 20-validation/20-test direct comparison artifact as the report source of truth because it evaluates both models on the same capped split."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed, then revise the section only if those results materially change the current conclusion."
+      ]
+    },
+    {
+      "name": "copilot-q5-ngram",
+      "date": "2026-04-13",
+      "scope": "Implement and validate a Q5 trigram language-model baseline",
+      "status": "review",
+      "owner": "copilot-q5-ngram",
+      "related_area": "q5_ngram_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Selected Q5 n-gram language modeling as the next narrow unclaimed slice because Q4 and Q5 were both still unimplemented and the trigram baseline was feasible to finish end to end quickly."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Scaffolded configs/q5.yaml and a new src/q5_language_modeling package with dataset loading, evaluation, generation analysis, and the standard run/export entrypoint.",
+          "Implemented a smoothed trigram NGramLanguageModel with fixed-vocabulary <unk> handling for capped WikiText-2 evaluation and simple seeded text generation.",
+          "Validated the full Q5 export path on a capped 3000-train/400-validation/400-test WikiText-2 run under outputs/q5/run_20260413_202258."
+        ]
+      },
+      "decisions": [
+        "Start Q5 with a classical trigram baseline so later LSTM or GPT-2 work can reuse the same dataset, evaluation, and export contract.",
+        "Use a fixed vocabulary with min token frequency 2 and <unk> mapping so perplexity is measured against a consistent token space."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Claim an LSTM language-model slice next if Q5 modeling should continue, or consume outputs/q5/run_20260413_202258 in a later report-summary slice."
+      ]
+    },
+    {
+      "name": "copilot-q5-report",
+      "date": "2026-04-13",
+      "scope": "Q5 report summary",
+      "status": "in_progress",
+      "owner": "copilot-q5-report",
+      "related_area": "q5_report_summary",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q5 reporting slice after the trigram baseline was validated and no Q5 summary artifact existed yet"
         ],
         "in_progress": [
-          "Adding a BART summarizer path and validating it on a capped CNN/DailyMail run"
+          "Reading the Q5 baseline exports and building Markdown, JSON, and LaTeX summary artifacts for the current report state"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Create a reusable Q5 summary builder from outputs/q5/run_20260413_202258 and leave the result ready for a later q5.tex drafting slice"
+      ]
+    },
+    {
+      "name": "copilot-q5-lstm",
+      "date": "2026-04-13",
+      "scope": "Q5 LSTM language-model baseline",
+      "status": "in_progress",
+      "owner": "copilot-q5-lstm",
+      "related_area": "q5_lstm_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate Q5 LSTM slice after the trigram baseline reached review and confirmed the existing Q5 scaffold already handles dataset loading, perplexity export, and generation rows."
+        ],
+        "in_progress": [
+          "Implement a minimal PyTorch LSTM language model that matches the n-gram fit/perplexity/generate contract and validate it on a capped WikiText-2 run."
         ],
         "completed": []
       },
       "decisions": [
-        "Keep this slice to zero-shot pretrained inference only; any fine-tuning remains a later Q3 experiment."
+        "Keep this slice to a word-level LSTM with teacher-forced next-token training; GPT-2 remains a later optional Q5 slice."
       ],
       "blockers": [],
       "next_actions": [
-        "Wire the abstractive model into configs/q3.yaml and the existing train/evaluate/export flow, then run a small validation"
+        "Add the LSTM model path, run a capped validation/test experiment, and compare its perplexity against the trigram baseline artifact."
       ]
     }
   ]

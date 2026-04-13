@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 19:14
+Last updated: 2026-04-13 21:16
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -13,9 +13,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
 | Q1 Text Classification | unassigned | in_progress | All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts and a refreshed report summary; the remaining open work is report drafting |
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
-| Q3 Summarization | unassigned | in_progress | TextRank baseline is implemented and validated under outputs/q3/run_20260413_185438; abstractive summarization remains unclaimed. |
+| Q3 Summarization | unassigned | in_progress | TextRank and a capped distilBART comparison now exist under outputs/q3/run_20260413_192426, and report/sections/q3.tex now reflects that direct comparison; only larger-budget Q3 work remains separate. |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
-| Q5 Language Modeling | unassigned | todo | N-gram + LSTM + optional GPT-2 |
+| Q5 Language Modeling | unassigned | in_progress | A trigram n-gram baseline is now implemented and validated under outputs/q5/run_20260413_202258; neural Q5 baselines such as LSTM or GPT-2 remain separate follow-up slices. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
 | Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q2 already has a drafted section, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
@@ -41,8 +41,11 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 report summary refresh | copilot-q1-summary-refresh | review | Refreshed Q1 summary artifacts were generated under outputs/q1/run_20260413_185011 using the matched 4k-train/2k-test comparison and the finished preprocessing sweep |
 | Q3 TextRank baseline | copilot-q3-textrank | review | Self-contained extractive TextRank baseline plus lexical evaluation/export pipeline implemented and validated by the capped run under outputs/q3/run_20260413_185438. |
 | Report introduction draft | copilot-report-intro | review | report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope, current technical setup, and report organization based on the finished Q1/Q2 state |
-| Q3 report draft | copilot-q3-writeup | review | report/sections/q3.tex and report/tables/q3_overall_results.tex now document the finished TextRank baseline honestly as a provisional extractive-only Q3 section |
-| Q3 BART baseline | copilot-q3-bart | in_progress | Implementing a self-contained abstractive Q3 summarization path that reuses the existing CNN/DailyMail dataset, metrics, and export contract without reopening the TextRank baseline |
+| Q3 report draft | copilot-q3-report-refresh | review | report/sections/q3.tex and report/tables/q3_overall_results.tex now reflect the capped direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426; larger-budget Q3 work remains optional follow-up. |
+| Q3 BART baseline | copilot-q3-bart | review | Pretrained abstractive Q3 summarizer validated on CNN/DailyMail with a direct 20-validation/20-test comparison run under outputs/q3/run_20260413_192426, where distilBART outperformed TextRank on all exported lexical metrics. |
+| Q5 N-gram baseline | copilot-q5-ngram | review | Self-contained trigram add-k language model validated on capped WikiText-2 under outputs/q5/run_20260413_202258 with validation/test perplexity 1392.54/1388.72 plus exported generation samples. |
+| Q5 report summary | copilot-q5-report | in_progress | Building a report-ready Q5 summary artifact from the finished trigram baseline without overlapping future LSTM or GPT-2 modeling slices |
+| Q5 LSTM baseline | copilot-q5-lstm | in_progress | Implementing a self-contained neural Q5 language-model baseline on top of the finished WikiText-2 n-gram scaffold. |
 
 ---
 

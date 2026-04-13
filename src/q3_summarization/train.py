@@ -8,7 +8,7 @@ from src.common.export import save_metrics, save_predictions
 from src.q3_summarization.analysis import qualitative_comparison
 from src.q3_summarization.dataset import prepare_datasets
 from src.q3_summarization.evaluation import evaluate_predictions
-from src.q3_summarization.models import TextRankSummarizer
+from src.q3_summarization.models import BARTSummarizer, TextRankSummarizer
 
 
 def _build_models(config) -> dict[str, object]:
@@ -21,6 +21,21 @@ def _build_models(config) -> dict[str, object]:
             num_sentences=model_config.num_sentences,
             max_sentences=getattr(model_config, "max_sentences", 40),
             min_sentence_words=getattr(config.preprocess, "min_sentence_words", 4),
+        )
+
+    if "bart" in config.models and config.models.bart.enabled:
+        model_config = config.models.bart
+        models["bart"] = BARTSummarizer(
+            model_name=model_config.model_name,
+            batch_size=getattr(model_config, "batch_size", 2),
+            max_input_length=getattr(model_config, "max_input_length", 1024),
+            max_output_length=getattr(model_config, "max_output_length", 142),
+            min_output_length=getattr(model_config, "min_output_length", 56),
+            num_beams=getattr(model_config, "num_beams", 4),
+            length_penalty=getattr(model_config, "length_penalty", 2.0),
+            no_repeat_ngram_size=getattr(model_config, "no_repeat_ngram_size", 3),
+            early_stopping=getattr(model_config, "early_stopping", True),
+            device=config.device,
         )
 
     if not models:
