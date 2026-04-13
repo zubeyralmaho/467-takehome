@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:19"
+    "last_updated": "2026-04-13 15:24"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison artifacts are now ready while larger-budget neural runs remain open"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; a larger-budget DistilBERT run is complete while larger-budget BiLSTM and final matched comparison remain open"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A minimal LaTeX scaffold now exists under report/ and Q2 already has a drafted section; the remaining write-up work can proceed as separate question-level slices"
+      "notes": "A minimal LaTeX scaffold now exists under report/, Q2 already has a drafted section, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available"
     },
     {
       "key": "project_state_sync",
@@ -84,8 +84,8 @@
       "key": "q1_distilbert_baseline",
       "label": "Q1 DistilBERT baseline",
       "owner": "copilot-q1-distilbert",
-      "status": "review",
-      "notes": "Self-contained DistilBERT baseline implemented and smoke-tested on IMDb; larger-budget training and comparison analysis remain"
+      "status": "done",
+      "notes": "DistilBERT baseline path is implemented and validated by the larger-budget run under outputs/q1/run_20260413_151402; comparison work remains separate"
     },
     {
       "key": "q2_bilstm_crf_baseline",
@@ -161,8 +161,8 @@
       "key": "q1_distilbert_experiment",
       "label": "Q1 DistilBERT experiment",
       "owner": "copilot-q1-distilbert-experiment",
-      "status": "in_progress",
-      "notes": "Larger-budget DistilBERT experiment claimed on top of the implemented Q1 baseline without changing active comparison/report ownership"
+      "status": "done",
+      "notes": "Larger-budget DistilBERT experiment completed under outputs/q1/run_20260413_151402; validation/test macro-F1 0.875/0.879 on the 4k-train/2k-test run and no one-class collapse"
     },
     {
       "key": "q2_report_draft",
@@ -175,8 +175,22 @@
       "key": "q1_bilstm_experiment",
       "label": "Q1 BiLSTM experiment",
       "owner": "copilot-q1-bilstm-experiment",
+      "status": "review",
+      "notes": "Matched 4000-train/2000-test BiLSTM final-eval run completed under outputs/q1/run_20260413_151549 with validation/test macro-F1 0.7386/0.7011 for later Q1 comparison"
+    },
+    {
+      "key": "report_build_docs",
+      "label": "Report build docs",
+      "owner": "copilot-report-docs",
+      "status": "review",
+      "notes": "report/README.md now documents the scaffold layout, compile prerequisites, section-to-artifact mapping, and the recommended report-writing workflow"
+    },
+    {
+      "key": "q1_large_budget_comparison",
+      "label": "Q1 large-budget comparison",
+      "owner": "copilot-q1-large-comparison",
       "status": "in_progress",
-      "notes": "Running a larger-budget Q1 BiLSTM experiment on a matched 4000-train/2000-test slice so later Q1 comparison artifacts can use comparable neural runs"
+      "notes": "Refreshing Q1 comparison artifacts using matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs without editing the active Q2 report slices"
     }
   ],
   "priorities": [
@@ -348,6 +362,30 @@
         "outcome": "A buildable report skeleton now exists and the Q2 section is drafted with tables, figure support, and narrative aligned to the finished experiment artifacts",
         "next": "Draft the remaining report sections as separate slices and compile the report once pdflatex or an equivalent LaTeX toolchain is available",
         "blocker": "pdflatex is not installed in the current environment, so full PDF compilation could not be verified"
+      },
+      {
+        "agent": "copilot-q1-bilstm-experiment",
+        "date": "2026-04-13",
+        "scope": "Q1 BiLSTM experiment",
+        "outcome": "A larger-budget Q1 BiLSTM run now exists with full exported artifacts and substantially improved metrics over the earlier smoke test",
+        "next": "Compare outputs/q1/run_20260413_151549 against the TF-IDF baseline and the finished DistilBERT larger-budget run once that slice produces stable metrics",
+        "blocker": "The active DistilBERT experiment currently owns the matching second neural run, and its latest visible artifacts are not yet comparison-ready"
+      },
+      {
+        "agent": "copilot-report-docs",
+        "date": "2026-04-13",
+        "scope": "Report build docs",
+        "outcome": "The report scaffold now includes local usage documentation, compile commands, and artifact mapping so future write-up slices can extend it consistently",
+        "next": "Draft the remaining report sections against stable experiment artifacts and run a real LaTeX compile when a toolchain is installed",
+        "blocker": "latexmk/pdflatex are not installed in the current environment, so the documented compile commands were not executed here"
+      },
+      {
+        "agent": "copilot-q1-distilbert-experiment",
+        "date": "2026-04-13",
+        "scope": "Q1 DistilBERT experiment",
+        "outcome": "A larger-budget DistilBERT run completed successfully after restoring the Q1 trainer wiring, and the resulting 4k-train/2k-test artifact is strong enough to feed the next Q1 comparison pass",
+        "next": "Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused BiLSTM experiment so the neural models can be compared on a closer footing",
+        "blocker": "None"
       }
     ]
   },
@@ -525,7 +563,7 @@
       "name": "copilot-q1-distilbert",
       "date": "2026-04-13",
       "scope": "Implement a self-contained Q1 DistilBERT baseline on top of the existing IMDb pipeline and Q1 export flow",
-      "status": "review",
+      "status": "done",
       "owner": "copilot-q1-distilbert",
       "related_area": "q1_distilbert_baseline",
       "depends_on": [],
@@ -539,15 +577,17 @@
           "Wired DistilBERT into the Q1 model registry, config, and training factory without changing the existing evaluation/export contract",
           "Added the transformers dependency and extended shared environment export so DistilBERT runs record the transformer package version",
           "Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817",
-          "Synced the Q1 DistilBERT doc section and shared handoff priorities with the implemented slice"
+          "Synced the Q1 DistilBERT doc section and shared handoff priorities with the implemented slice",
+          "Restored DistilBERT registration in the current Q1 model registry and trainer, and added a fail-fast check so zero-enabled-model runs no longer emit empty artifacts silently"
         ]
       },
       "decisions": [
-        "Kept the slice on the existing Q1 preprocessing and export flow instead of widening scope into model-specific raw-text dataset paths"
+        "Kept the slice on the existing Q1 preprocessing and export flow instead of widening scope into model-specific raw-text dataset paths",
+        "Keep the DistilBERT path on the shared Q1 preprocessing flow for now; the larger-budget run shows the collapse was a registry regression plus small-budget artifact, not an immediate preprocessing blocker"
       ],
       "blockers": [],
       "next_actions": [
-        "Run a larger-budget DistilBERT experiment and compare it against the existing TF-IDF and BiLSTM outputs; revisit model-specific preprocessing only if the larger run still collapses to one class"
+        "Use the restored DistilBERT baseline path for later matched Q1 comparison work; any model-specific tuning should be claimed separately"
       ]
     },
     {
@@ -825,7 +865,7 @@
       "name": "copilot-q1-distilbert-experiment",
       "date": "2026-04-13",
       "scope": "Run and evaluate a larger-budget Q1 DistilBERT experiment using the implemented baseline path and current Q1 export flow",
-      "status": "in_progress",
+      "status": "done",
       "owner": "copilot-q1-distilbert-experiment",
       "related_area": "q1_distilbert_experiment",
       "depends_on": [],
@@ -833,15 +873,18 @@
         "started": [
           "Claimed a separate experiment slice after the Q1 DistilBERT baseline was validated on a capped run"
         ],
-        "in_progress": [
-          "Running a larger-budget DistilBERT experiment and comparing it against the existing TF-IDF and BiLSTM artifacts"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "A first 4k-train/2k-test attempt exposed a Q1 trainer regression that silently produced empty metrics when the DistilBERT model was not registered; the wiring was restored before rerunning the experiment",
+          "Reran a DistilBERT-only 4k-train/2k-test final-eval experiment under outputs/q1/run_20260413_151402 with validation accuracy/macro-F1 0.875/0.875 and test accuracy/macro-F1 0.8795/0.8793"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "The larger-budget DistilBERT run no longer collapses to one class, so immediate Q1 follow-up should shift to matched comparison or larger-budget BiLSTM rather than reopening preprocessing"
+      ],
       "blockers": [],
       "next_actions": [
-        "Execute the larger-budget DistilBERT run and inspect whether it still collapses to one class before deciding on any tuning follow-up"
+        "Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused tuning slice only if a matched comparison reveals a concrete regression"
       ]
     },
     {
@@ -874,7 +917,7 @@
       "name": "copilot-q1-bilstm-experiment",
       "date": "2026-04-13",
       "scope": "Q1 BiLSTM experiment",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-bilstm-experiment",
       "related_area": "q1_bilstm_experiment",
       "depends_on": [],
@@ -882,15 +925,89 @@
         "started": [
           "Reviewed the live tracker and selected the unowned Q1 BiLSTM larger-budget experiment as the clean parallel follow-up to the active DistilBERT experiment"
         ],
+        "in_progress": [],
+        "completed": [
+          "Ran a matched 4000-train/2000-test BiLSTM-only final-eval experiment under outputs/q1/run_20260413_151549",
+          "Validated exported metrics, confusion-matrix CSVs, predictions, and misclassification analysis with validation/test macro-F1 0.7386/0.7011"
+        ]
+      },
+      "decisions": [
+        "Kept this slice limited to the reusable experiment artifact so the later Q1 comparison refresh can consume it without changing reporting or DistilBERT ownership"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Reuse outputs/q1/run_20260413_151549 in the larger-budget Q1 comparison once the DistilBERT experiment owner finishes a matching usable run"
+      ]
+    },
+    {
+      "name": "copilot-report-docs",
+      "date": "2026-04-13",
+      "scope": "Report build docs",
+      "status": "review",
+      "owner": "copilot-report-docs",
+      "related_area": "report_build_docs",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow documentation slice to make the new report scaffold usable without overlapping active experiment ownership"
+        ],
+        "in_progress": [],
+        "completed": [
+          "Added report/README.md with compile prerequisites, section-to-artifact mapping, and a recommended editing workflow for the report scaffold"
+        ]
+      },
+      "decisions": [
+        "Kept this slice documentation-only so question-level write-up and experiment ownership remain separate"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Use report/README.md as the working guide for future Q1-Q5 write-up slices and compile once latexmk or pdflatex is available"
+      ]
+    },
+    {
+      "name": "copilot-q1-compare-refresh",
+      "date": "2026-04-13",
+      "scope": "Q1 larger-budget comparison",
+      "status": "in_progress",
+      "owner": "copilot-q1-compare-refresh",
+      "related_area": "q1_large_budget_comparison",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a fresh Q1 comparison slice after the larger-budget BiLSTM and DistilBERT runs became available"
+        ],
         "in_progress": [
-          "Running a matched 4000-train/2000-test BiLSTM final-eval run for later Q1 comparison"
+          "Locating the matching TF-IDF artifact and rebuilding Q1 comparison outputs on the shared 4k-train/2k-test budget"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Inspect the finished BiLSTM metrics and hand them off as a comparison-ready Q1 neural artifact"
+        "Run scripts/q1_model_comparison.py on the matched TF-IDF, BiLSTM, and DistilBERT outputs and leave a comparison handoff for report work"
+      ]
+    },
+    {
+      "name": "copilot-q1-large-comparison",
+      "date": "2026-04-13",
+      "scope": "Build refreshed Q1 comparison artifacts from matched 4k-train/2k-test TF-IDF, BiLSTM, and DistilBERT runs",
+      "status": "in_progress",
+      "owner": "copilot-q1-large-comparison",
+      "related_area": "q1_large_budget_comparison",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate Q1 comparison-refresh slice once matched larger-budget BiLSTM and DistilBERT runs were available"
+        ],
+        "in_progress": [
+          "Running a matched TF-IDF reference experiment and rebuilding the Q1 comparison artifacts on the 4k/2k budget"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Generate updated comparison outputs from the matched larger-budget Q1 runs and leave them ready for a report-summary refresh"
       ]
     }
   ]

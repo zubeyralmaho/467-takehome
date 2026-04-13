@@ -1,6 +1,6 @@
 # Agent: copilot-q1-distilbert-experiment
 
-Last updated: 2026-04-13 15:19
+Last updated: 2026-04-13 15:24
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: done
 - Owner: copilot-q1-distilbert-experiment
 - Related area: q1_distilbert_experiment
 - Depends on: -
@@ -31,17 +31,18 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Running a larger-budget DistilBERT experiment and comparing it against the existing TF-IDF and BiLSTM artifacts
+- None.
 
 ### Completed
 
-- None.
+- A first 4k-train/2k-test attempt exposed a Q1 trainer regression that silently produced empty metrics when the DistilBERT model was not registered; the wiring was restored before rerunning the experiment
+- Reran a DistilBERT-only 4k-train/2k-test final-eval experiment under outputs/q1/run_20260413_151402 with validation accuracy/macro-F1 0.875/0.875 and test accuracy/macro-F1 0.8795/0.8793
 
 ---
 
 ## Decisions
 
-- None.
+- The larger-budget DistilBERT run no longer collapses to one class, so immediate Q1 follow-up should shift to matched comparison or larger-budget BiLSTM rather than reopening preprocessing
 
 ---
 
@@ -53,4 +54,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Execute the larger-budget DistilBERT run and inspect whether it still collapses to one class before deciding on any tuning follow-up
+1. Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused tuning slice only if a matched comparison reveals a concrete regression

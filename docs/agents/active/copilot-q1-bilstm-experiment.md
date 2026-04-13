@@ -1,6 +1,6 @@
 # Agent: copilot-q1-bilstm-experiment
 
-Last updated: 2026-04-13 15:19
+Last updated: 2026-04-13 15:24
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-bilstm-experiment
 - Related area: q1_bilstm_experiment
 - Depends on: -
@@ -31,17 +31,18 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Running a matched 4000-train/2000-test BiLSTM final-eval run for later Q1 comparison
+- None.
 
 ### Completed
 
-- None.
+- Ran a matched 4000-train/2000-test BiLSTM-only final-eval experiment under outputs/q1/run_20260413_151549
+- Validated exported metrics, confusion-matrix CSVs, predictions, and misclassification analysis with validation/test macro-F1 0.7386/0.7011
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice limited to the reusable experiment artifact so the later Q1 comparison refresh can consume it without changing reporting or DistilBERT ownership
 
 ---
 
@@ -53,4 +54,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Inspect the finished BiLSTM metrics and hand them off as a comparison-ready Q1 neural artifact
+1. Reuse outputs/q1/run_20260413_151549 in the larger-budget Q1 comparison once the DistilBERT experiment owner finishes a matching usable run

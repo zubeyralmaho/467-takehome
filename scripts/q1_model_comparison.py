@@ -131,8 +131,8 @@ def main() -> None:
     latex_table = generate_latex_table(
         comparison_rows,
         columns=["display_name", "accuracy", "macro_f1", "source_run"],
-        caption=f"Q1 {args.split} smoke-test model comparison.",
-        label="tab:q1_smoke_comparison",
+        caption=f"Q1 {args.split} model comparison.",
+        label="tab:q1_model_comparison",
     )
     (output_dir / "model_comparison.tex").write_text(latex_table, encoding="utf-8")
     plot_metric_comparison(

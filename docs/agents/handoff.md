@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:19
+Last updated: 2026-04-13 15:24
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -144,3 +144,21 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: A buildable report skeleton now exists and the Q2 section is drafted with tables, figure support, and narrative aligned to the finished experiment artifacts
   Next: Draft the remaining report sections as separate slices and compile the report once pdflatex or an equivalent LaTeX toolchain is available
   Blocker: pdflatex is not installed in the current environment, so full PDF compilation could not be verified
+- Agent: copilot-q1-bilstm-experiment
+  Date: 2026-04-13
+  Scope: Q1 BiLSTM experiment
+  Outcome: A larger-budget Q1 BiLSTM run now exists with full exported artifacts and substantially improved metrics over the earlier smoke test
+  Next: Compare outputs/q1/run_20260413_151549 against the TF-IDF baseline and the finished DistilBERT larger-budget run once that slice produces stable metrics
+  Blocker: The active DistilBERT experiment currently owns the matching second neural run, and its latest visible artifacts are not yet comparison-ready
+- Agent: copilot-report-docs
+  Date: 2026-04-13
+  Scope: Report build docs
+  Outcome: The report scaffold now includes local usage documentation, compile commands, and artifact mapping so future write-up slices can extend it consistently
+  Next: Draft the remaining report sections against stable experiment artifacts and run a real LaTeX compile when a toolchain is installed
+  Blocker: latexmk/pdflatex are not installed in the current environment, so the documented compile commands were not executed here
+- Agent: copilot-q1-distilbert-experiment
+  Date: 2026-04-13
+  Scope: Q1 DistilBERT experiment
+  Outcome: A larger-budget DistilBERT run completed successfully after restoring the Q1 trainer wiring, and the resulting 4k-train/2k-test artifact is strong enough to feed the next Q1 comparison pass
+  Next: Use outputs/q1/run_20260413_151402 in larger-budget Q1 comparison work, or claim a focused BiLSTM experiment so the neural models can be compared on a closer footing
+  Blocker: None

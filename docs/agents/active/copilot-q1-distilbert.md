@@ -1,6 +1,6 @@
 # Agent: copilot-q1-distilbert
 
-Last updated: 2026-04-13 15:19
+Last updated: 2026-04-13 15:24
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: review
+- Status: done
 - Owner: copilot-q1-distilbert
 - Related area: q1_distilbert_baseline
 - Depends on: -
@@ -40,12 +40,14 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 - Added the transformers dependency and extended shared environment export so DistilBERT runs record the transformer package version
 - Validated a capped DistilBERT-only final-eval run on IMDb and confirmed metrics, predictions, confusion matrices, and misclassification analysis under outputs/q1/run_20260413_141817
 - Synced the Q1 DistilBERT doc section and shared handoff priorities with the implemented slice
+- Restored DistilBERT registration in the current Q1 model registry and trainer, and added a fail-fast check so zero-enabled-model runs no longer emit empty artifacts silently
 
 ---
 
 ## Decisions
 
 - Kept the slice on the existing Q1 preprocessing and export flow instead of widening scope into model-specific raw-text dataset paths
+- Keep the DistilBERT path on the shared Q1 preprocessing flow for now; the larger-budget run shows the collapse was a registry regression plus small-budget artifact, not an immediate preprocessing blocker
 
 ---
 
@@ -57,4 +59,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Run a larger-budget DistilBERT experiment and compare it against the existing TF-IDF and BiLSTM outputs; revisit model-specific preprocessing only if the larger run still collapses to one class
+1. Use the restored DistilBERT baseline path for later matched Q1 comparison work; any model-specific tuning should be claimed separately
