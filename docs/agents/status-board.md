@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 14:41
+Last updated: 2026-04-13 14:47
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -25,6 +25,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 BiLSTM-CRF baseline | copilot-q2-bilstm-crf | review | BiLSTM-CRF path is implemented and smoke-tested on a capped Q2 run; a larger-budget neural experiment is still needed before comparison against the CRF baseline |
 | Q2 BERT baseline | copilot-q2-bert | review | Self-contained BERT token-classification baseline implemented and smoke-tested on a capped CoNLL run; larger-budget training and anti-collapse tuning remain |
 | Q1 visualization | copilot-q1-visualization | review | Shared confusion-matrix figure export is implemented and validated on Q1; training curves and model-comparison figures remain separate visualization slices |
+| Q2 BERT experiment | copilot-q2-bert | in_progress | Larger-budget BERT token-classification experiment slice on top of the completed Q2 BERT baseline path |
 
 ---
 

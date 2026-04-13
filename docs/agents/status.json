@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:41"
+    "last_updated": "2026-04-13 14:47"
   },
   "areas": [
     {
@@ -107,6 +107,13 @@
       "owner": "copilot-q1-visualization",
       "status": "review",
       "notes": "Shared confusion-matrix figure export is implemented and validated on Q1; training curves and model-comparison figures remain separate visualization slices"
+    },
+    {
+      "key": "q2_bert_experiment",
+      "label": "Q2 BERT experiment",
+      "owner": "copilot-q2-bert",
+      "status": "in_progress",
+      "notes": "Larger-budget BERT token-classification experiment slice on top of the completed Q2 BERT baseline path"
     }
   ],
   "priorities": [
@@ -497,6 +504,29 @@
       "blockers": [],
       "next_actions": [
         "Use the generated Q1 confusion-matrix figures in analysis/reporting work, or claim a separate visualization slice for training curves and comparison plots"
+      ]
+    },
+    {
+      "name": "copilot-q2-bert-experiment",
+      "date": "2026-04-13",
+      "scope": "Run and evaluate a larger-budget Q2 BERT token-classification experiment using the existing Q2 BERT baseline path",
+      "status": "in_progress",
+      "owner": "copilot-q2-bert",
+      "related_area": "q2_bert_experiment",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate experiment slice after the Q2 BERT baseline smoke test entered review"
+        ],
+        "in_progress": [
+          "Running a larger-budget BERT experiment and comparing it against the stabilized Q2 CRF baseline"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Execute the larger-budget BERT run and review whether entity-level F1 recovers from the smoke-test collapse"
       ]
     }
   ]
