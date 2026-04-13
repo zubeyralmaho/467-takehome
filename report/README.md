@@ -24,7 +24,7 @@ Other LaTeX toolchains may also work, including:
 - `latexmk` with `pdflatex`
 - `pdflatex` plus `bibtex`
 
-The current workspace already contains a successfully generated `main.pdf` built from `main.tex` with Tectonic. Remaining issues are limited to a small number of non-blocking layout warnings that are being cleaned up separately.
+The current workspace already contains a successfully generated `main.pdf` built from `main.tex` with Tectonic, and the latest verified build is clean.
 
 ## Compile Commands
 
@@ -79,8 +79,8 @@ pdflatex main.tex
 ### Question 4
 
 - Pretrained transformer baseline artifact: `outputs/q4/run_20260413_212828`
-- Seq2Seq baseline artifact: `outputs/q4/run_20260413_214538`
-- Comparison summary artifact: `outputs/q4/run_20260413_215201`
+- Seq2Seq baseline artifact: `outputs/q4/run_20260413_214229`
+- Comparison summary artifact: `outputs/q4/run_20260413_231508`
 - `sections/q4.tex` now uses the direct capped transformer-versus-seq2seq comparison while explicitly noting that the train budgets are not perfectly matched because the transformer is a pretrained reference.
 
 ### Question 5
@@ -104,5 +104,5 @@ pdflatex main.tex
 
 - Finalize `sections/q1.tex` after the active larger-budget Q1 neural runs are summarized.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
-- Only reopen Q4 if a more budget-matched seq2seq rerun or transformer fine-tuning becomes necessary.
+- Only reopen Q4 if a more budget-matched seq2seq rerun or transformer fine-tuning becomes necessary beyond the stronger current seq2seq reference artifact.
 - Only reopen `sections/q5.tex` if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.

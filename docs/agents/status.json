@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:59"
+    "last_updated": "2026-04-13 23:20"
   },
   "areas": [
     {
@@ -36,7 +36,7 @@
       "label": "Q4 Machine Translation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "Both the pretrained transformer baseline and a custom seq2seq+attention baseline are now implemented and validated on capped Multi30k artifacts; the strongest current seq2seq reference is outputs/q4/run_20260413_214229, while direct comparison and Q4 reporting remain separate slices."
+      "notes": "Both the pretrained transformer baseline and the stronger custom seq2seq+attention baseline are now implemented and compared in report-ready artifacts under outputs/q4/run_20260413_231508; future Q4 work should focus only on a more budget-aligned comparison."
     },
     {
       "key": "q5_language_modeling",
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The report now compiles successfully with Tectonic and produces a PDF, while a small set of non-blocking overfull-box warnings remain in the introduction table plus parts of Q3/Q4/Q5."
+      "notes": "The report compiles successfully with Tectonic and now produces a clean PDF build with no overfull-box warnings."
     },
     {
       "key": "project_state_sync",
@@ -190,14 +190,14 @@
       "label": "Q1 larger-budget comparison",
       "owner": "copilot-q1-large-comparison",
       "status": "review",
-      "notes": "Matched 4k-train/2k-test Q1 comparison artifacts are complete under outputs/q1/run_20260413_152437, ranking DistilBERT ahead of TF-IDF + SVM, TF-IDF + LR, and BiLSTM on test macro-F1"
+      "notes": "Matched 4k-train/2k-test Q1 comparison artifacts are complete under outputs/q1/run_20260413_152558, ranking DistilBERT ahead of TF-IDF + SVM, TF-IDF + LR, and BiLSTM on test macro-F1."
     },
     {
       "key": "q1_report_draft",
       "label": "Q1 report draft",
       "owner": "copilot-q1-writeup",
       "status": "review",
-      "notes": "report/sections/q1.tex plus report-local Q1 tables and figure assets now reflect the stable 4k-train/2k-test Q1 artifacts; PDF compilation remains pending because no LaTeX toolchain is installed"
+      "notes": "report/sections/q1.tex plus report-local Q1 tables and figure assets reflect the stable 4k-train/2k-test artifacts and are now included in the successfully compiled Tectonic report."
     },
     {
       "key": "q1_report_summary_refresh",
@@ -281,7 +281,7 @@
       "label": "Report conclusion draft",
       "owner": "copilot-report-conclusion",
       "status": "review",
-      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, including the GPT-style Q5 reference while still treating Q4 as the main remaining comparison gap."
+      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, including the direct Q4 comparison and the GPT-style Q5 reference, while later matched reruns remain optional refinements."
     },
     {
       "key": "q5_report_draft_refresh",
@@ -302,7 +302,7 @@
       "label": "Q4 report draft",
       "owner": "copilot-q4-writeup-refresh",
       "status": "review",
-      "notes": "report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the direct transformer-versus-seq2seq comparison sourced from outputs/q4/run_20260413_215201."
+      "notes": "report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the direct transformer-versus-seq2seq comparison sourced from outputs/q4/run_20260413_231508 using the stronger seq2seq reference run."
     },
     {
       "key": "q4_seq2seq_baseline",
@@ -330,14 +330,14 @@
       "label": "Q4 report summary",
       "owner": "copilot-q4-report",
       "status": "review",
-      "notes": "Report-ready comparison summary exported to outputs/q4/run_20260413_215201 from the tracker-approved transformer and seq2seq runs."
+      "notes": "Report-ready comparison summary exported to outputs/q4/run_20260413_231508 from the tracker-approved transformer run and the stronger seq2seq run outputs/q4/run_20260413_214229 and outputs/q4/run_20260413_212828."
     },
     {
       "key": "report_build_validation",
       "label": "Report build validation",
       "owner": "copilot-report-build",
       "status": "review",
-      "notes": "Installed Tectonic and compiled the full report successfully to PDF; remaining issues are non-blocking overfull-box warnings rather than TeX or BibTeX failures."
+      "notes": "Installed Tectonic and compiled the full report successfully to PDF; the latest verified build is clean with no overfull-box warnings or TeX/BibTeX failures."
     },
     {
       "key": "report_q5_gpt_refresh",
@@ -349,16 +349,16 @@
     {
       "key": "q4_report_draft_refresh",
       "label": "Q4 report draft refresh",
-      "owner": "copilot-q4-writeup-refresh",
+      "owner": "copilot-q4-writeup-bestseq-refresh",
       "status": "review",
-      "notes": "Q4 report section, report-local table, README, and report framing were refreshed from outputs/q4/run_20260413_215201 without reopening Q4 model training."
+      "notes": "Q4 report section, report-local table, and README mapping were refreshed from outputs/q4/run_20260413_231508 after correcting the seq2seq source artifact to the stronger run_20260413_214229 reference."
     },
     {
       "key": "report_layout_cleanup",
       "label": "Report layout cleanup",
       "owner": "copilot-report-layout",
-      "status": "in_progress",
-      "notes": "Reducing the remaining non-blocking overfull-box warnings in the compiled report without reopening finished content or active question-summary slices."
+      "status": "review",
+      "notes": "Wrapped the wide report tables with tabularx, reflowed the remaining dense prose paragraphs, added a conservative emergencystretch in the preamble, and verified a clean Tectonic build with no remaining overfull-box warnings."
     },
     {
       "key": "report_build_docs_refresh",
@@ -366,6 +366,20 @@
       "owner": "copilot-report-docs-refresh",
       "status": "review",
       "notes": "report/README.md now reflects the verified Tectonic-based PDF build instead of the older unverified compile guidance."
+    },
+    {
+      "key": "q4_report_consistency_refresh",
+      "label": "Q4 report consistency refresh",
+      "owner": "copilot-q4-consistency",
+      "status": "review",
+      "notes": "Regenerated the Q4 comparison summary and refreshed report files so they now use the tracker-approved stronger seq2seq artifact under outputs/q4/run_20260413_214229 instead of the weaker older report pair."
+    },
+    {
+      "key": "report_layout_regression_cleanup",
+      "label": "Report layout regression cleanup",
+      "owner": "copilot-report-layout-refresh",
+      "status": "review",
+      "notes": "Removed the duplicated Q2 results sentence, tightened the remaining warning-producing report prose and tables, and revalidated a clean Tectonic build."
     }
   ],
   "priorities": [
@@ -832,6 +846,38 @@
         "scope": "Report build docs refresh",
         "outcome": "The report README now documents the verified Tectonic compile path and no longer states that PDF compilation is unverified.",
         "next": "Re-run Tectonic after future report edits and only revisit the build docs if the preferred build workflow changes.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-consistency",
+        "date": "2026-04-13",
+        "scope": "Q4 report consistency refresh",
+        "outcome": "The Q4 summary artifact and report files now use the stronger approved seq2seq reference run under outputs/q4/run_20260413_214229 instead of the weaker older report pair.",
+        "next": "Use outputs/q4/run_20260413_231508 as the current Q4 report-summary source and only reopen Q4 if a stronger budget-aligned comparison becomes available.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-layout",
+        "date": "2026-04-13",
+        "scope": "Report layout cleanup",
+        "outcome": "The report tables and stubborn prose were tightened, and the full report now compiles cleanly with Tectonic and no overfull-box warnings.",
+        "next": "Use the current preamble and table layouts as the baseline and only revisit layout if later content edits introduce new warnings.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q4-writeup-bestseq-refresh",
+        "date": "2026-04-13",
+        "scope": "Q4 stronger-summary refresh follow-up",
+        "outcome": "Verified that the report and tracker now consistently use the stronger seq2seq reference run and the newer Q4 summary artifact, then cleaned up the duplicate in-progress agent state.",
+        "next": "Prioritize Q1 or Q2 final report polishing unless a newer budget-aligned Q4 comparison appears.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-layout-refresh",
+        "date": "2026-04-13",
+        "scope": "Report layout regression cleanup",
+        "outcome": "Removed the duplicated Q2 paragraph, tightened the remaining warning-producing report text, and restored a clean Tectonic build.",
+        "next": "Only revisit layout if future report edits reintroduce overfull warnings or page-width regressions.",
         "blocker": "None"
       }
     ]
@@ -2167,7 +2213,7 @@
       "name": "copilot-report-layout",
       "date": "2026-04-13",
       "scope": "Reduce non-blocking LaTeX layout warnings in the compiled report",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-layout",
       "related_area": "report_layout_cleanup",
       "depends_on": [],
@@ -2175,15 +2221,19 @@
         "started": [
           "Claimed the unowned post-build cleanup slice after the report compiled successfully with Tectonic."
         ],
-        "in_progress": [
-          "Inspecting the remaining overfull-box warnings in the introduction table plus Q3/Q4/Q5 to make focused layout fixes only."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Replaced the wide introduction and Q4 comparison tables with tabularx-based layouts so they fit the page width cleanly.",
+          "Reflowed the remaining Q2, Q3, Q4, and Q5 prose paragraphs that were generating persistent overfull-box warnings.",
+          "Added a conservative emergencystretch=2em in the report preamble and validated a clean Tectonic build that produces report/main.pdf without overfull-box warnings."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Keep this slice strictly about layout and typesetting so finished report content and question ownership stay unchanged."
+      ],
       "blockers": [],
       "next_actions": [
-        "Adjust the affected tables or paragraphs, rebuild the PDF with Tectonic, and leave the warning delta in the handoff."
+        "Re-run Tectonic after future report edits; if new warnings appear, treat them as local regressions in the edited section rather than rolling back the shared layout cleanup."
       ]
     },
     {
@@ -2211,6 +2261,87 @@
       "blockers": [],
       "next_actions": [
         "Only refresh the build docs again if the preferred compile path changes or if the layout-cleanup slice introduces new build caveats."
+      ]
+    },
+    {
+      "name": "copilot-q4-writeup-bestseq-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh the Q4 report draft from the stronger seq2seq comparison summary",
+      "status": "review",
+      "owner": "copilot-q4-writeup-bestseq-refresh",
+      "related_area": "q4_report_draft_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Picked up a narrow Q4 report refresh after confirming that outputs/q4/run_20260413_215906 supersedes the older Q4 summary by using the stronger seq2seq artifact outputs/q4/run_20260413_214229."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Verified that the report files and tracker had already been refreshed again to use the stronger approved seq2seq reference under outputs/q4/run_20260413_214229 and the newer summary artifact outputs/q4/run_20260413_231508.",
+          "Left the Q4 report content unchanged in this slice because the stronger refresh had already landed cleanly, and limited the work to tracker-state cleanup."
+        ]
+      },
+      "decisions": [
+        "Keep the refresh limited to report-layer artifacts and tracker state; do not reopen Q4 model training or overlap the active layout-cleanup slice."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only reopen Q4 reporting if a more budget-matched seq2seq or fine-tuned transformer comparison supersedes outputs/q4/run_20260413_231508."
+      ]
+    },
+    {
+      "name": "copilot-q4-consistency",
+      "date": "2026-04-13",
+      "scope": "Refresh Q4 report artifacts from the approved seq2seq reference run",
+      "status": "review",
+      "owner": "copilot-q4-consistency",
+      "related_area": "q4_report_consistency_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q4 consistency slice after finding that the report and Q4 summary artifact still used an older weaker seq2seq run than the tracker-approved reference."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Confirmed that the report and Q4 summary artifact still referenced the weaker seq2seq run even though the tracker-approved reference had moved to outputs/q4/run_20260413_214229.",
+          "Regenerated the Q4 comparison summary under outputs/q4/run_20260413_231508 from the approved transformer and seq2seq runs.",
+          "Updated report/sections/q4.tex, report/tables/q4_overall_results.tex, and report/README.md to match the stronger seq2seq artifact and the corrected summary.",
+          "Validated the refreshed Q4 report files with editor diagnostics."
+        ]
+      },
+      "decisions": [
+        "Fix the artifact-source mismatch at the summary level first, then refresh the prose and table from that corrected artifact rather than patching only the report text."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only revisit Q4 again if a more budget-matched seq2seq or fine-tuned transformer comparison replaces outputs/q4/run_20260413_214229 as the approved reference."
+      ]
+    },
+    {
+      "name": "copilot-report-layout-refresh",
+      "date": "2026-04-13",
+      "scope": "Resolve post-refresh report layout regressions",
+      "status": "review",
+      "owner": "copilot-report-layout-refresh",
+      "related_area": "report_layout_regression_cleanup",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow post-build cleanup slice after a fresh Tectonic run still showed overfull-box warnings and a duplicated Q2 results sentence despite the earlier layout-cleanup slice being in review."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Removed the duplicated Q2 results sentence and tightened the remaining warning-producing introduction, Q3, Q4, and Q5 prose/table text.",
+          "Rebuilt the full report with Tectonic and verified a clean PDF build with no remaining overfull-box warnings.",
+          "Updated report/README.md so the verified Tectonic build status no longer claims unresolved layout warnings."
+        ]
+      },
+      "decisions": [
+        "Keep this slice focused on layout and minor prose de-duplication, not new experimental claims or model changes."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only reopen report layout work if later content edits reintroduce build warnings or table-width regressions."
       ]
     }
   ]

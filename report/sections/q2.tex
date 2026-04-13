@@ -19,11 +19,11 @@ The classical baseline is a linear-chain CRF \cite{lafferty2001crf} trained with
 The hybrid neural baseline uses 100-dimensional token embeddings, a single bidirectional LSTM layer with hidden size 128, dropout 0.3, batch size 32, and AdamW optimization with learning rate 0.001. The model was trained for up to eight epochs with early stopping on validation F1. The CRF output layer preserves global transition constraints during decoding.
 
 \paragraph{BERT Token Classification.}
-The transformer baseline fine-tunes \texttt{bert-base-cased} \cite{devlin2019bert} with maximum sequence length 128, batch size 8, learning rate \(5 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, and early stopping patience 2. The strongest full-data run completed after two epochs and clearly outperformed the non-transformer baselines.
+The transformer baseline fine-tunes \nolinkurl{bert-base-cased} \cite{devlin2019bert} with maximum sequence length 128, batch size 8, learning rate \(5 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, and early stopping patience 2. The strongest full-data run completed after two epochs and clearly outperformed the non-transformer baselines.
 
 \subsection{Results}
 
-Table~\ref{tab:q2_overall_results} summarizes the overall validation and test metrics. BERT produced the strongest result by a wide margin, reaching test F1 0.9062. The feature-based CRF remained a strong non-transformer baseline at test F1 0.7948, while BiLSTM-CRF improved over its smoke-test behavior but still lagged behind both alternatives at test F1 0.7145.
+Table~\ref{tab:q2_overall_results} summarizes the overall validation and test metrics. BERT produced the strongest result by a wide margin, reaching test F1 0.9062. The feature-based CRF remained a strong non-transformer baseline at test F1 0.7948. BiLSTM-CRF improved over its smoke-test behavior but still lagged behind both alternatives at test F1 0.7145.
 
 \input{tables/q2_overall_results}
 

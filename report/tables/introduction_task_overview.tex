@@ -1,15 +1,15 @@
 \begin{table}[H]
 \centering
-\small
+\footnotesize
 \begin{tabularx}{\linewidth}{c l l >{\raggedright\arraybackslash}X}
 \toprule
 Q & Task & Dataset & Representative Models \\
 \midrule
-1 & Text classification & IMDb & TF-IDF + LR / SVM, BiLSTM, DistilBERT \\
+1 & Text classification & IMDb & TF-IDF+LR/SVM, BiLSTM, DistilBERT \\
 2 & Named entity recognition & CoNLL-2003 & CRF, BiLSTM-CRF, BERT \\
-3 & Summarization & CNN/DailyMail & TextRank, BART or T5 \\
-4 & Machine translation & Multi30k & Seq2Seq + Attention, Opus-MT Transformer \\
-5 & Language modeling & WikiText-2 & Trigram add-k, LSTM, distilGPT-2 \\
+3 & Summarization & CNN/DailyMail & TextRank, DistilBART \\
+4 & Machine translation & Multi30k & Seq2Seq+Attn, Opus-MT \\
+5 & Language modeling & WikiText-2 & Trigram, LSTM, distilGPT-2 \\
 \bottomrule
 \end{tabularx}
 \caption{Task and dataset overview for the take-home report.}

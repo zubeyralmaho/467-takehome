@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:59
+Last updated: 2026-04-13 23:20
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -365,4 +365,28 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Report build docs refresh
   Outcome: The report README now documents the verified Tectonic compile path and no longer states that PDF compilation is unverified.
   Next: Re-run Tectonic after future report edits and only revisit the build docs if the preferred build workflow changes.
+  Blocker: None
+- Agent: copilot-q4-consistency
+  Date: 2026-04-13
+  Scope: Q4 report consistency refresh
+  Outcome: The Q4 summary artifact and report files now use the stronger approved seq2seq reference run under outputs/q4/run_20260413_214229 instead of the weaker older report pair.
+  Next: Use outputs/q4/run_20260413_231508 as the current Q4 report-summary source and only reopen Q4 if a stronger budget-aligned comparison becomes available.
+  Blocker: None
+- Agent: copilot-report-layout
+  Date: 2026-04-13
+  Scope: Report layout cleanup
+  Outcome: The report tables and stubborn prose were tightened, and the full report now compiles cleanly with Tectonic and no overfull-box warnings.
+  Next: Use the current preamble and table layouts as the baseline and only revisit layout if later content edits introduce new warnings.
+  Blocker: None
+- Agent: copilot-q4-writeup-bestseq-refresh
+  Date: 2026-04-13
+  Scope: Q4 stronger-summary refresh follow-up
+  Outcome: Verified that the report and tracker now consistently use the stronger seq2seq reference run and the newer Q4 summary artifact, then cleaned up the duplicate in-progress agent state.
+  Next: Prioritize Q1 or Q2 final report polishing unless a newer budget-aligned Q4 comparison appears.
+  Blocker: None
+- Agent: copilot-report-layout-refresh
+  Date: 2026-04-13
+  Scope: Report layout regression cleanup
+  Outcome: Removed the duplicated Q2 paragraph, tightened the remaining warning-producing report text, and restored a clean Tectonic build.
+  Next: Only revisit layout if future report edits reintroduce overfull warnings or page-width regressions.
   Blocker: None

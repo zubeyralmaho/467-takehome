@@ -10,15 +10,15 @@ Even with that limitation, CNN/DailyMail remains an appropriate benchmark for th
 
 The current Q3 pipeline performs shared article cleanup, truncates long inputs to 900 words, and evaluates all models with the same lexical metrics. The extractive baseline is a TF-IDF based TextRank summarizer \cite{mihalcea2004textrank}: sentences are treated as graph nodes, pairwise cosine similarities define weighted edges, and PageRank scores determine which three sentences are selected for the final summary. The configuration uses damping 0.85 and allows up to 40 candidate sentences per article.
 
-The abstractive baseline uses the pretrained DistilBART checkpoint \nolinkurl{sshleifer/distilbart-cnn-12-6}, which is derived from BART-style sequence-to-sequence pretraining \cite{lewis2020bart}, without additional fine-tuning. Inputs are tokenized up to 512 tokens and decoded with beam search using output lengths between 20 and 80 tokens. This design keeps the comparison practical on the current environment while still testing the main assignment question: whether an abstractive model can produce more reference-like summaries than a purely extractive sentence selector.
+The abstractive baseline uses a pretrained DistilBART CNN checkpoint from the DistilBART family. It is derived from BART-style sequence-to-sequence pretraining \cite{lewis2020bart} and is used here without additional fine-tuning. Inputs are tokenized up to 512 tokens, and decoding uses beam search with output lengths between 20 and 80 tokens. This design keeps the comparison practical on the current environment while still testing the main assignment question: whether an abstractive model can produce more reference-like summaries than a purely extractive sentence selector.
 
 \subsection{Results}
 
-Table~\ref{tab:q3_overall_results} summarizes the matched two-model comparison. On the test split, DistilBART reaches ROUGE-1 0.4218, ROUGE-2 0.1948, ROUGE-L 0.2833, BLEU 0.1355, and METEOR 0.4254, while TextRank reaches 0.3095, 0.1042, 0.2045, 0.0674, and 0.3041 respectively. The abstractive model outperforms TextRank on every exported metric on both validation and test.
+Table~\ref{tab:q3_overall_results} summarizes the matched two-model comparison. On the test split, DistilBART reaches ROUGE-1 0.4218, ROUGE-2 0.1948, and ROUGE-L 0.2833. Its BLEU and METEOR scores are 0.1355 and 0.4254, while TextRank reaches 0.3095, 0.1042, 0.2045, 0.0674, and 0.3041 respectively. The abstractive model outperforms TextRank on every exported metric on both validation and test.
 
 \input{tables/q3_overall_results}
 
-The largest absolute test improvements are in METEOR (+0.1213), ROUGE-1 (+0.1124), and ROUGE-2 (+0.0906). This pattern suggests that the abstractive model improves both content selection and phrase-level overlap, not only unigram recall. Because the split is still small, these numbers should not be over-generalized, but the consistency across both splits gives a materially stronger result than the earlier baseline-only Q3 section.
+The largest absolute test improvements are in METEOR (+0.1213), ROUGE-1 (+0.1124), and ROUGE-2 (+0.0906). This pattern suggests that the abstractive model improves both content selection and phrase-level overlap, not only unigram recall. Because the split is still small, these numbers should not be over-generalized. Even so, the results remain consistent across both splits and are materially stronger than the earlier baseline-only Q3 section.
 
 \subsection{Qualitative Analysis}
 

@@ -1,6 +1,6 @@
 # Agent: copilot-report-layout
 
-Last updated: 2026-04-13 21:59
+Last updated: 2026-04-13 23:20
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-report-layout
 - Related area: report_layout_cleanup
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Inspecting the remaining overfull-box warnings in the introduction table plus Q3/Q4/Q5 to make focused layout fixes only.
+- None.
 
 ### Completed
 
-- None.
+- Replaced the wide introduction and Q4 comparison tables with tabularx-based layouts so they fit the page width cleanly.
+- Reflowed the remaining Q2, Q3, Q4, and Q5 prose paragraphs that were generating persistent overfull-box warnings.
+- Added a conservative emergencystretch=2em in the report preamble and validated a clean Tectonic build that produces report/main.pdf without overfull-box warnings.
 
 ---
 
 ## Decisions
 
-- None.
+- Keep this slice strictly about layout and typesetting so finished report content and question ownership stay unchanged.
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Adjust the affected tables or paragraphs, rebuild the PDF with Tectonic, and leave the warning delta in the handoff.
+1. Re-run Tectonic after future report edits; if new warnings appear, treat them as local regressions in the edited section rather than rolling back the shared layout cleanup.
