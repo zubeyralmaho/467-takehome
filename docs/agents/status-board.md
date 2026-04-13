@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:44
+Last updated: 2026-04-13 21:45
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -47,15 +47,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q5 report summary | copilot-q5-report | review | Baseline-only Q5 summary artifacts were generated under outputs/q5/run_20260413_211754 from the finished trigram n-gram run and include perplexity plus generation-analysis exports |
 | Q5 LSTM baseline | copilot-q5-lstm | review | Existing LSTM language-model path validated on capped WikiText-2 under outputs/q5/run_20260413_212022 with validation/test perplexity 269.12/259.97 plus exported generation samples. |
 | Q5 report draft | copilot-q5-writeup | review | report/sections/q5.tex plus report/tables/q5_overall_results.tex now reflect the matched trigram-versus-LSTM comparison sourced from outputs/q5/run_20260413_212315, while the later smaller LSTM rerun remains a separate reference artifact. |
-| Q5 report summary refresh | copilot-q5-summary-refresh | review | Refreshed Q5 summary artifacts were generated under outputs/q5/run_20260413_212315 from the matched trigram and LSTM runs at outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945, and the builder now rejects mismatched split budgets for direct comparisons. |
+| Q5 report summary refresh | copilot-q5-summary-gpt2-refresh | in_progress | Refreshing the Q5 summary artifacts again so they compare the matched trigram, LSTM, and GPT-style runs under outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856. |
 | Q4 Transformer baseline | copilot-q4-transformer | review | Pretrained Helsinki-NLP/opus-mt-en-de baseline validated on capped Multi30k under outputs/q4/run_20260413_212828 with validation/test BLEU 0.4008/0.3572 and ChrF 0.6569/0.6380 plus exported translation predictions. |
 | Report conclusion draft | copilot-report-conclusion | review | report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, treating Q4 as a baseline-first section and the overall conclusion as provisional where later comparisons may still extend the report. |
-| Q5 report draft refresh | copilot-q5-writeup-refresh | review | Refreshed the Q5 report section, local table, and report README mapping from the matched trigram-versus-LSTM summary artifact under outputs/q5/run_20260413_212315 without reopening model-training ownership. |
-| Q5 GPT-2 baseline | copilot-q5-gpt2 | in_progress | Implementing a practical GPT-2 Q5 baseline on top of the existing language-modeling package so Question 5 can include a transformer-style comparison beyond the matched trigram-versus-LSTM result. |
+| Q5 report draft refresh | copilot-q5-writeup-gpt2-refresh | in_progress | Refreshing report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md so the Q5 write-up includes the matched GPT-style baseline as the current strongest model. |
+| Q5 GPT-2 baseline | copilot-q5-gpt2 | review | Practical distilgpt2 baseline validated on matched 3000/400/400 WikiText-2 splits under outputs/q5/run_20260413_213856 with validation/test perplexity 109.78/106.44 plus seeded generation samples. |
 | Q4 report draft | copilot-q4-writeup | review | report/sections/q4.tex plus report/tables/q4_overall_results.tex now capture the stable pretrained transformer baseline artifact under outputs/q4/run_20260413_212828; any seq2seq comparison remains separate. |
 | Q4 Seq2Seq baseline | copilot-q4-seq2seq | review | Compact GRU seq2seq+attention baseline validated on capped Multi30k under outputs/q4/run_20260413_214229 with validation/test BLEU 0.1284/0.1348 and ChrF 0.3491/0.3548 plus exported translation predictions. |
 | Report framing refresh | copilot-report-refresh | review | report/sections/introduction.tex and report/sections/conclusion.tex now reflect the drafted Q3/Q4/Q5 sections and the current report-wide baseline/comparison state. |
 | Report bibliography refresh | copilot-report-bib | in_progress | Adding foundational dataset/model citations to the drafted report sections and populating report/references.bib without touching active modeling slices. |
+| Q4 report summary | copilot-q4-report | in_progress | Building report-ready Q4 comparison artifacts from the finished transformer and seq2seq runs without editing q4.tex directly in this slice. |
 
 ---
 

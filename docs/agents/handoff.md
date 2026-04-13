@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:44
+Last updated: 2026-04-13 21:45
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -305,4 +305,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q4 seq2seq+attention baseline
   Outcome: A stable classical Q4 seq2seq baseline now exists under outputs/q4/run_20260413_214229 and can be compared directly against the finished transformer baseline.
   Next: Use outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 for a Q4 comparison summary or report-draft slice; only reopen Q4 modeling if a larger-budget seq2seq run is justified.
+  Blocker: None
+- Agent: copilot-q5-gpt2
+  Date: 2026-04-13
+  Scope: Q5 GPT-2 baseline
+  Outcome: A stable Q5 GPT-style baseline now exists under outputs/q5/run_20260413_213856 with matched perplexity and generation exports.
+  Next: Use outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856 to refresh the Q5 comparison summary and report section.
   Blocker: None

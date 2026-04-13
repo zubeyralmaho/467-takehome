@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:44"
+    "last_updated": "2026-04-13 21:45"
   },
   "areas": [
     {
@@ -265,9 +265,9 @@
     {
       "key": "q5_report_summary_refresh",
       "label": "Q5 report summary refresh",
-      "owner": "copilot-q5-summary-refresh",
-      "status": "review",
-      "notes": "Refreshed Q5 summary artifacts were generated under outputs/q5/run_20260413_212315 from the matched trigram and LSTM runs at outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945, and the builder now rejects mismatched split budgets for direct comparisons."
+      "owner": "copilot-q5-summary-gpt2-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing the Q5 summary artifacts again so they compare the matched trigram, LSTM, and GPT-style runs under outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856."
     },
     {
       "key": "q4_transformer_baseline",
@@ -286,16 +286,16 @@
     {
       "key": "q5_report_draft_refresh",
       "label": "Q5 report draft refresh",
-      "owner": "copilot-q5-writeup-refresh",
-      "status": "review",
-      "notes": "Refreshed the Q5 report section, local table, and report README mapping from the matched trigram-versus-LSTM summary artifact under outputs/q5/run_20260413_212315 without reopening model-training ownership."
+      "owner": "copilot-q5-writeup-gpt2-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md so the Q5 write-up includes the matched GPT-style baseline as the current strongest model."
     },
     {
       "key": "q5_gpt2_baseline",
       "label": "Q5 GPT-2 baseline",
       "owner": "copilot-q5-gpt2",
-      "status": "in_progress",
-      "notes": "Implementing a practical GPT-2 Q5 baseline on top of the existing language-modeling package so Question 5 can include a transformer-style comparison beyond the matched trigram-versus-LSTM result."
+      "status": "review",
+      "notes": "Practical distilgpt2 baseline validated on matched 3000/400/400 WikiText-2 splits under outputs/q5/run_20260413_213856 with validation/test perplexity 109.78/106.44 plus seeded generation samples."
     },
     {
       "key": "q4_report_draft",
@@ -324,6 +324,13 @@
       "owner": "copilot-report-bib",
       "status": "in_progress",
       "notes": "Adding foundational dataset/model citations to the drafted report sections and populating report/references.bib without touching active modeling slices."
+    },
+    {
+      "key": "q4_report_summary",
+      "label": "Q4 report summary",
+      "owner": "copilot-q4-report",
+      "status": "in_progress",
+      "notes": "Building report-ready Q4 comparison artifacts from the finished transformer and seq2seq runs without editing q4.tex directly in this slice."
     }
   ],
   "priorities": [
@@ -710,6 +717,14 @@
         "scope": "Q4 seq2seq+attention baseline",
         "outcome": "A stable classical Q4 seq2seq baseline now exists under outputs/q4/run_20260413_214229 and can be compared directly against the finished transformer baseline.",
         "next": "Use outputs/q4/run_20260413_212828 and outputs/q4/run_20260413_214229 for a Q4 comparison summary or report-draft slice; only reopen Q4 modeling if a larger-budget seq2seq run is justified.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q5-gpt2",
+        "date": "2026-04-13",
+        "scope": "Q5 GPT-2 baseline",
+        "outcome": "A stable Q5 GPT-style baseline now exists under outputs/q5/run_20260413_213856 with matched perplexity and generation exports.",
+        "next": "Use outputs/q5/run_20260413_202258, outputs/q5/run_20260413_211945, and outputs/q5/run_20260413_213856 to refresh the Q5 comparison summary and report section.",
         "blocker": "None"
       }
     ]
@@ -1754,7 +1769,7 @@
       "name": "copilot-q5-gpt2",
       "date": "2026-04-13",
       "scope": "Implement and validate a Q5 GPT-2 baseline",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q5-gpt2",
       "related_area": "q5_gpt2_baseline",
       "depends_on": [],
@@ -1762,16 +1777,19 @@
         "started": [
           "Selected a GPT-2 Q5 slice after confirming that the matched trigram-versus-LSTM comparison and Q5 report refresh were already complete and unowned GPT-style modeling remained the main open Q5 question."
         ],
-        "in_progress": [
-          "Extending src/q5_language_modeling with a practical GPT-2 evaluation path and validating it on capped WikiText-2 splits."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Extended the existing Q5 package with a practical pretrained GPT-style baseline wrapper using distilgpt2 for perplexity evaluation and seeded generation.",
+          "Validated the GPT-style path on matched 3000/400/400 WikiText-2 splits under outputs/q5/run_20260413_213856."
+        ]
       },
       "decisions": [
-        "Prefer a practical pretrained-or-lightweight GPT-2 baseline over heavy fine-tuning so the transformer comparison remains feasible in the current environment."
+        "Use a practical pretrained distilgpt2 baseline rather than heavy GPT-2 fine-tuning so the transformer comparison remains feasible in the current environment."
       ],
       "blockers": [],
-      "next_actions": []
+      "next_actions": [
+        "Refresh the Q5 comparison summary and q5.tex so they incorporate outputs/q5/run_20260413_213856 alongside the matched trigram and LSTM runs."
+      ]
     },
     {
       "name": "copilot-q4-writeup",
@@ -1873,6 +1891,77 @@
         "completed": []
       },
       "decisions": [],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "name": "copilot-q4-report",
+      "date": "2026-04-13",
+      "scope": "Q4 report summary",
+      "status": "in_progress",
+      "owner": "copilot-q4-report",
+      "related_area": "q4_report_summary",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a Q4 artifact-only summary slice after the baseline-only report draft and the new seq2seq comparison artifact both became available."
+        ],
+        "in_progress": [
+          "Add a reusable Q4 summary builder and generate comparison-ready Markdown, JSON, and LaTeX outputs from the finished transformer and seq2seq runs."
+        ],
+        "completed": []
+      },
+      "decisions": [
+        "Keep this slice artifact-only so a later q4.tex refresh can consume the summary without overlapping report prose changes."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Create the Q4 summary builder, validate it on the transformer and seq2seq run pair, and export a refreshed comparison summary artifact."
+      ]
+    },
+    {
+      "name": "copilot-q5-summary-gpt2-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh Q5 summary artifacts to include the GPT-style baseline",
+      "status": "in_progress",
+      "owner": "copilot-q5-summary-gpt2-refresh",
+      "related_area": "q5_report_summary_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Picked up the explicit Q5 summary-refresh handoff once a matched GPT-style baseline became available."
+        ],
+        "in_progress": [
+          "Updating scripts/q5_report_summary.py and generating a new comparison artifact with trigram, LSTM, and GPT-style runs."
+        ],
+        "completed": []
+      },
+      "decisions": [
+        "Keep the refreshed Q5 summary on the matched 3000/400/400 budget so all three models remain directly comparable."
+      ],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "name": "copilot-q5-writeup-gpt2-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh the Q5 report draft to include the GPT-style baseline",
+      "status": "in_progress",
+      "owner": "copilot-q5-writeup-gpt2-refresh",
+      "related_area": "q5_report_draft_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Picked up the explicit Q5 write-up refresh handoff once a matched GPT-style baseline became available."
+        ],
+        "in_progress": [
+          "Updating q5.tex, the local Q5 table, and report/README.md from the refreshed three-model comparison artifact."
+        ],
+        "completed": []
+      },
+      "decisions": [
+        "Keep the Q5 report refresh tied to the matched trigram/LSTM/GPT-style comparison rather than mixing in the later smaller LSTM rerun."
+      ],
       "blockers": [],
       "next_actions": []
     }

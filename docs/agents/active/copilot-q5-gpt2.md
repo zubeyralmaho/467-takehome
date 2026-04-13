@@ -1,6 +1,6 @@
 # Agent: copilot-q5-gpt2
 
-Last updated: 2026-04-13 21:44
+Last updated: 2026-04-13 21:45
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q5-gpt2
 - Related area: q5_gpt2_baseline
 - Depends on: -
@@ -31,17 +31,18 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Extending src/q5_language_modeling with a practical GPT-2 evaluation path and validating it on capped WikiText-2 splits.
+- None.
 
 ### Completed
 
-- None.
+- Extended the existing Q5 package with a practical pretrained GPT-style baseline wrapper using distilgpt2 for perplexity evaluation and seeded generation.
+- Validated the GPT-style path on matched 3000/400/400 WikiText-2 splits under outputs/q5/run_20260413_213856.
 
 ---
 
 ## Decisions
 
-- Prefer a practical pretrained-or-lightweight GPT-2 baseline over heavy fine-tuning so the transformer comparison remains feasible in the current environment.
+- Use a practical pretrained distilgpt2 baseline rather than heavy GPT-2 fine-tuning so the transformer comparison remains feasible in the current environment.
 
 ---
 
@@ -53,4 +54,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. None.
+1. Refresh the Q5 comparison summary and q5.tex so they incorporate outputs/q5/run_20260413_213856 alongside the matched trigram and LSTM runs.
