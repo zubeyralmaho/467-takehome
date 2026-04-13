@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 23:53
+Last updated: 2026-04-13 23:55
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -402,3 +402,15 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: Closed the stale Q5 refresh states and synchronized the remaining Q5 tracker notes with the current three-model report state.
   Next: Only revisit tracker consistency if future slices land without updating their review state or current artifact references.
   Blocker: None
+- Agent: copilot-report-figures
+  Date: 2026-04-13
+  Scope: Report comparison figures
+  Outcome: Q3, Q4, and Q5 now have reproducible report-local comparison figures, and the final report still compiles cleanly with those assets included.
+  Next: Use the new figure generator as the default refresh path for Q3/Q4/Q5 visuals and only revisit the plots if later summary artifacts or report layout constraints change.
+  Blocker: None
+- Agent: copilot-report-proofread
+  Date: 2026-04-13
+  Scope: Report proofread pass
+  Outcome: The clean compiled report appears structurally sound; the only concrete remaining submission issue found in the proofread pass is the placeholder student ID.
+  Next: Provide the real student ID, update report/main.tex, and rerun Tectonic to refresh the final PDF.
+  Blocker: The final student ID is not present in the workspace or memories.

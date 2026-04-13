@@ -8,6 +8,7 @@ This directory contains the LaTeX scaffold for the final take-home report.
 - `sections/q1.tex`, `sections/q2.tex`, `sections/q3.tex`, `sections/q4.tex`, and `sections/q5.tex` are drafted from stable experiment artifacts.
 - `sections/q3.tex` now contains a direct capped comparison between TextRank and a pretrained DistilBART baseline.
 - `sections/q4.tex` now contains a direct capped comparison between the Q4 pretrained transformer reference and the custom seq2seq baseline.
+- `sections/q3.tex`, `sections/q4.tex`, and `sections/q5.tex` now include report-local comparison figures generated from the stable summary artifacts.
 - `sections/conclusion.tex` is drafted and now reflects the current Q1/Q2/Q3/Q4/Q5 comparison state, while later matched reruns may still refine the final narrative.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
@@ -95,14 +96,15 @@ pdflatex main.tex
 ## Editing Workflow
 
 1. Update experiment artifacts in `outputs/` first.
-2. Copy only the figures that the report should reference into `report/figures/`.
-3. Put reusable table snippets into `report/tables/` if a section will `\input{...}` them.
-4. Write narrative in `report/sections/*.tex` using the stable artifact outputs, not ad hoc terminal observations.
-5. Recompile after each question-level write-up slice, preferably with `tectonic main.tex` from `report/`.
+2. Regenerate the report-local Q3/Q4/Q5 comparison figures with `python scripts/report_comparison_figures.py` after the source summary artifacts change.
+3. Copy only the figures that the report should reference into `report/figures/`.
+4. Put reusable table snippets into `report/tables/` if a section will `\input{...}` them.
+5. Write narrative in `report/sections/*.tex` using the stable artifact outputs, not ad hoc terminal observations.
+6. Recompile after each question-level write-up slice, preferably with `tectonic main.tex` from `report/`.
 
 ## Suggested Next Steps
 
-- Replace the placeholder student ID in `main.tex` and do a final proofreading pass on the clean compiled PDF.
+- Do a final manual proofreading pass on the clean compiled PDF before submission.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
 - Only reopen Q4 if a more budget-matched seq2seq rerun or transformer fine-tuning becomes necessary beyond the stronger current seq2seq reference artifact.
 - Only reopen `sections/q5.tex` if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.

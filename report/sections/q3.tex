@@ -18,6 +18,15 @@ Table~\ref{tab:q3_overall_results} summarizes the matched two-model comparison. 
 
 \input{tables/q3_overall_results}
 
+Figure~\ref{fig:q3_test_metric_comparison} visualizes the same test-set ranking. DistilBART leads TextRank on every exported metric, with especially clear gaps on METEOR, ROUGE-1, and ROUGE-2.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/q3/test_metric_comparison.png}
+	\caption{Q3 test-set metric comparison for TextRank and DistilBART.}
+	\label{fig:q3_test_metric_comparison}
+\end{figure}
+
 The largest absolute test improvements are in METEOR (+0.1213), ROUGE-1 (+0.1124), and ROUGE-2 (+0.0906). This pattern suggests that the abstractive model improves both content selection and phrase-level overlap, not only unigram recall. Because the split is still small, these numbers should not be over-generalized. Even so, the results remain consistent across both splits and are materially stronger than the earlier baseline-only Q3 section.
 
 \subsection{Qualitative Analysis}

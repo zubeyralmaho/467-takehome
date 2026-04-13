@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 23:53
+Last updated: 2026-04-13 23:55
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -17,7 +17,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q4 Machine Translation | unassigned | in_progress | Both the pretrained transformer baseline and the stronger custom seq2seq+attention baseline are now implemented and compared in report-ready artifacts under outputs/q4/run_20260413_231508; future Q4 work should focus only on a more budget-aligned comparison. |
 | Q5 Language Modeling | unassigned | in_progress | The trigram, matched LSTM, and practical distilgpt2 baselines now exist, refreshed three-model Q5 summary artifacts are ready under outputs/q5/run_20260413_214837, and q5.tex is included in the clean compiled report; future Q5 work should focus only on larger matched reruns or transformer fine-tuning if needed. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
-| Report preparation | unassigned | review | The report now compiles cleanly with Tectonic, all drafted sections align with stable artifacts, and the remaining work is final proofreading, submission metadata, or optional new experiments. |
+| Report preparation | unassigned | in_progress | The report compiles successfully with Tectonic, now includes report-local Q3/Q4/Q5 comparison figures, and still builds cleanly with no TeX/BibTeX warnings. |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
 | Q2 CRF baseline | copilot-q2-crf | done | Self-contained CoNLL CRF baseline implemented and validated on a capped run; any larger-budget experiment can now be claimed as a separate slice |
 | Q2 CRF experiment | copilot-q2-crf | done | Full-split CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_141702 |
@@ -64,10 +64,11 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report build docs refresh | copilot-report-docs-refresh | review | report/README.md now reflects the verified Tectonic-based PDF build instead of the older unverified compile guidance. |
 | Q4 report consistency refresh | copilot-q4-consistency | review | Regenerated the Q4 comparison summary and refreshed report files so they now use the tracker-approved stronger seq2seq artifact under outputs/q4/run_20260413_214229 instead of the weaker older report pair. |
 | Report layout regression cleanup | copilot-report-layout-refresh | review | Removed the duplicated Q2 results sentence, tightened the remaining warning-producing report prose and tables, and revalidated a clean Tectonic build. |
-| Report comparison figures | copilot-report-figures | in_progress | Generating report-local Q3/Q4/Q5 comparison figures from the stable summary artifacts and wiring them into the final report without reopening model results. |
+| Report comparison figures | copilot-report-figures | review | Added a reproducible figure generator for Q3/Q4/Q5, rendered report-local comparison figures from the stable summary artifacts, wired them into the drafted sections, and revalidated a clean Tectonic build. |
 | Report state sync refresh | copilot-report-state-sync | review | Tracker priorities, handoff guidance, and report README next steps now reflect the current clean compiled report and the settled canonical Q1/Q4/Q5 artifact paths. |
 | Tracker consistency refresh | copilot-tracker-refresh | review | Closed stale Q5 refresh states and synchronized the remaining tracker metadata with the current clean report and finished comparison artifacts. |
-| Report proofread pass | copilot-report-proofread | in_progress | Reviewing the clean compiled PDF for obvious submission issues beyond the known placeholder student ID, without overlapping active figure-generation work. |
+| Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems beyond the remaining placeholder student ID in report/main.tex. |
+| Report submission metadata | copilot-report-metadata | in_progress | Replacing the placeholder student ID in report/main.tex, rebuilding the PDF, and refreshing any stale submission-metadata guidance. |
 
 ---
 

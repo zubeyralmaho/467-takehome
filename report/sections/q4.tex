@@ -20,6 +20,15 @@ Table~\ref{tab:q4_overall_results} summarizes the finished comparison. The pretr
 
 \input{tables/q4_overall_results}
 
+Figure~\ref{fig:q4_test_metric_comparison} makes the same comparison easier to scan visually. The transformer leads the classical seq2seq model on both exported test metrics, and the gap is large enough that the model ranking is unambiguous even on the capped evaluation split.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.88\textwidth]{figures/q4/test_metric_comparison.png}
+	\caption{Q4 test-set BLEU and ChrF comparison for the stronger seq2seq baseline and the pretrained transformer reference.}
+	\label{fig:q4_test_metric_comparison}
+\end{figure}
+
 The size of this gap still makes the main takeaway straightforward: under the current capped setup, the from-scratch seq2seq baseline improves materially with more training budget but is still not competitive with a strong pretrained translation checkpoint. At the same time, the comparison should not be oversold as a perfectly aligned training-budget experiment, because the transformer benefits from large-scale pretraining rather than the capped Multi30k train split.
 
 \subsection{Qualitative Analysis}

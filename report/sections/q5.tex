@@ -20,6 +20,15 @@ Table~\ref{tab:q5_overall_results} reports the refreshed Q5 perplexity compariso
 
 \input{tables/q5_overall_results}
 
+Figure~\ref{fig:q5_perplexity_comparison} shows the same ordering on a log-scaled y-axis so that the trigram, LSTM, and distilGPT-2 bars remain readable in a single chart. The pretrained transformer remains the strongest model on both validation and test, while the LSTM sits well below the classical trigram baseline but still well above distilGPT-2.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{figures/q5/perplexity_comparison.png}
+	\caption{Q5 validation and test perplexity comparison on a log-scaled y-axis.}
+	\label{fig:q5_perplexity_comparison}
+\end{figure}
+
 Two comparisons matter here. First, the LSTM cuts validation perplexity by 79.5\% and test perplexity by 79.9\% relative to the trigram baseline, which shows that even a compact recurrent language model is far better than sparse count-based context matching on held-out WikiText-2 continuations. Second, distilGPT-2 lowers validation perplexity by a further 61.6\% and test perplexity by 61.9\% relative to the matched LSTM result, making the pretrained transformer the strongest finished Q5 model.
 
 \subsection{Generated Text Samples}

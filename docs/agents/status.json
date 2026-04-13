@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 23:53"
+    "last_updated": "2026-04-13 23:55"
   },
   "areas": [
     {
@@ -56,8 +56,8 @@
       "key": "report_preparation",
       "label": "Report preparation",
       "owner": "unassigned",
-      "status": "review",
-      "notes": "The report now compiles cleanly with Tectonic, all drafted sections align with stable artifacts, and the remaining work is final proofreading, submission metadata, or optional new experiments."
+      "status": "in_progress",
+      "notes": "The report compiles successfully with Tectonic, now includes report-local Q3/Q4/Q5 comparison figures, and still builds cleanly with no TeX/BibTeX warnings."
     },
     {
       "key": "project_state_sync",
@@ -385,8 +385,8 @@
       "key": "report_comparison_figures",
       "label": "Report comparison figures",
       "owner": "copilot-report-figures",
-      "status": "in_progress",
-      "notes": "Generating report-local Q3/Q4/Q5 comparison figures from the stable summary artifacts and wiring them into the final report without reopening model results."
+      "status": "review",
+      "notes": "Added a reproducible figure generator for Q3/Q4/Q5, rendered report-local comparison figures from the stable summary artifacts, wired them into the drafted sections, and revalidated a clean Tectonic build."
     },
     {
       "key": "report_state_sync_refresh",
@@ -406,8 +406,15 @@
       "key": "report_proofread_pass",
       "label": "Report proofread pass",
       "owner": "copilot-report-proofread",
+      "status": "review",
+      "notes": "A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems beyond the remaining placeholder student ID in report/main.tex."
+    },
+    {
+      "key": "report_submission_metadata",
+      "label": "Report submission metadata",
+      "owner": "copilot-report-metadata",
       "status": "in_progress",
-      "notes": "Reviewing the clean compiled PDF for obvious submission issues beyond the known placeholder student ID, without overlapping active figure-generation work."
+      "notes": "Replacing the placeholder student ID in report/main.tex, rebuilding the PDF, and refreshing any stale submission-metadata guidance."
     }
   ],
   "priorities": [
@@ -923,6 +930,22 @@
         "outcome": "Closed the stale Q5 refresh states and synchronized the remaining Q5 tracker notes with the current three-model report state.",
         "next": "Only revisit tracker consistency if future slices land without updating their review state or current artifact references.",
         "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-figures",
+        "date": "2026-04-13",
+        "scope": "Report comparison figures",
+        "outcome": "Q3, Q4, and Q5 now have reproducible report-local comparison figures, and the final report still compiles cleanly with those assets included.",
+        "next": "Use the new figure generator as the default refresh path for Q3/Q4/Q5 visuals and only revisit the plots if later summary artifacts or report layout constraints change.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-proofread",
+        "date": "2026-04-13",
+        "scope": "Report proofread pass",
+        "outcome": "The clean compiled report appears structurally sound; the only concrete remaining submission issue found in the proofread pass is the placeholder student ID.",
+        "next": "Provide the real student ID, update report/main.tex, and rerun Tectonic to refresh the final PDF.",
+        "blocker": "The final student ID is not present in the workspace or memories."
       }
     ]
   },
@@ -2392,7 +2415,7 @@
       "name": "copilot-report-figures",
       "date": "2026-04-13",
       "scope": "Add report-local comparison figures for Q3, Q4, and Q5",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-figures",
       "related_area": "report_comparison_figures",
       "depends_on": [],
@@ -2400,15 +2423,20 @@
         "started": [
           "Claimed the unowned report-visualization slice after confirming that report/figures/q3, q4, and q5 were still empty despite stable summary artifacts and drafted report sections."
         ],
-        "in_progress": [
-          "Adding reproducible report-local figures for Q3, Q4, and Q5 from the approved summary artifacts, then validating them in the compiled PDF."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added scripts/report_comparison_figures.py plus a shared grouped-bar plotting helper so report-local Q3/Q4/Q5 figures can be regenerated from the approved summary artifacts.",
+          "Rendered new Q3, Q4, and Q5 comparison figures under report/figures and inserted them into the corresponding LaTeX sections.",
+          "Updated report/README.md to document the figure-regeneration step and made matplotlib an explicit project dependency.",
+          "Rebuilt the full report with Tectonic and verified that main.pdf still compiles cleanly after the new figures were added."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Keep this slice focused on report-local visualization from stable artifacts rather than adding new experiments or changing the underlying model rankings."
+      ],
       "blockers": [],
       "next_actions": [
-        "Implement the figure generator, render the assets into report/figures, update the LaTeX sections to include them, and rebuild the report."
+        "Re-run scripts/report_comparison_figures.py whenever the approved Q3/Q4/Q5 summary artifacts change, then rebuild the report to check for layout regressions."
       ]
     },
     {
@@ -2465,7 +2493,7 @@
       "name": "copilot-report-proofread",
       "date": "2026-04-13",
       "scope": "Proofread the clean compiled report PDF for obvious issues",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-proofread",
       "related_area": "report_proofread_pass",
       "depends_on": [],
@@ -2473,8 +2501,34 @@
         "started": [
           "Claimed a narrow proofread slice after the report compiled cleanly and the remaining top-level work narrowed to proofreading and submission metadata."
         ],
+        "in_progress": [],
+        "completed": [
+          "Extracted the compiled PDF text and verified that the report body and references render normally in the clean Tectonic build.",
+          "Confirmed that the remaining concrete submission issue is the placeholder student ID in report/main.tex and the compiled PDF title page."
+        ]
+      },
+      "decisions": [
+        "Treat the proofread pass as complete because the only remaining fix requires user-provided submission metadata rather than another report edit inferred from the workspace."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Replace the placeholder student ID in report/main.tex once the final submission metadata is provided, then rerun the Tectonic build."
+      ]
+    },
+    {
+      "name": "copilot-report-metadata",
+      "date": "2026-04-13",
+      "scope": "Replace placeholder submission metadata and refresh the final PDF",
+      "status": "in_progress",
+      "owner": "copilot-report-metadata",
+      "related_area": "report_submission_metadata",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow submission-metadata slice after the final student ID was provided and the remaining concrete report issue became actionable."
+        ],
         "in_progress": [
-          "Extracting the compiled PDF text and scanning for obvious issues that survive compilation, such as placeholders or repeated/garbled passages."
+          "Updating report/main.tex with the final student ID, rebuilding the PDF, and clearing stale placeholder-metadata guidance."
         ],
         "completed": []
       },
