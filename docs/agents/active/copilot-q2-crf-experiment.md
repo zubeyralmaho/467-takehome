@@ -35,11 +35,9 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Completed
 
-- Ran a full-split Q2 CRF experiment on tomaarsen/conll2003 with validation and final test evaluation enabled
-- Validated outputs under outputs/q2/run_20260413_141549 with validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976
-- Recorded test performance at precision 0.813, recall 0.777, F1 0.795, accuracy 0.957 and confirmed exported validation/test prediction CSVs
-- Ran the full-config Q2 CRF experiment with final evaluation and exported validation/test artifacts under outputs/q2/run_20260413_141702
-- Observed validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976 and test precision 0.813, recall 0.777, F1 0.795, accuracy 0.957
+- Ran the full-config Q2 CRF experiment with final evaluation enabled on tomaarsen/conll2003
+- Exported metrics, error analysis, and prediction CSVs under outputs/q2/run_20260413_141702
+- Achieved validation precision 0.894, recall 0.860, F1 0.876, accuracy 0.976 and test precision 0.813, recall 0.777, F1 0.795, accuracy 0.957
 
 ---
 
