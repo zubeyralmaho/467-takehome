@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:16
+Last updated: 2026-04-13 21:21
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -15,7 +15,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
 | Q3 Summarization | unassigned | in_progress | TextRank and a capped distilBART comparison now exist under outputs/q3/run_20260413_192426, and report/sections/q3.tex now reflects that direct comparison; only larger-budget Q3 work remains separate. |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
-| Q5 Language Modeling | unassigned | in_progress | A trigram n-gram baseline is now implemented and validated under outputs/q5/run_20260413_202258; neural Q5 baselines such as LSTM or GPT-2 remain separate follow-up slices. |
+| Q5 Language Modeling | unassigned | in_progress | Matched capped trigram and LSTM baselines now exist under outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945; GPT-2 or Q5 reporting remain separate follow-up slices. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
 | Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q2 already has a drafted section, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
@@ -44,8 +44,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q3 report draft | copilot-q3-report-refresh | review | report/sections/q3.tex and report/tables/q3_overall_results.tex now reflect the capped direct TextRank-versus-DistilBART comparison artifact under outputs/q3/run_20260413_192426; larger-budget Q3 work remains optional follow-up. |
 | Q3 BART baseline | copilot-q3-bart | review | Pretrained abstractive Q3 summarizer validated on CNN/DailyMail with a direct 20-validation/20-test comparison run under outputs/q3/run_20260413_192426, where distilBART outperformed TextRank on all exported lexical metrics. |
 | Q5 N-gram baseline | copilot-q5-ngram | review | Self-contained trigram add-k language model validated on capped WikiText-2 under outputs/q5/run_20260413_202258 with validation/test perplexity 1392.54/1388.72 plus exported generation samples. |
-| Q5 report summary | copilot-q5-report | in_progress | Building a report-ready Q5 summary artifact from the finished trigram baseline without overlapping future LSTM or GPT-2 modeling slices |
-| Q5 LSTM baseline | copilot-q5-lstm | in_progress | Implementing a self-contained neural Q5 language-model baseline on top of the finished WikiText-2 n-gram scaffold. |
+| Q5 report summary | copilot-q5-report | review | Baseline-only Q5 summary artifacts were generated under outputs/q5/run_20260413_211754 from the finished trigram n-gram run and include perplexity plus generation-analysis exports |
+| Q5 LSTM baseline | copilot-q5-lstm | review | Self-contained word-level LSTM language model validated on capped WikiText-2 under outputs/q5/run_20260413_211945 with validation/test perplexity 286.06/279.46, substantially outperforming the matched trigram baseline on the same 3000/400/400 budget. |
+| Q5 report draft | copilot-q5-writeup | in_progress | Drafting the baseline-only Q5 report section from the stable trigram summary artifact while leaving the active LSTM modeling slice untouched |
+| Q5 report summary refresh | copilot-q5-summary-refresh | in_progress | Refreshing the Q5 summary artifacts to consume both the finished trigram and matched LSTM runs without overlapping future q5.tex drafting. |
 
 ---
 

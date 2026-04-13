@@ -1,6 +1,6 @@
 # Agent: copilot-q5-lstm
 
-Last updated: 2026-04-13 21:16
+Last updated: 2026-04-13 21:21
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q5-lstm
 - Related area: q5_lstm_baseline
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Implement a minimal PyTorch LSTM language model that matches the n-gram fit/perplexity/generate contract and validate it on a capped WikiText-2 run.
+- None.
 
 ### Completed
 
-- None.
+- Extended configs/q5.yaml plus the Q5 trainer/model exports so model.type=lstm runs through the same entrypoint, perplexity evaluator, and generation-export path as the n-gram baseline.
+- Implemented a self-contained word-level LSTM language model with fixed vocabulary, teacher-forced next-token training, perplexity evaluation, and temperature-based generation in src/q5_language_modeling/models/lstm_lm.py.
+- Validated the neural path on a 300/80/80 smoke run under outputs/q5/run_20260413_211901 and a matched 3000/400/400 run under outputs/q5/run_20260413_211945.
 
 ---
 
 ## Decisions
 
-- Keep this slice to a word-level LSTM with teacher-forced next-token training; GPT-2 remains a later optional Q5 slice.
+- Keep the first neural Q5 slice to a compact word-level LSTM with tied weights so it stays feasible in the current environment while still giving a meaningful comparison against the trigram baseline.
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Add the LSTM model path, run a capped validation/test experiment, and compare its perplexity against the trigram baseline artifact.
+1. Claim a Q5 comparison/report-summary slice that compares outputs/q5/run_20260413_211945 against outputs/q5/run_20260413_202258, or add an optional GPT-2 slice if a transformer baseline is still required.

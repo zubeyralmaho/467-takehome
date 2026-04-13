@@ -64,9 +64,15 @@ pdflatex main.tex
 - Earlier TextRank-only baseline artifact: `outputs/q3/run_20260413_185438`
 - `sections/q3.tex` now uses the direct capped TextRank-versus-DistilBART comparison, while any larger-budget Q3 rerun remains optional follow-up work.
 
-### Questions 4-5
+### Question 4
 
-- These sections are placeholders until implementations and experiment artifacts exist.
+- This section remains a placeholder until machine-translation implementations and experiment artifacts exist.
+
+### Question 5
+
+- Trigram baseline run: `outputs/q5/run_20260413_202258`
+- Report summary artifact: `outputs/q5/run_20260413_211754`
+- `sections/q5.tex` is still a placeholder, but the baseline-only summary is now ready for a future Q5 write-up slice.
 
 ## Editing Workflow
 
@@ -82,4 +88,5 @@ pdflatex main.tex
 - Expand `sections/introduction.tex` once Q1 and Q2 write-ups stabilize.
 - Fill `references.bib` when citations are added to the final prose.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
-- Draft `sections/q4.tex` and `sections/q5.tex` after their experiment outputs are available.
+- Draft `sections/q4.tex` after machine-translation outputs are available.
+- Replace the `sections/q5.tex` placeholder with baseline prose now that the trigram summary exists, or wait for an LSTM slice if Q5 should include a stronger neural comparison.

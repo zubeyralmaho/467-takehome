@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:16"
+    "last_updated": "2026-04-13 21:21"
   },
   "areas": [
     {
@@ -43,7 +43,7 @@
       "label": "Q5 Language Modeling",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A trigram n-gram baseline is now implemented and validated under outputs/q5/run_20260413_202258; neural Q5 baselines such as LSTM or GPT-2 remain separate follow-up slices."
+      "notes": "Matched capped trigram and LSTM baselines now exist under outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945; GPT-2 or Q5 reporting remain separate follow-up slices."
     },
     {
       "key": "evaluation_and_analysis",
@@ -245,15 +245,29 @@
       "key": "q5_report_summary",
       "label": "Q5 report summary",
       "owner": "copilot-q5-report",
-      "status": "in_progress",
-      "notes": "Building a report-ready Q5 summary artifact from the finished trigram baseline without overlapping future LSTM or GPT-2 modeling slices"
+      "status": "review",
+      "notes": "Baseline-only Q5 summary artifacts were generated under outputs/q5/run_20260413_211754 from the finished trigram n-gram run and include perplexity plus generation-analysis exports"
     },
     {
       "key": "q5_lstm_baseline",
       "label": "Q5 LSTM baseline",
       "owner": "copilot-q5-lstm",
+      "status": "review",
+      "notes": "Self-contained word-level LSTM language model validated on capped WikiText-2 under outputs/q5/run_20260413_211945 with validation/test perplexity 286.06/279.46, substantially outperforming the matched trigram baseline on the same 3000/400/400 budget."
+    },
+    {
+      "key": "q5_report_draft",
+      "label": "Q5 report draft",
+      "owner": "copilot-q5-writeup",
       "status": "in_progress",
-      "notes": "Implementing a self-contained neural Q5 language-model baseline on top of the finished WikiText-2 n-gram scaffold."
+      "notes": "Drafting the baseline-only Q5 report section from the stable trigram summary artifact while leaving the active LSTM modeling slice untouched"
+    },
+    {
+      "key": "q5_report_summary_refresh",
+      "label": "Q5 report summary refresh",
+      "owner": "copilot-q5-summary-refresh",
+      "status": "in_progress",
+      "notes": "Refreshing the Q5 summary artifacts to consume both the finished trigram and matched LSTM runs without overlapping future q5.tex drafting."
     }
   ],
   "priorities": [
@@ -552,6 +566,22 @@
         "scope": "Q5 trigram baseline",
         "outcome": "A stable Q5 trigram n-gram baseline now exists under outputs/q5/run_20260413_202258 with capped validation/test perplexity and generation exports.",
         "next": "Reuse configs/q5.yaml and src/q5_language_modeling as the base for a Q5 LSTM slice or a Q5 report-summary slice; do not reopen the classical baseline unless a larger-budget rerun is needed.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q5-report",
+        "date": "2026-04-13",
+        "scope": "Q5 report summary",
+        "outcome": "A baseline-only Q5 report summary now exists with Markdown, JSON, and LaTeX outputs covering perplexity, configuration, and generation examples for the trigram model",
+        "next": "Consume outputs/q5/run_20260413_211754 in a later Q5 report-draft slice, or add an LSTM baseline next if Q5 should move beyond the classical model",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q5-lstm",
+        "date": "2026-04-13",
+        "scope": "Q5 LSTM baseline",
+        "outcome": "A stable Q5 LSTM baseline now exists under outputs/q5/run_20260413_211945 and beats the matched trigram baseline by a wide margin on capped WikiText-2 perplexity.",
+        "next": "Use outputs/q5/run_20260413_211945 and outputs/q5/run_20260413_202258 as the base for Q5 comparison/reporting work, or only reopen Q5 modeling if a GPT-2 comparison is worth the extra budget.",
         "blocker": "None"
       }
     ]
@@ -1407,7 +1437,7 @@
       "name": "copilot-q5-report",
       "date": "2026-04-13",
       "scope": "Q5 report summary",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q5-report",
       "related_area": "q5_report_summary",
       "depends_on": [],
@@ -1415,22 +1445,26 @@
         "started": [
           "Claimed a narrow Q5 reporting slice after the trigram baseline was validated and no Q5 summary artifact existed yet"
         ],
-        "in_progress": [
-          "Reading the Q5 baseline exports and building Markdown, JSON, and LaTeX summary artifacts for the current report state"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added a reusable scripts/q5_report_summary.py builder for baseline-only Markdown, JSON, and LaTeX Q5 summary artifacts",
+          "Generated refreshed Q5 summary outputs under outputs/q5/run_20260413_211754 from the finished trigram baseline run at outputs/q5/run_20260413_202258",
+          "Updated report/README.md so the report scaffold now lists the available Q5 baseline and summary artifacts"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept the slice artifact-only so a future Q5 write-up or LSTM model slice can consume the summary without ownership overlap"
+      ],
       "blockers": [],
       "next_actions": [
-        "Create a reusable Q5 summary builder from outputs/q5/run_20260413_202258 and leave the result ready for a later q5.tex drafting slice"
+        "Use outputs/q5/run_20260413_211754 for a future q5.tex drafting slice, or claim an LSTM language-model slice if Q5 modeling should continue"
       ]
     },
     {
       "name": "copilot-q5-lstm",
       "date": "2026-04-13",
       "scope": "Q5 LSTM language-model baseline",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q5-lstm",
       "related_area": "q5_lstm_baseline",
       "depends_on": [],
@@ -1438,17 +1472,67 @@
         "started": [
           "Claimed a separate Q5 LSTM slice after the trigram baseline reached review and confirmed the existing Q5 scaffold already handles dataset loading, perplexity export, and generation rows."
         ],
+        "in_progress": [],
+        "completed": [
+          "Extended configs/q5.yaml plus the Q5 trainer/model exports so model.type=lstm runs through the same entrypoint, perplexity evaluator, and generation-export path as the n-gram baseline.",
+          "Implemented a self-contained word-level LSTM language model with fixed vocabulary, teacher-forced next-token training, perplexity evaluation, and temperature-based generation in src/q5_language_modeling/models/lstm_lm.py.",
+          "Validated the neural path on a 300/80/80 smoke run under outputs/q5/run_20260413_211901 and a matched 3000/400/400 run under outputs/q5/run_20260413_211945."
+        ]
+      },
+      "decisions": [
+        "Keep the first neural Q5 slice to a compact word-level LSTM with tied weights so it stays feasible in the current environment while still giving a meaningful comparison against the trigram baseline."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Claim a Q5 comparison/report-summary slice that compares outputs/q5/run_20260413_211945 against outputs/q5/run_20260413_202258, or add an optional GPT-2 slice if a transformer baseline is still required."
+      ]
+    },
+    {
+      "name": "copilot-q5-writeup",
+      "date": "2026-04-13",
+      "scope": "Q5 report draft",
+      "status": "in_progress",
+      "owner": "copilot-q5-writeup",
+      "related_area": "q5_report_draft",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q5 write-up slice after the trigram baseline and Q5 summary artifact were available while the LSTM modeling slice remained active"
+        ],
         "in_progress": [
-          "Implement a minimal PyTorch LSTM language model that matches the n-gram fit/perplexity/generate contract and validate it on a capped WikiText-2 run."
+          "Replacing the placeholder q5.tex and adding report-local baseline tables from the finished trigram summary artifact"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Read the current report section style and draft a baseline-focused Q5 section that can later be extended if the active LSTM slice finishes"
+      ]
+    },
+    {
+      "name": "copilot-q5-summary-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh Q5 summary artifacts from the finished n-gram and LSTM runs",
+      "status": "in_progress",
+      "owner": "copilot-q5-summary-refresh",
+      "related_area": "q5_report_summary_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow Q5 artifact-refresh slice after confirming the existing summary script is baseline-only while matched trigram and LSTM artifacts now both exist."
+        ],
+        "in_progress": [
+          "Update scripts/q5_report_summary.py so it can summarize the finished Q5 comparison rather than only the trigram baseline, then generate a refreshed output run."
         ],
         "completed": []
       },
       "decisions": [
-        "Keep this slice to a word-level LSTM with teacher-forced next-token training; GPT-2 remains a later optional Q5 slice."
+        "Keep this slice artifact-only and do not edit report/sections/q5.tex; a later write-up slice can consume the refreshed summary."
       ],
       "blockers": [],
       "next_actions": [
-        "Add the LSTM model path, run a capped validation/test experiment, and compare its perplexity against the trigram baseline artifact."
+        "Generalize the Q5 summary builder to compare the n-gram and LSTM runs, validate it, and export a refreshed report-ready summary artifact."
       ]
     }
   ]

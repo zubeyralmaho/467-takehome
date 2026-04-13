@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:16
+Last updated: 2026-04-13 21:21
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -239,4 +239,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q5 trigram baseline
   Outcome: A stable Q5 trigram n-gram baseline now exists under outputs/q5/run_20260413_202258 with capped validation/test perplexity and generation exports.
   Next: Reuse configs/q5.yaml and src/q5_language_modeling as the base for a Q5 LSTM slice or a Q5 report-summary slice; do not reopen the classical baseline unless a larger-budget rerun is needed.
+  Blocker: None
+- Agent: copilot-q5-report
+  Date: 2026-04-13
+  Scope: Q5 report summary
+  Outcome: A baseline-only Q5 report summary now exists with Markdown, JSON, and LaTeX outputs covering perplexity, configuration, and generation examples for the trigram model
+  Next: Consume outputs/q5/run_20260413_211754 in a later Q5 report-draft slice, or add an LSTM baseline next if Q5 should move beyond the classical model
+  Blocker: None
+- Agent: copilot-q5-lstm
+  Date: 2026-04-13
+  Scope: Q5 LSTM baseline
+  Outcome: A stable Q5 LSTM baseline now exists under outputs/q5/run_20260413_211945 and beats the matched trigram baseline by a wide margin on capped WikiText-2 perplexity.
+  Next: Use outputs/q5/run_20260413_211945 and outputs/q5/run_20260413_202258 as the base for Q5 comparison/reporting work, or only reopen Q5 modeling if a GPT-2 comparison is worth the extra budget.
   Blocker: None

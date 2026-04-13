@@ -19,6 +19,20 @@ model:
   smoothing: add_k
   alpha: 0.1
   min_token_frequency: 2
+  max_vocab_size: 15000
+  embedding_dim: 128
+  hidden_dim: 128
+  num_layers: 2
+  dropout: 0.2
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0
+  max_epochs: 8
+  early_stopping_patience: 2
+  max_seq_length: 35
+  tie_weights: true
+  gradient_clip: 1.0
+  num_workers: 0
 
 generation:
   max_length: 25

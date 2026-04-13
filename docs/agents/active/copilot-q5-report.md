@@ -1,6 +1,6 @@
 # Agent: copilot-q5-report
 
-Last updated: 2026-04-13 21:16
+Last updated: 2026-04-13 21:21
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q5-report
 - Related area: q5_report_summary
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Reading the Q5 baseline exports and building Markdown, JSON, and LaTeX summary artifacts for the current report state
+- None.
 
 ### Completed
 
-- None.
+- Added a reusable scripts/q5_report_summary.py builder for baseline-only Markdown, JSON, and LaTeX Q5 summary artifacts
+- Generated refreshed Q5 summary outputs under outputs/q5/run_20260413_211754 from the finished trigram baseline run at outputs/q5/run_20260413_202258
+- Updated report/README.md so the report scaffold now lists the available Q5 baseline and summary artifacts
 
 ---
 
 ## Decisions
 
-- None.
+- Kept the slice artifact-only so a future Q5 write-up or LSTM model slice can consume the summary without ownership overlap
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Create a reusable Q5 summary builder from outputs/q5/run_20260413_202258 and leave the result ready for a later q5.tex drafting slice
+1. Use outputs/q5/run_20260413_211754 for a future q5.tex drafting slice, or claim an LSTM language-model slice if Q5 modeling should continue
