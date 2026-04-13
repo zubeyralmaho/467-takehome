@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:08"
+    "last_updated": "2026-04-13 15:13"
   },
   "areas": [
     {
@@ -22,7 +22,7 @@
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "CRF, BERT, and BiLSTM-CRF full-data runs are complete; BERT currently leads, CRF remains the strongest non-transformer baseline, and any BiLSTM-CRF tuning is a separate slice"
+      "notes": "All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034"
     },
     {
       "key": "q3_summarization",
@@ -147,20 +147,27 @@
       "key": "q2_report_summary",
       "label": "Q2 report summary",
       "owner": "copilot-q2-report",
-      "status": "in_progress",
-      "notes": "Report-only Q2 slice claimed to summarize the completed CRF, BiLSTM-CRF, and BERT full-data artifacts into report-ready outputs"
+      "status": "review",
+      "notes": "Report-ready Q2 summary artifacts were generated under outputs/q2/run_20260413_151034 from the completed CRF, BiLSTM-CRF, and BERT full-data runs"
     },
     {
       "key": "q2_model_comparison",
       "label": "Q2 model comparison",
       "owner": "copilot-q2-comparison",
+      "status": "review",
+      "notes": "Report-ready Q2 comparison artifacts were generated under outputs/q2/run_20260413_151143, ranking BERT ahead of the CRF baseline and BiLSTM-CRF on overall and per-entity test F1"
+    },
+    {
+      "key": "q1_distilbert_experiment",
+      "label": "Q1 DistilBERT experiment",
+      "owner": "copilot-q1-distilbert-experiment",
       "status": "in_progress",
-      "notes": "Building report-ready comparison artifacts across the completed CRF, BiLSTM-CRF, and BERT Q2 runs without changing the active experiment ownership"
+      "notes": "Larger-budget DistilBERT experiment claimed on top of the implemented Q1 baseline without changing active comparison/report ownership"
     }
   ],
   "priorities": [
     "Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.",
-    "Finish the remaining larger-budget Q2 BiLSTM-CRF experiment and compare it against the stabilized CRF and BERT baselines.",
+    "Complete the in-progress Q2 comparison/reporting work using the finished CRF, BiLSTM-CRF, and BERT artifacts.",
     "Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations."
   ],
   "handoff": {
@@ -173,7 +180,7 @@
     "next_recommended_actions": [
       "Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs",
       "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
-      "Finish the in-progress BiLSTM-CRF experiment and compare its artifacts directly against outputs/q2/run_20260413_144742 and outputs/q2/run_20260413_141702"
+      "Use outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the Q2 report reference artifacts; only reopen BiLSTM-CRF if a focused tuning slice is justified"
     ],
     "entries": [
       {
@@ -302,6 +309,22 @@
         "scope": "Q2 BiLSTM-CRF experiment",
         "outcome": "Full-data BiLSTM-CRF experiment completed with exported validation/test artifacts and a usable neural comparison point",
         "next": "Compare outputs/q2/run_20260413_144913 against the finished CRF and BERT runs in analysis/reporting, or claim a focused BiLSTM-CRF tuning slice if recurrent modeling still needs improvement",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-report",
+        "date": "2026-04-13",
+        "scope": "Q2 report summary",
+        "outcome": "A report-ready Q2 comparison summary now exists with Markdown, JSON, and LaTeX outputs derived from the completed CRF, BiLSTM-CRF, and BERT runs",
+        "next": "Use outputs/q2/run_20260413_151034 alongside outputs/q2/run_20260413_144742 when drafting Q2 report tables and discussion; only claim more Q2 modeling work if BiLSTM-CRF tuning is worth the budget",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-comparison",
+        "date": "2026-04-13",
+        "scope": "Q2 model comparison",
+        "outcome": "A finished Q2 comparison run now aggregates CRF, BiLSTM-CRF, and BERT into overall and per-entity report-ready artifacts, with BERT leading every entity type on the test split",
+        "next": "Reuse outputs/q2/run_20260413_151143 for Q2 report tables and discussion, or rerun the comparison builder later if a tuned BiLSTM-CRF experiment supersedes outputs/q2/run_20260413_144913",
         "blocker": "None"
       }
     ]
@@ -728,7 +751,7 @@
       "name": "copilot-q2-report",
       "date": "2026-04-13",
       "scope": "Q2 report summary",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q2-report",
       "related_area": "q2_report_summary",
       "depends_on": [],
@@ -736,22 +759,25 @@
         "started": [
           "Claimed a report-only Q2 summary slice after the CRF, BiLSTM-CRF, and BERT full-data runs were all available"
         ],
-        "in_progress": [
-          "Building report-ready Q2 comparison artifacts from the exported full-data experiment outputs"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Added a reusable Q2 report-summary generator that reads the completed CRF, BiLSTM-CRF, and BERT outputs and exports Markdown, JSON, and LaTeX artifacts",
+          "Generated validated summary artifacts under outputs/q2/run_20260413_151034 with overall comparison tables, per-entity test metrics, error-analysis highlights, and discussion prompts aligned to the report structure"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Positioned BERT as the current report anchor for Q2, with CRF as the strongest non-transformer baseline and BiLSTM-CRF as the weaker neural comparator"
+      ],
       "blockers": [],
       "next_actions": [
-        "Generate Markdown, JSON, and LaTeX summary artifacts comparing the three finished Q2 models and aligned to the report structure"
+        "Use outputs/q2/run_20260413_151034 for report drafting and only reopen Q2 modeling if a focused BiLSTM-CRF tuning slice is explicitly needed"
       ]
     },
     {
       "name": "copilot-q2-comparison",
       "date": "2026-04-13",
       "scope": "Q2 model comparison",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q2-comparison",
       "related_area": "q2_model_comparison",
       "depends_on": [],
@@ -759,15 +785,41 @@
         "started": [
           "Reviewed the live tracker and selected a Q2 comparison slice that only consumes finished run artifacts"
         ],
+        "in_progress": [],
+        "completed": [
+          "Added a reusable Q2 comparison builder that exports overall and per-entity CSV and LaTeX tables plus an entity-F1 comparison figure",
+          "Validated comparison outputs under outputs/q2/run_20260413_151143 using the finished CRF, BiLSTM-CRF, and BERT full-data runs"
+        ]
+      },
+      "decisions": [
+        "Kept this slice focused on reusable comparison artifacts so the separate Q2 report-summary owner can consume them without cross-editing model or summary logic"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Use outputs/q2/run_20260413_151143 as the report-table source for Q2 and only reopen comparison if a tuned BiLSTM-CRF rerun changes the ranking"
+      ]
+    },
+    {
+      "name": "copilot-q1-distilbert-experiment",
+      "date": "2026-04-13",
+      "scope": "Run and evaluate a larger-budget Q1 DistilBERT experiment using the implemented baseline path and current Q1 export flow",
+      "status": "in_progress",
+      "owner": "copilot-q1-distilbert-experiment",
+      "related_area": "q1_distilbert_experiment",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate experiment slice after the Q1 DistilBERT baseline was validated on a capped run"
+        ],
         "in_progress": [
-          "Building reusable Q2 comparison outputs from the completed CRF, BiLSTM-CRF, and BERT runs"
+          "Running a larger-budget DistilBERT experiment and comparing it against the existing TF-IDF and BiLSTM artifacts"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Generate report-ready overall and per-entity Q2 comparison artifacts from the finished outputs"
+        "Execute the larger-budget DistilBERT run and inspect whether it still collapses to one class before deciding on any tuning follow-up"
       ]
     }
   ]

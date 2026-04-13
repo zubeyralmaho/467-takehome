@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:08
+Last updated: 2026-04-13 15:13
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -24,7 +24,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 1. Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs
 2. Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized
-3. Finish the in-progress BiLSTM-CRF experiment and compare its artifacts directly against outputs/q2/run_20260413_144742 and outputs/q2/run_20260413_141702
+3. Use outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the Q2 report reference artifacts; only reopen BiLSTM-CRF if a focused tuning slice is justified
 
 ---
 
@@ -125,4 +125,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 BiLSTM-CRF experiment
   Outcome: Full-data BiLSTM-CRF experiment completed with exported validation/test artifacts and a usable neural comparison point
   Next: Compare outputs/q2/run_20260413_144913 against the finished CRF and BERT runs in analysis/reporting, or claim a focused BiLSTM-CRF tuning slice if recurrent modeling still needs improvement
+  Blocker: None
+- Agent: copilot-q2-report
+  Date: 2026-04-13
+  Scope: Q2 report summary
+  Outcome: A report-ready Q2 comparison summary now exists with Markdown, JSON, and LaTeX outputs derived from the completed CRF, BiLSTM-CRF, and BERT runs
+  Next: Use outputs/q2/run_20260413_151034 alongside outputs/q2/run_20260413_144742 when drafting Q2 report tables and discussion; only claim more Q2 modeling work if BiLSTM-CRF tuning is worth the budget
+  Blocker: None
+- Agent: copilot-q2-comparison
+  Date: 2026-04-13
+  Scope: Q2 model comparison
+  Outcome: A finished Q2 comparison run now aggregates CRF, BiLSTM-CRF, and BERT into overall and per-entity report-ready artifacts, with BERT leading every entity type on the test split
+  Next: Reuse outputs/q2/run_20260413_151143 for Q2 report tables and discussion, or rerun the comparison builder later if a tuned BiLSTM-CRF experiment supersedes outputs/q2/run_20260413_144913
   Blocker: None

@@ -1,6 +1,6 @@
 # Agent: copilot-q2-report
 
-Last updated: 2026-04-13 15:08
+Last updated: 2026-04-13 15:13
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q2-report
 - Related area: q2_report_summary
 - Depends on: -
@@ -31,17 +31,18 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Building report-ready Q2 comparison artifacts from the exported full-data experiment outputs
+- None.
 
 ### Completed
 
-- None.
+- Added a reusable Q2 report-summary generator that reads the completed CRF, BiLSTM-CRF, and BERT outputs and exports Markdown, JSON, and LaTeX artifacts
+- Generated validated summary artifacts under outputs/q2/run_20260413_151034 with overall comparison tables, per-entity test metrics, error-analysis highlights, and discussion prompts aligned to the report structure
 
 ---
 
 ## Decisions
 
-- None.
+- Positioned BERT as the current report anchor for Q2, with CRF as the strongest non-transformer baseline and BiLSTM-CRF as the weaker neural comparator
 
 ---
 
@@ -53,4 +54,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Generate Markdown, JSON, and LaTeX summary artifacts comparing the three finished Q2 models and aligned to the report structure
+1. Use outputs/q2/run_20260413_151034 for report drafting and only reopen Q2 modeling if a focused BiLSTM-CRF tuning slice is explicitly needed

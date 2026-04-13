@@ -345,6 +345,19 @@ outputs/q2/run_{timestamp}/
 +-- model_best_*.pt
 ```
 
+Dedicated comparison/reporting runs may additionally write:
+
+```
+outputs/q2/run_{timestamp}/
+|-- comparison_manifest.json
+|-- overall_model_comparison.csv
+|-- overall_model_comparison.tex
+|-- per_entity_model_comparison.csv
+|-- per_entity_model_comparison.tex
++-- figures/
+    +-- entity_f1_comparison.png
+```
+
 ---
 
 ## Config Example (q2.yaml)

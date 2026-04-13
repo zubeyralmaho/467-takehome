@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 15:08
+Last updated: 2026-04-13 15:13
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -12,7 +12,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
 | Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparison artifacts are now ready while larger-budget neural runs remain open |
-| Q2 Named Entity Recognition | unassigned | in_progress | CRF, BERT, and BiLSTM-CRF full-data runs are complete; BERT currently leads, CRF remains the strongest non-transformer baseline, and any BiLSTM-CRF tuning is a separate slice |
+| Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
 | Q5 Language Modeling | unassigned | todo | N-gram + LSTM + optional GPT-2 |
@@ -30,15 +30,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
 | Q1 preprocessing comparison | copilot-q1-preprocessing | review | The documented TF-IDF+LR preprocessing sweep is implemented and exported under outputs/q1/run_20260413_145735; the current lowercase+keep-stopwords default already matches the best validation setting |
 | Q1 report summary | copilot-q1-report | review | Report-ready Q1 smoke-test summary artifacts were generated under outputs/q1/run_20260413_150237 from the completed comparison and preprocessing runs |
-| Q2 report summary | copilot-q2-report | in_progress | Report-only Q2 slice claimed to summarize the completed CRF, BiLSTM-CRF, and BERT full-data artifacts into report-ready outputs |
-| Q2 model comparison | copilot-q2-comparison | in_progress | Building report-ready comparison artifacts across the completed CRF, BiLSTM-CRF, and BERT Q2 runs without changing the active experiment ownership |
+| Q2 report summary | copilot-q2-report | review | Report-ready Q2 summary artifacts were generated under outputs/q2/run_20260413_151034 from the completed CRF, BiLSTM-CRF, and BERT full-data runs |
+| Q2 model comparison | copilot-q2-comparison | review | Report-ready Q2 comparison artifacts were generated under outputs/q2/run_20260413_151143, ranking BERT ahead of the CRF baseline and BiLSTM-CRF on overall and per-entity test F1 |
+| Q1 DistilBERT experiment | copilot-q1-distilbert-experiment | in_progress | Larger-budget DistilBERT experiment claimed on top of the implemented Q1 baseline without changing active comparison/report ownership |
 
 ---
 
 ## Current Priorities
 
 1. Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.
-2. Finish the remaining larger-budget Q2 BiLSTM-CRF experiment and compare it against the stabilized CRF and BERT baselines.
+2. Complete the in-progress Q2 comparison/reporting work using the finished CRF, BiLSTM-CRF, and BERT artifacts.
 3. Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations.
 
 ---
