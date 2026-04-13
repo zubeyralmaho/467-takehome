@@ -7,6 +7,7 @@ from collections.abc import Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 import random
+import re
 
 import torch
 from torch import nn
@@ -266,6 +267,7 @@ class _Seq2SeqAttentionNetwork(nn.Module):
         bos_id: int,
         eos_id: int,
         max_length: int,
+        forbidden_token_ids: Sequence[int] | None = None,
     ) -> torch.Tensor:
         encoder_outputs, hidden = self.encoder(src_ids, src_lengths)
         mask = self._mask(src_ids)
@@ -276,6 +278,11 @@ class _Seq2SeqAttentionNetwork(nn.Module):
 
         for _ in range(max_length):
             step_logits, hidden = self.decoder(input_token, hidden, encoder_outputs, mask)
+            if forbidden_token_ids:
+                step_logits = step_logits.clone()
+                for token_id in forbidden_token_ids:
+                    if 0 <= int(token_id) < step_logits.size(1):
+                        step_logits[:, int(token_id)] = float("-inf")
             input_token = step_logits.argmax(dim=1)
             predictions.append(input_token)
             finished = finished | input_token.eq(eos_id)
@@ -343,6 +350,16 @@ class Seq2SeqAttentionMT:
     @staticmethod
     def _tokenize(text: str) -> list[str]:
         return str(text).split()
+
+    @staticmethod
+    def _detokenize(tokens: Sequence[str]) -> str:
+        if not tokens:
+            return ""
+        text = " ".join(tokens)
+        text = re.sub(r"\s+([,.;:!?%])", r"\1", text)
+        text = re.sub(r"\(\s+", "(", text)
+        text = re.sub(r"\s+\)", ")", text)
+        return text.strip()
 
     def _require_fitted(self) -> tuple[_Seq2SeqAttentionNetwork, Vocabulary, Vocabulary]:
         if self.model is None or self.source_vocabulary is None or self.target_vocabulary is None:
@@ -506,8 +523,13 @@ class Seq2SeqAttentionMT:
                     bos_id=target_vocabulary.bos_id,
                     eos_id=target_vocabulary.eos_id,
                     max_length=self.max_output_length,
+                    forbidden_token_ids=[
+                        target_vocabulary.pad_id,
+                        target_vocabulary.bos_id,
+                        target_vocabulary.unk_id,
+                    ],
                 )
                 for row in decoded_ids.cpu().tolist():
-                    predictions.append(" ".join(target_vocabulary.decode(row)).strip())
+                    predictions.append(self._detokenize(target_vocabulary.decode(row)))
 
         return predictions

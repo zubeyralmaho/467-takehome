@@ -1,6 +1,6 @@
 # Agent: copilot-report-refresh
 
-Last updated: 2026-04-13 21:39
+Last updated: 2026-04-13 21:43
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-report-refresh
 - Related area: report_framing_refresh
 - Depends on: -
@@ -31,17 +31,20 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Re-reading the introduction and conclusion to update the report framing around the current Q3/Q4/Q5 state.
+- None.
 
 ### Completed
 
-- None.
+- Re-read the drafted introduction, conclusion, Q4 section, and refreshed Q5 section to identify stale report-wide framing.
+- Updated report/sections/introduction.tex so the scope and organization now reflect drafted Q3/Q4/Q5 sections instead of placeholder language.
+- Updated report/sections/conclusion.tex so the project-level synthesis now includes the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.
+- Validated the refreshed introduction and conclusion with editor diagnostics.
 
 ---
 
 ## Decisions
 
-- None.
+- Treat the report framing as provisional only where later comparisons may still extend a section, not as if Q3-Q5 were still missing.
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. None.
+1. Refresh the framing again only if a new Q4 seq2seq comparison or Q5 GPT-2 comparison materially changes the report-wide narrative.

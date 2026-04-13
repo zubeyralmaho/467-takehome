@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:39"
+    "last_updated": "2026-04-13 21:43"
   },
   "areas": [
     {
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections are drafted from stable artifacts, and report/README.md documents the current artifact mapping; introduction and conclusion refreshes remain separate cleanup slices."
+      "notes": "A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q4/Q5 sections plus the introduction and conclusion are drafted from stable artifacts, and report/README.md documents the current artifact mapping; compilation still awaits a LaTeX toolchain."
     },
     {
       "key": "project_state_sync",
@@ -218,7 +218,7 @@
       "label": "Report introduction draft",
       "owner": "copilot-report-intro",
       "status": "review",
-      "notes": "report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope, current technical setup, and report organization based on the finished Q1/Q2 state"
+      "notes": "report/sections/introduction.tex and report/tables/introduction_task_overview.tex now describe the full five-task scope and current report organization, including drafted Q3/Q4/Q5 sections and provisional later extensions."
     },
     {
       "key": "q3_report_draft",
@@ -281,7 +281,7 @@
       "label": "Report conclusion draft",
       "owner": "copilot-report-conclusion",
       "status": "review",
-      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q5 findings while explicitly marking Q4 as unfinished and the conclusion as provisional"
+      "notes": "report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q4/Q5 findings, treating Q4 as a baseline-first section and the overall conclusion as provisional where later comparisons may still extend the report."
     },
     {
       "key": "q5_report_draft_refresh",
@@ -315,8 +315,15 @@
       "key": "report_framing_refresh",
       "label": "Report framing refresh",
       "owner": "copilot-report-refresh",
+      "status": "review",
+      "notes": "report/sections/introduction.tex and report/sections/conclusion.tex now reflect the drafted Q3/Q4/Q5 sections and the current report-wide baseline/comparison state."
+    },
+    {
+      "key": "report_bibliography_refresh",
+      "label": "Report bibliography refresh",
+      "owner": "copilot-report-bib",
       "status": "in_progress",
-      "notes": "Refreshing report/sections/introduction.tex and report/sections/conclusion.tex so they reflect the drafted Q3/Q4/Q5 sections and the current report state."
+      "notes": "Adding foundational dataset/model citations to the drafted report sections and populating report/references.bib without touching active modeling slices."
     }
   ],
   "priorities": [
@@ -687,6 +694,14 @@
         "scope": "Q4 report draft",
         "outcome": "The Q4 report section and a local BLEU/ChrF table now document the stable pretrained transformer baseline under outputs/q4/run_20260413_212828, and report/README.md now treats Q4 as drafted rather than empty.",
         "next": "Refresh sections/introduction.tex and sections/conclusion.tex for report-wide consistency, or compare the baseline against a later seq2seq+attention run.",
+        "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics."
+      },
+      {
+        "agent": "copilot-report-refresh",
+        "date": "2026-04-13",
+        "scope": "Report framing refresh",
+        "outcome": "The report introduction and conclusion now align with the drafted Q3/Q4/Q5 sections, including the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.",
+        "next": "Only revisit the top-level framing if later Q4 or Q5 comparisons materially change the report-wide conclusions.",
         "blocker": "No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics."
       }
     ]
@@ -1807,7 +1822,7 @@
       "name": "copilot-report-refresh",
       "date": "2026-04-13",
       "scope": "Refresh the report introduction and conclusion after the Q4 write-up",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-refresh",
       "related_area": "report_framing_refresh",
       "depends_on": [],
@@ -1815,8 +1830,36 @@
         "started": [
           "Claimed a narrow report-wide refresh slice after the Q4 section was drafted and the top-level framing became stale."
         ],
+        "in_progress": [],
+        "completed": [
+          "Re-read the drafted introduction, conclusion, Q4 section, and refreshed Q5 section to identify stale report-wide framing.",
+          "Updated report/sections/introduction.tex so the scope and organization now reflect drafted Q3/Q4/Q5 sections instead of placeholder language.",
+          "Updated report/sections/conclusion.tex so the project-level synthesis now includes the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.",
+          "Validated the refreshed introduction and conclusion with editor diagnostics."
+        ]
+      },
+      "decisions": [
+        "Treat the report framing as provisional only where later comparisons may still extend a section, not as if Q3-Q5 were still missing."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Refresh the framing again only if a new Q4 seq2seq comparison or Q5 GPT-2 comparison materially changes the report-wide narrative."
+      ]
+    },
+    {
+      "name": "copilot-report-bib",
+      "date": "2026-04-13",
+      "scope": "Add citations and populate the report bibliography",
+      "status": "in_progress",
+      "owner": "copilot-report-bib",
+      "related_area": "report_bibliography_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow bibliography-refresh slice after confirming that the report uses an empty references.bib file and no citation pass was active."
+        ],
         "in_progress": [
-          "Re-reading the introduction and conclusion to update the report framing around the current Q3/Q4/Q5 state."
+          "Adding stable citations to the drafted report sections and populating report/references.bib with the referenced works."
         ],
         "completed": []
       },

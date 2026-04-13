@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:39
+Last updated: 2026-04-13 21:43
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -293,4 +293,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q4 report draft
   Outcome: The Q4 report section and a local BLEU/ChrF table now document the stable pretrained transformer baseline under outputs/q4/run_20260413_212828, and report/README.md now treats Q4 as drafted rather than empty.
   Next: Refresh sections/introduction.tex and sections/conclusion.tex for report-wide consistency, or compare the baseline against a later seq2seq+attention run.
+  Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics.
+- Agent: copilot-report-refresh
+  Date: 2026-04-13
+  Scope: Report framing refresh
+  Outcome: The report introduction and conclusion now align with the drafted Q3/Q4/Q5 sections, including the Q4 transformer baseline and the matched Q5 trigram-versus-LSTM comparison.
+  Next: Only revisit the top-level framing if later Q4 or Q5 comparisons materially change the report-wide conclusions.
   Blocker: No LaTeX toolchain is installed locally, so validation is currently limited to file diagnostics.
