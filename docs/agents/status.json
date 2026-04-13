@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 14:47"
+    "last_updated": "2026-04-13 14:54"
   },
   "areas": [
     {
@@ -15,7 +15,7 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparisons, larger-budget neural runs, and final model comparison remain unclaimed"
+      "notes": "TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched smoke-test comparison artifacts are ready while preprocessing sweeps and larger-budget neural runs remain open"
     },
     {
       "key": "q2_named_entity_recognition",
@@ -113,7 +113,21 @@
       "label": "Q2 BERT experiment",
       "owner": "copilot-q2-bert",
       "status": "in_progress",
-      "notes": "Larger-budget BERT token-classification experiment slice on top of the completed Q2 BERT baseline path"
+      "notes": "A full-split 2-epoch BERT experiment is actively running under outputs/q2/run_20260413_144742; metrics and comparison analysis are pending when the run finishes"
+    },
+    {
+      "key": "q2_bilstm_crf_experiment",
+      "label": "Q2 BiLSTM-CRF experiment",
+      "owner": "copilot-q2-bilstm-crf-experiment",
+      "status": "in_progress",
+      "notes": "Larger-budget BiLSTM-CRF experiment claimed on top of the implemented Q2 neural baseline"
+    },
+    {
+      "key": "q1_model_comparison",
+      "label": "Q1 model comparison",
+      "owner": "copilot-q1-comparison",
+      "status": "review",
+      "notes": "Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice"
     }
   ],
   "priorities": [
@@ -220,6 +234,14 @@
         "scope": "Q2 BERT baseline",
         "outcome": "A self-contained Q2 BERT token-classification path now runs end to end and exports the same artifact set as the CRF baseline, but the capped smoke test collapsed to O-tag predictions",
         "next": "Run a larger-budget BERT experiment against outputs/q2/run_20260413_141702; if entity F1 stays at 0, claim a focused tuning slice for schedule, batch size, or label-alignment strategy",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-bert-experiment",
+        "date": "2026-04-13",
+        "scope": "Q2 BERT experiment",
+        "outcome": "A full-split 2-epoch BERT experiment is currently running on the completed Q2 BERT baseline path; the run directory already exists at outputs/q2/run_20260413_144742",
+        "next": "When metrics.json appears under outputs/q2/run_20260413_144742, compare the finished BERT results against outputs/q2/run_20260413_141702 and decide whether the slice can move to review or needs a focused tuning follow-up",
         "blocker": "None"
       }
     ]
@@ -526,7 +548,53 @@
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Execute the larger-budget BERT run and review whether entity-level F1 recovers from the smoke-test collapse"
+        "Watch outputs/q2/run_20260413_144742 for metrics.json and error_analysis.json, then compare the finished BERT run against outputs/q2/run_20260413_141702"
+      ]
+    },
+    {
+      "name": "copilot-q2-bilstm-crf-experiment",
+      "date": "2026-04-13",
+      "scope": "Run and evaluate a larger-budget Q2 BiLSTM-CRF experiment using the implemented neural baseline path",
+      "status": "in_progress",
+      "owner": "copilot-q2-bilstm-crf-experiment",
+      "related_area": "q2_bilstm_crf_experiment",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate experiment slice after the Q2 BiLSTM-CRF implementation was validated on a capped run"
+        ],
+        "in_progress": [
+          "Running a larger-budget BiLSTM-CRF experiment and comparing it against the full-data CRF baseline"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Execute the larger-budget BiLSTM-CRF run and compare its outputs against outputs/q2/run_20260413_141702"
+      ]
+    },
+    {
+      "name": "copilot-q1-comparison",
+      "date": "2026-04-13",
+      "scope": "Build matched Q1 smoke-test comparison artifacts for TF-IDF, BiLSTM, and DistilBERT",
+      "status": "in_progress",
+      "owner": "copilot-q1-comparison",
+      "related_area": "q1_model_comparison",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the tracker, current Q1 runs, and report expectations for comparison tables and figures"
+        ],
+        "in_progress": [
+          "Creating a matched 200/100 BiLSTM companion run and a reusable comparison artifact builder for Q1"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Run the matched BiLSTM smoke test, generate the Q1 comparison outputs, and validate the comparison figure plus table artifacts"
       ]
     }
   ]

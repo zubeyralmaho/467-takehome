@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 14:47
+Last updated: 2026-04-13 14:54
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -95,4 +95,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 BERT baseline
   Outcome: A self-contained Q2 BERT token-classification path now runs end to end and exports the same artifact set as the CRF baseline, but the capped smoke test collapsed to O-tag predictions
   Next: Run a larger-budget BERT experiment against outputs/q2/run_20260413_141702; if entity F1 stays at 0, claim a focused tuning slice for schedule, batch size, or label-alignment strategy
+  Blocker: None
+- Agent: copilot-q2-bert-experiment
+  Date: 2026-04-13
+  Scope: Q2 BERT experiment
+  Outcome: A full-split 2-epoch BERT experiment is currently running on the completed Q2 BERT baseline path; the run directory already exists at outputs/q2/run_20260413_144742
+  Next: When metrics.json appears under outputs/q2/run_20260413_144742, compare the finished BERT results against outputs/q2/run_20260413_141702 and decide whether the slice can move to review or needs a focused tuning follow-up
   Blocker: None

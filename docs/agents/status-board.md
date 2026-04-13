@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 14:47
+Last updated: 2026-04-13 14:54
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -11,7 +11,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Area | Owner | Status | Notes |
 |------|-------|--------|-------|
 | Shared infrastructure | unassigned | in_progress | Initial config, seed, dataset split, metrics, export scaffold, shared evaluator, and confusion-matrix visualization helper are implemented; trainer and broader visualization slices remain |
-| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; preprocessing comparisons, larger-budget neural runs, and final model comparison remain unclaimed |
+| Q1 Text Classification | unassigned | in_progress | TF-IDF, BiLSTM, and DistilBERT paths are implemented; matched smoke-test comparison artifacts are ready while preprocessing sweeps and larger-budget neural runs remain open |
 | Q2 Named Entity Recognition | unassigned | in_progress | The Q2 CRF baseline and a BERT smoke-test path are in place; BiLSTM-CRF remains unclaimed and larger-budget BERT training/comparison remain open |
 | Q3 Summarization | unassigned | todo | TextRank + BART/T5 |
 | Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
@@ -25,7 +25,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q2 BiLSTM-CRF baseline | copilot-q2-bilstm-crf | review | BiLSTM-CRF path is implemented and smoke-tested on a capped Q2 run; a larger-budget neural experiment is still needed before comparison against the CRF baseline |
 | Q2 BERT baseline | copilot-q2-bert | review | Self-contained BERT token-classification baseline implemented and smoke-tested on a capped CoNLL run; larger-budget training and anti-collapse tuning remain |
 | Q1 visualization | copilot-q1-visualization | review | Shared confusion-matrix figure export is implemented and validated on Q1; training curves and model-comparison figures remain separate visualization slices |
-| Q2 BERT experiment | copilot-q2-bert | in_progress | Larger-budget BERT token-classification experiment slice on top of the completed Q2 BERT baseline path |
+| Q2 BERT experiment | copilot-q2-bert | in_progress | A full-split 2-epoch BERT experiment is actively running under outputs/q2/run_20260413_144742; metrics and comparison analysis are pending when the run finishes |
+| Q2 BiLSTM-CRF experiment | copilot-q2-bilstm-crf-experiment | in_progress | Larger-budget BiLSTM-CRF experiment claimed on top of the implemented Q2 neural baseline |
+| Q1 model comparison | copilot-q1-comparison | review | Matched Q1 smoke-test comparison artifacts were generated under outputs/q1/run_20260413_145244; larger-budget comparison remains a separate slice |
 
 ---
 

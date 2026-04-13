@@ -296,6 +296,8 @@ outputs/q1/run_{timestamp}/
 |   |-- tfidf_svm_validation_confusion_matrix.csv
 |   |-- bilstm_validation_confusion_matrix.csv
 |   +-- distilbert_validation_confusion_matrix.csv
+|-- model_comparison.csv      # Optional aggregated comparison table
+|-- model_comparison.tex      # Optional LaTeX-ready comparison table
 |-- misclassification_analysis.json
 |-- figures/
 |   |-- confusion_matrix_*.png

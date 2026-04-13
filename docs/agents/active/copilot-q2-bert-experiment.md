@@ -1,6 +1,6 @@
 # Agent: copilot-q2-bert-experiment
 
-Last updated: 2026-04-13 14:47
+Last updated: 2026-04-13 14:54
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -53,4 +53,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Execute the larger-budget BERT run and review whether entity-level F1 recovers from the smoke-test collapse
+1. Watch outputs/q2/run_20260413_144742 for metrics.json and error_analysis.json, then compare the finished BERT run against outputs/q2/run_20260413_141702

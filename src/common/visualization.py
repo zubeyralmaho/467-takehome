@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -53,6 +54,46 @@ def plot_confusion_matrix(
                 va="center",
                 color="white" if value > threshold else "black",
             )
+
+    figure.tight_layout()
+    figure.savefig(destination, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_metric_comparison(
+    rows: Sequence[Mapping[str, Any]],
+    metric: str,
+    output_path: str | Path,
+    title: str | None = None,
+) -> None:
+    _require_matplotlib()
+
+    if not rows:
+        raise ValueError("At least one comparison row is required.")
+
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    labels = [str(row.get("display_name", row.get("model", "model"))) for row in rows]
+    values = [float(row[metric]) for row in rows]
+
+    figure, axis = plt.subplots(figsize=(8, 5))
+    bars = axis.bar(labels, values, color=["#1f77b4", "#4c78a8", "#72b7b2", "#f28e2b", "#e15759"][: len(rows)])
+
+    axis.set_ylim(0.0, max(max(values) * 1.15, 1.0))
+    axis.set_ylabel(metric.replace("_", " ").title())
+    axis.set_title(title or f"{metric.replace('_', ' ').title()} comparison")
+    axis.grid(axis="y", linestyle="--", linewidth=0.6, alpha=0.4)
+    axis.set_axisbelow(True)
+
+    for bar, value in zip(bars, values, strict=False):
+        axis.text(
+            bar.get_x() + bar.get_width() / 2,
+            value + 0.01,
+            f"{value:.3f}",
+            ha="center",
+            va="bottom",
+        )
 
     figure.tight_layout()
     figure.savefig(destination, dpi=180, bbox_inches="tight")

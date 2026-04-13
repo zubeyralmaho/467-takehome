@@ -77,6 +77,62 @@ def save_confusion_matrix_csv(confusion_matrix: Mapping[str, Any], path: str | P
             )
 
 
+def _latex_escape(value: object) -> str:
+    text = str(value)
+    replacements = {
+        "\\": "\\textbackslash{}",
+        "&": "\\&",
+        "%": "\\%",
+        "$": "\\$",
+        "#": "\\#",
+        "_": "\\_",
+        "{": "\\{",
+        "}": "\\}",
+        "~": "\\textasciitilde{}",
+        "^": "\\textasciicircum{}",
+    }
+    for source, target in replacements.items():
+        text = text.replace(source, target)
+    return text
+
+
+def generate_latex_table(
+    rows: Any,
+    columns: Iterable[str] | None = None,
+    caption: str | None = None,
+    label: str | None = None,
+) -> str:
+    if hasattr(rows, "to_dict"):
+        records = list(rows.to_dict("records"))
+    else:
+        records = list(rows)
+
+    if not records:
+        raise ValueError("At least one row is required to generate a LaTeX table.")
+
+    selected_columns = list(columns) if columns is not None else list(records[0].keys())
+    column_spec = "l" * len(selected_columns)
+
+    def _format_cell(value: object) -> str:
+        if isinstance(value, float):
+            return f"{value:.4f}"
+        return _latex_escape(value)
+
+    lines = ["\\begin{table}[htbp]", "\\centering", f"\\begin{{tabular}}{{{column_spec}}}", "\\hline"]
+    lines.append(" & ".join(_latex_escape(column) for column in selected_columns) + r" \\")
+    lines.append("\\hline")
+    for record in records:
+        lines.append(" & ".join(_format_cell(record.get(column, "")) for column in selected_columns) + r" \\")
+    lines.append("\\hline")
+    lines.append("\\end{tabular}")
+    if caption:
+        lines.append(f"\\caption{{{_latex_escape(caption)}}}")
+    if label:
+        lines.append(f"\\label{{{_latex_escape(label)}}}")
+    lines.append("\\end{table}")
+    return "\n".join(lines) + "\n"
+
+
 def save_config_copy(config: Config, run_dir: str | Path) -> None:
     config.save(Path(run_dir) / "config.yaml")
 
