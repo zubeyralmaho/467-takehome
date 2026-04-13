@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:03
+Last updated: 2026-04-13 15:04
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -113,4 +113,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q1 report summary
   Outcome: A report-ready Q1 smoke-test summary now exists with Markdown, JSON, and LaTeX outputs derived from the completed comparison and preprocessing artifacts
   Next: Use outputs/q1/run_20260413_150237 for interim reporting, then rerun the summary builder after larger-budget neural experiments complete
+  Blocker: None
+- Agent: copilot-q2-bert-experiment
+  Date: 2026-04-13
+  Scope: Q2 BERT experiment
+  Outcome: The larger-budget BERT run completed successfully and now stands as the strongest finished Q2 model, outperforming the full-data CRF baseline on both validation and test F1
+  Next: Treat outputs/q2/run_20260413_144742 as the Q2 BERT reference point for report tables and for comparison against the pending BiLSTM-CRF experiment artifacts
   Blocker: None

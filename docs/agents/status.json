@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:03"
+    "last_updated": "2026-04-13 15:04"
   },
   "areas": [
     {
@@ -22,7 +22,7 @@
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The Q2 CRF baseline and a BERT smoke-test path are in place; BiLSTM-CRF remains unclaimed and larger-budget BERT training/comparison remain open"
+      "notes": "The Q2 CRF baseline and larger-budget BERT comparison are complete with exported artifacts; the larger-budget BiLSTM-CRF comparison remains in progress"
     },
     {
       "key": "q3_summarization",
@@ -98,8 +98,8 @@
       "key": "q2_bert_baseline",
       "label": "Q2 BERT baseline",
       "owner": "copilot-q2-bert",
-      "status": "review",
-      "notes": "Self-contained BERT token-classification baseline implemented and smoke-tested on a capped CoNLL run; larger-budget training and anti-collapse tuning remain"
+      "status": "done",
+      "notes": "Self-contained BERT token-classification baseline is implemented and now validated by the larger-budget run under outputs/q2/run_20260413_144742"
     },
     {
       "key": "q1_visualization",
@@ -111,9 +111,9 @@
     {
       "key": "q2_bert_experiment",
       "label": "Q2 BERT experiment",
-      "owner": "copilot-q2-bert",
-      "status": "in_progress",
-      "notes": "A full-split 2-epoch BERT experiment is actively running under outputs/q2/run_20260413_144742; metrics and comparison analysis are pending when the run finishes"
+      "owner": "copilot-q2-bert-experiment",
+      "status": "done",
+      "notes": "Full-split 2-epoch BERT experiment completed under outputs/q2/run_20260413_144742 and outperformed the CRF baseline on validation/test F1 (0.9517/0.9062 vs 0.8765/0.7948)"
     },
     {
       "key": "q2_bilstm_crf_experiment",
@@ -272,6 +272,14 @@
         "scope": "Q1 report summary",
         "outcome": "A report-ready Q1 smoke-test summary now exists with Markdown, JSON, and LaTeX outputs derived from the completed comparison and preprocessing artifacts",
         "next": "Use outputs/q1/run_20260413_150237 for interim reporting, then rerun the summary builder after larger-budget neural experiments complete",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-bert-experiment",
+        "date": "2026-04-13",
+        "scope": "Q2 BERT experiment",
+        "outcome": "The larger-budget BERT run completed successfully and now stands as the strongest finished Q2 model, outperforming the full-data CRF baseline on both validation and test F1",
+        "next": "Treat outputs/q2/run_20260413_144742 as the Q2 BERT reference point for report tables and for comparison against the pending BiLSTM-CRF experiment artifacts",
         "blocker": "None"
       }
     ]
@@ -561,24 +569,27 @@
     {
       "name": "copilot-q2-bert-experiment",
       "date": "2026-04-13",
-      "scope": "Run and evaluate a larger-budget Q2 BERT token-classification experiment using the existing Q2 BERT baseline path",
-      "status": "in_progress",
-      "owner": "copilot-q2-bert",
+      "scope": "Q2 BERT experiment",
+      "status": "done",
+      "owner": "copilot-q2-bert-experiment",
       "related_area": "q2_bert_experiment",
       "depends_on": [],
       "summary": {
         "started": [
-          "Claimed a separate experiment slice after the Q2 BERT baseline smoke test entered review"
+          "Claimed a separate experiment slice after the Q2 BERT implementation was validated on a capped run"
         ],
-        "in_progress": [
-          "Running a larger-budget BERT experiment and comparing it against the stabilized Q2 CRF baseline"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Ran a full-split 2-epoch BERT experiment under outputs/q2/run_20260413_144742 and exported metrics, error analysis, and prediction CSV artifacts",
+          "BERT reached validation F1 0.9517 and test F1 0.9062, beating the CRF baseline at outputs/q2/run_20260413_141702 (validation F1 0.8765, test F1 0.7948)"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Closed the experiment slice without opening a tuning follow-up because the larger-budget run resolved the earlier capped-run O-tag collapse concern"
+      ],
       "blockers": [],
       "next_actions": [
-        "Watch outputs/q2/run_20260413_144742 for metrics.json and error_analysis.json, then compare the finished BERT run against outputs/q2/run_20260413_141702"
+        "Use outputs/q2/run_20260413_144742 as the current Q2 best-model reference and compare it against the in-progress BiLSTM-CRF larger-budget run when that slice finishes"
       ]
     },
     {
