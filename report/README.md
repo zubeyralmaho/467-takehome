@@ -102,7 +102,7 @@ pdflatex main.tex
 
 ## Suggested Next Steps
 
-- Finalize `sections/q1.tex` after the active larger-budget Q1 neural runs are summarized.
+- Replace the placeholder student ID in `main.tex` and do a final proofreading pass on the clean compiled PDF.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
 - Only reopen Q4 if a more budget-matched seq2seq rerun or transformer fine-tuning becomes necessary beyond the stronger current seq2seq reference artifact.
 - Only reopen `sections/q5.tex` if a larger matched rerun or actual GPT-style fine-tuning becomes necessary.

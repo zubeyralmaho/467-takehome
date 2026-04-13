@@ -98,3 +98,85 @@ def plot_metric_comparison(
     figure.tight_layout()
     figure.savefig(destination, dpi=180, bbox_inches="tight")
     plt.close(figure)
+
+
+def plot_grouped_metric_comparison(
+    rows: Sequence[Mapping[str, Any]],
+    metrics: Sequence[str],
+    output_path: str | Path,
+    title: str | None = None,
+    y_label: str | None = None,
+    metric_labels: Mapping[str, str] | None = None,
+    label_formats: Mapping[str, str] | None = None,
+    log_scale: bool = False,
+) -> None:
+    _require_matplotlib()
+
+    if not rows:
+        raise ValueError("At least one comparison row is required.")
+    if not metrics:
+        raise ValueError("At least one metric key is required.")
+
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    labels = [str(row.get("display_name", row.get("model", "model"))) for row in rows]
+    x_positions = list(range(len(labels)))
+    bar_width = 0.8 / len(metrics)
+    colors = ["#1f77b4", "#4c78a8", "#72b7b2", "#f28e2b", "#e15759"]
+
+    figure_width = max(8, len(labels) * 2.4)
+    figure, axis = plt.subplots(figsize=(figure_width, 5))
+
+    all_values = [float(row[metric]) for metric in metrics for row in rows]
+    positive_values = [value for value in all_values if value > 0]
+
+    for metric_index, metric in enumerate(metrics):
+        offsets = [
+            position - 0.4 + (bar_width / 2) + (metric_index * bar_width)
+            for position in x_positions
+        ]
+        values = [float(row[metric]) for row in rows]
+        bars = axis.bar(
+            offsets,
+            values,
+            width=bar_width,
+            label=(metric_labels or {}).get(metric, metric.replace("_", " ").title()),
+            color=colors[metric_index % len(colors)],
+        )
+
+        for bar, value in zip(bars, values, strict=False):
+            label_format = (label_formats or {}).get(metric, "{:.3f}")
+            if log_scale:
+                text_y = value * 1.08
+            else:
+                text_y = value + max(max(all_values) * 0.02, 0.01)
+            axis.text(
+                bar.get_x() + bar.get_width() / 2,
+                text_y,
+                label_format.format(value),
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+
+    axis.set_xticks(x_positions, labels=labels)
+    if any(len(label) > 14 for label in labels):
+        axis.tick_params(axis="x", labelrotation=10)
+
+    if log_scale:
+        axis.set_yscale("log")
+        if positive_values:
+            axis.set_ylim(min(positive_values) * 0.8, max(all_values) * 1.35)
+    else:
+        axis.set_ylim(0.0, max(max(all_values) * 1.18, 1.0))
+
+    axis.set_ylabel(y_label or "Score")
+    axis.set_title(title or "Metric comparison")
+    axis.grid(axis="y", linestyle="--", linewidth=0.6, alpha=0.4)
+    axis.set_axisbelow(True)
+    axis.legend()
+
+    figure.tight_layout()
+    figure.savefig(destination, dpi=180, bbox_inches="tight")
+    plt.close(figure)

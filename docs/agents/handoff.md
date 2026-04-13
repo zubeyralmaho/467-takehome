@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 23:20
+Last updated: 2026-04-13 23:53
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -14,17 +14,17 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 ## Pending Decisions
 
-- Dataset finalization for each question.
-- Exact experiment budget per task.
-- Whether optional GPT-2 fine-tuning will be included in Q5.
+- Whether to stop at the current clean compiled report or run optional larger-budget Q3/Q4/Q5 comparisons.
+- What final submission metadata should replace placeholders in report/main.tex before submission.
+- Whether optional GPT-style or other budget-aligned fine-tuning should be included beyond the current reference baselines.
 
 ---
 
 ## Next Recommended Actions
 
-1. Use outputs/q1/run_20260413_185011, outputs/q1/run_20260413_152558, and the finished preprocessing sweep while finalizing the Q1 report draft
-2. Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting; only reopen Q2 modeling if a focused tuning slice is justified
-3. Only claim new model-training work if a concrete comparison or report gap remains after consuming the finished Q1 and Q2 artifacts
+1. Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.
+2. Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.
+3. Keep docs/agents and report/README aligned with the current compiled report whenever future edits land.
 
 ---
 
@@ -389,4 +389,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Report layout regression cleanup
   Outcome: Removed the duplicated Q2 paragraph, tightened the remaining warning-producing report text, and restored a clean Tectonic build.
   Next: Only revisit layout if future report edits reintroduce overfull warnings or page-width regressions.
+  Blocker: None
+- Agent: copilot-report-state-sync
+  Date: 2026-04-13
+  Scope: Report state sync refresh
+  Outcome: Tracker priorities and report README next steps now match the current clean compiled report state instead of the earlier Q1/Q2 drafting phase.
+  Next: Use the clean compiled report as the baseline and only reopen coordination docs if later edits change the canonical artifacts or remaining tasks.
+  Blocker: None
+- Agent: copilot-tracker-refresh
+  Date: 2026-04-13
+  Scope: Tracker consistency refresh
+  Outcome: Closed the stale Q5 refresh states and synchronized the remaining Q5 tracker notes with the current three-model report state.
+  Next: Only revisit tracker consistency if future slices land without updating their review state or current artifact references.
   Blocker: None

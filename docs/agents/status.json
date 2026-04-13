@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 23:20"
+    "last_updated": "2026-04-13 23:53"
   },
   "areas": [
     {
@@ -15,14 +15,14 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts and a refreshed report summary; the remaining open work is report drafting"
+      "notes": "All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts, a refreshed report summary under outputs/q1/run_20260413_185011, and a drafted q1.tex section included in the clean compiled report; further Q1 work is optional tuning or proofreading."
     },
     {
       "key": "q2_named_entity_recognition",
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034"
+      "notes": "All three full-data Q2 runs are complete, BERT is the strongest finished model, a report-ready comparison summary exists under outputs/q2/run_20260413_151034, and q2.tex is included in the clean compiled report; further Q2 work is optional tuning or proofreading."
     },
     {
       "key": "q3_summarization",
@@ -43,7 +43,7 @@
       "label": "Q5 Language Modeling",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a practical distilgpt2 baseline under outputs/q5/run_20260413_213856 now exist; refreshed three-model Q5 summary artifacts are ready under outputs/q5/run_20260413_214837."
+      "notes": "The trigram, matched LSTM, and practical distilgpt2 baselines now exist, refreshed three-model Q5 summary artifacts are ready under outputs/q5/run_20260413_214837, and q5.tex is included in the clean compiled report; future Q5 work should focus only on larger matched reruns or transformer fine-tuning if needed."
     },
     {
       "key": "evaluation_and_analysis",
@@ -56,8 +56,8 @@
       "key": "report_preparation",
       "label": "Report preparation",
       "owner": "unassigned",
-      "status": "in_progress",
-      "notes": "The report compiles successfully with Tectonic and now produces a clean PDF build with no overfull-box warnings."
+      "status": "review",
+      "notes": "The report now compiles cleanly with Tectonic, all drafted sections align with stable artifacts, and the remaining work is final proofreading, submission metadata, or optional new experiments."
     },
     {
       "key": "project_state_sync",
@@ -246,7 +246,7 @@
       "label": "Q5 report summary",
       "owner": "copilot-q5-report",
       "status": "review",
-      "notes": "Baseline-only Q5 summary artifacts were generated under outputs/q5/run_20260413_211754 from the finished trigram n-gram run and include perplexity plus generation-analysis exports"
+      "notes": "Report-ready Q5 comparison artifacts now exist under outputs/q5/run_20260413_214837, covering the matched trigram, LSTM, and GPT-style runs with refreshed JSON, Markdown, and LaTeX outputs."
     },
     {
       "key": "q5_lstm_baseline",
@@ -260,7 +260,7 @@
       "label": "Q5 report draft",
       "owner": "copilot-q5-writeup",
       "status": "review",
-      "notes": "report/sections/q5.tex plus report/tables/q5_overall_results.tex now reflect the matched trigram-versus-LSTM comparison sourced from outputs/q5/run_20260413_212315, while the later smaller LSTM rerun remains a separate reference artifact."
+      "notes": "report/sections/q5.tex plus report/tables/q5_overall_results.tex now reflect the matched trigram-versus-LSTM-versus-GPT-style comparison sourced from outputs/q5/run_20260413_214837, while the later smaller LSTM rerun remains a separate reference artifact."
     },
     {
       "key": "q5_report_summary_refresh",
@@ -380,24 +380,52 @@
       "owner": "copilot-report-layout-refresh",
       "status": "review",
       "notes": "Removed the duplicated Q2 results sentence, tightened the remaining warning-producing report prose and tables, and revalidated a clean Tectonic build."
+    },
+    {
+      "key": "report_comparison_figures",
+      "label": "Report comparison figures",
+      "owner": "copilot-report-figures",
+      "status": "in_progress",
+      "notes": "Generating report-local Q3/Q4/Q5 comparison figures from the stable summary artifacts and wiring them into the final report without reopening model results."
+    },
+    {
+      "key": "report_state_sync_refresh",
+      "label": "Report state sync refresh",
+      "owner": "copilot-report-state-sync",
+      "status": "review",
+      "notes": "Tracker priorities, handoff guidance, and report README next steps now reflect the current clean compiled report and the settled canonical Q1/Q4/Q5 artifact paths."
+    },
+    {
+      "key": "tracker_consistency_refresh",
+      "label": "Tracker consistency refresh",
+      "owner": "copilot-tracker-refresh",
+      "status": "review",
+      "notes": "Closed stale Q5 refresh states and synchronized the remaining tracker metadata with the current clean report and finished comparison artifacts."
+    },
+    {
+      "key": "report_proofread_pass",
+      "label": "Report proofread pass",
+      "owner": "copilot-report-proofread",
+      "status": "in_progress",
+      "notes": "Reviewing the clean compiled PDF for obvious submission issues beyond the known placeholder student ID, without overlapping active figure-generation work."
     }
   ],
   "priorities": [
-    "Use the finished larger-budget Q1 artifacts and refreshed summary to complete the Q1 report prose, tables, and figures.",
-    "Use the finished Q2 artifacts and the new report scaffold to turn Q2 into final report prose, tables, and figures.",
-    "Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations."
+    "Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.",
+    "Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.",
+    "Keep docs/agents and report/README aligned with the current compiled report whenever future edits land."
   ],
   "handoff": {
     "current_blockers": [],
     "pending_decisions": [
-      "Dataset finalization for each question.",
-      "Exact experiment budget per task.",
-      "Whether optional GPT-2 fine-tuning will be included in Q5."
+      "Whether to stop at the current clean compiled report or run optional larger-budget Q3/Q4/Q5 comparisons.",
+      "What final submission metadata should replace placeholders in report/main.tex before submission.",
+      "Whether optional GPT-style or other budget-aligned fine-tuning should be included beyond the current reference baselines."
     ],
     "next_recommended_actions": [
-      "Use outputs/q1/run_20260413_185011, outputs/q1/run_20260413_152558, and the finished preprocessing sweep while finalizing the Q1 report draft",
-      "Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting; only reopen Q2 modeling if a focused tuning slice is justified",
-      "Only claim new model-training work if a concrete comparison or report gap remains after consuming the finished Q1 and Q2 artifacts"
+      "Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.",
+      "Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.",
+      "Keep docs/agents and report/README aligned with the current compiled report whenever future edits land."
     ],
     "entries": [
       {
@@ -878,6 +906,22 @@
         "scope": "Report layout regression cleanup",
         "outcome": "Removed the duplicated Q2 paragraph, tightened the remaining warning-producing report text, and restored a clean Tectonic build.",
         "next": "Only revisit layout if future report edits reintroduce overfull warnings or page-width regressions.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-state-sync",
+        "date": "2026-04-13",
+        "scope": "Report state sync refresh",
+        "outcome": "Tracker priorities and report README next steps now match the current clean compiled report state instead of the earlier Q1/Q2 drafting phase.",
+        "next": "Use the clean compiled report as the baseline and only reopen coordination docs if later edits change the canonical artifacts or remaining tasks.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-tracker-refresh",
+        "date": "2026-04-13",
+        "scope": "Tracker consistency refresh",
+        "outcome": "Closed the stale Q5 refresh states and synchronized the remaining Q5 tracker notes with the current three-model report state.",
+        "next": "Only revisit tracker consistency if future slices land without updating their review state or current artifact references.",
         "blocker": "None"
       }
     ]
@@ -2085,7 +2129,7 @@
       "name": "copilot-q5-summary-gpt2-refresh",
       "date": "2026-04-13",
       "scope": "Refresh Q5 summary artifacts to include the GPT-style baseline",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q5-summary-gpt2-refresh",
       "related_area": "q5_report_summary_refresh",
       "depends_on": [],
@@ -2093,10 +2137,10 @@
         "started": [
           "Picked up the explicit Q5 summary-refresh handoff once a matched GPT-style baseline became available."
         ],
-        "in_progress": [
-          "Updating scripts/q5_report_summary.py and generating a new comparison artifact with trigram, LSTM, and GPT-style runs."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Updated scripts/q5_report_summary.py and generated outputs/q5/run_20260413_214837 with refreshed JSON, Markdown, and LaTeX comparison artifacts for the matched trigram, LSTM, and GPT-style runs."
+        ]
       },
       "decisions": [
         "Keep the refreshed Q5 summary on the matched 3000/400/400 budget so all three models remain directly comparable."
@@ -2108,7 +2152,7 @@
       "name": "copilot-q5-writeup-gpt2-refresh",
       "date": "2026-04-13",
       "scope": "Refresh the Q5 report draft to include the GPT-style baseline",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q5-writeup-gpt2-refresh",
       "related_area": "q5_report_draft_refresh",
       "depends_on": [],
@@ -2116,10 +2160,10 @@
         "started": [
           "Picked up the explicit Q5 write-up refresh handoff once a matched GPT-style baseline became available."
         ],
-        "in_progress": [
-          "Updating q5.tex, the local Q5 table, and report/README.md from the refreshed three-model comparison artifact."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Updated report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md from the refreshed three-model comparison artifact under outputs/q5/run_20260413_214837."
+        ]
       },
       "decisions": [
         "Keep the Q5 report refresh tied to the matched trigram/LSTM/GPT-style comparison rather than mixing in the later smaller LSTM rerun."
@@ -2343,6 +2387,100 @@
       "next_actions": [
         "Only reopen report layout work if later content edits reintroduce build warnings or table-width regressions."
       ]
+    },
+    {
+      "name": "copilot-report-figures",
+      "date": "2026-04-13",
+      "scope": "Add report-local comparison figures for Q3, Q4, and Q5",
+      "status": "in_progress",
+      "owner": "copilot-report-figures",
+      "related_area": "report_comparison_figures",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed the unowned report-visualization slice after confirming that report/figures/q3, q4, and q5 were still empty despite stable summary artifacts and drafted report sections."
+        ],
+        "in_progress": [
+          "Adding reproducible report-local figures for Q3, Q4, and Q5 from the approved summary artifacts, then validating them in the compiled PDF."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Implement the figure generator, render the assets into report/figures, update the LaTeX sections to include them, and rebuild the report."
+      ]
+    },
+    {
+      "name": "copilot-report-state-sync",
+      "date": "2026-04-13",
+      "scope": "Refresh stale report and tracker next-step guidance",
+      "status": "review",
+      "owner": "copilot-report-state-sync",
+      "related_area": "report_state_sync_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow coordination slice after confirming that the main remaining drift is in stale priorities, handoff guidance, and top-level question notes rather than experiment content."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Updated the top-level question/report notes and handoff guidance so they reflect the clean compiled report rather than older Q1/Q2 drafting assumptions.",
+          "Refreshed the status priorities and report/README suggested next steps to focus on final proofreading, submission metadata, and optional future reruns only."
+        ]
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Only revisit coordination docs if future report edits or new experiments change the canonical artifact set or the recommended next steps."
+      ]
+    },
+    {
+      "name": "copilot-tracker-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh stale coordination metadata after report stabilization",
+      "status": "review",
+      "owner": "copilot-tracker-refresh",
+      "related_area": "tracker_consistency_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow tracker-consistency slice after the report, Q4, and Q5 artifacts stabilized but docs/agents still contained stale in-progress states and outdated next-step guidance."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Updated the stale Q5 report-summary and Q5 report-draft area notes so they now point to the current three-model comparison state.",
+          "Moved the stale Q5 GPT-style summary and write-up refresh agents from in_progress to review with completed summaries that match the landed artifacts."
+        ]
+      },
+      "decisions": [
+        "Keep this slice coordination-only and avoid reopening finished modeling or report-writing work."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only reopen tracker cleanup if later slices land without closing their in-progress state or if the top-level handoff drifts again."
+      ]
+    },
+    {
+      "name": "copilot-report-proofread",
+      "date": "2026-04-13",
+      "scope": "Proofread the clean compiled report PDF for obvious issues",
+      "status": "in_progress",
+      "owner": "copilot-report-proofread",
+      "related_area": "report_proofread_pass",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow proofread slice after the report compiled cleanly and the remaining top-level work narrowed to proofreading and submission metadata."
+        ],
+        "in_progress": [
+          "Extracting the compiled PDF text and scanning for obvious issues that survive compilation, such as placeholders or repeated/garbled passages."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": []
     }
   ]
 }

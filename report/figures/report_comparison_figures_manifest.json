@@ -1,0 +1,12 @@
+{
+  "sources": {
+    "q3": "/Users/zybo/467-takehome/outputs/q3/run_20260413_192426/metrics.json",
+    "q4": "/Users/zybo/467-takehome/outputs/q4/run_20260413_231508/q4_report_summary.json",
+    "q5": "/Users/zybo/467-takehome/outputs/q5/run_20260413_214837/q5_report_summary.json"
+  },
+  "outputs": {
+    "q3": "/Users/zybo/467-takehome/report/figures/q3/test_metric_comparison.png",
+    "q4": "/Users/zybo/467-takehome/report/figures/q4/test_metric_comparison.png",
+    "q5": "/Users/zybo/467-takehome/report/figures/q5/perplexity_comparison.png"
+  }
+}

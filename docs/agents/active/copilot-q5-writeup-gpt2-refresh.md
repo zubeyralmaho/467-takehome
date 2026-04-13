@@ -1,6 +1,6 @@
 # Agent: copilot-q5-writeup-gpt2-refresh
 
-Last updated: 2026-04-13 23:20
+Last updated: 2026-04-13 23:53
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q5-writeup-gpt2-refresh
 - Related area: q5_report_draft_refresh
 - Depends on: -
@@ -31,11 +31,11 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Updating q5.tex, the local Q5 table, and report/README.md from the refreshed three-model comparison artifact.
+- None.
 
 ### Completed
 
-- None.
+- Updated report/sections/q5.tex, report/tables/q5_overall_results.tex, and report/README.md from the refreshed three-model comparison artifact under outputs/q5/run_20260413_214837.
 
 ---
 
