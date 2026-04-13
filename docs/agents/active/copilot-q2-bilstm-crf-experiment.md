@@ -1,6 +1,6 @@
 # Agent: copilot-q2-bilstm-crf-experiment
 
-Last updated: 2026-04-13 15:04
+Last updated: 2026-04-13 15:05
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: done
 - Owner: copilot-q2-bilstm-crf-experiment
 - Related area: q2_bilstm_crf_experiment
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Running a larger-budget BiLSTM-CRF experiment and comparing it against the full-data CRF baseline
+- None.
 
 ### Completed
 
-- None.
+- Ran the full-config Q2 BiLSTM-CRF experiment with final evaluation enabled on tomaarsen/conll2003
+- Exported metrics, error analysis, and prediction CSVs under outputs/q2/run_20260413_144913
+- Observed validation precision 0.829, recall 0.763, F1 0.794, accuracy 0.957 and test precision 0.767, recall 0.668, F1 0.714, accuracy 0.937
 
 ---
 
 ## Decisions
 
-- None.
+- The full-data BiLSTM-CRF run improves drastically over the capped smoke test but still trails the CRF baseline by roughly 0.08 F1 on both validation and test
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Execute the larger-budget BiLSTM-CRF run and compare its outputs against outputs/q2/run_20260413_141702
+1. Claim Q2 BERT as the next slice, or claim a focused BiLSTM-CRF tuning slice if the recurrent model still needs improvement

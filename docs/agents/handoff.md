@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:04
+Last updated: 2026-04-13 15:05
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -24,7 +24,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 1. Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs
 2. Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized
-3. Claim BiLSTM-CRF or BERT as the next Q2 slice using outputs/q2/run_20260413_141702 as the baseline
+3. Finish the in-progress BiLSTM-CRF experiment and compare its artifacts directly against outputs/q2/run_20260413_144742 and outputs/q2/run_20260413_141702
 
 ---
 
@@ -119,4 +119,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q2 BERT experiment
   Outcome: The larger-budget BERT run completed successfully and now stands as the strongest finished Q2 model, outperforming the full-data CRF baseline on both validation and test F1
   Next: Treat outputs/q2/run_20260413_144742 as the Q2 BERT reference point for report tables and for comparison against the pending BiLSTM-CRF experiment artifacts
+  Blocker: None
+- Agent: copilot-q2-bilstm-crf-experiment
+  Date: 2026-04-13
+  Scope: Q2 BiLSTM-CRF experiment
+  Outcome: Full-data BiLSTM-CRF experiment completed with exported validation/test artifacts and a usable neural comparison point
+  Next: Claim Q2 BERT as the next slice, or claim a focused BiLSTM-CRF tuning slice if recurrent modeling still needs improvement
   Blocker: None

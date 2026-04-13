@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:04"
+    "last_updated": "2026-04-13 15:05"
   },
   "areas": [
     {
@@ -22,7 +22,7 @@
       "label": "Q2 Named Entity Recognition",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "The Q2 CRF baseline and larger-budget BERT comparison are complete with exported artifacts; the larger-budget BiLSTM-CRF comparison remains in progress"
+      "notes": "CRF and BiLSTM-CRF full-data runs are complete; the BiLSTM-CRF model is a valid neural baseline but still trails CRF, and BERT remains unclaimed"
     },
     {
       "key": "q3_summarization",
@@ -91,8 +91,8 @@
       "key": "q2_bilstm_crf_baseline",
       "label": "Q2 BiLSTM-CRF baseline",
       "owner": "copilot-q2-bilstm-crf",
-      "status": "review",
-      "notes": "BiLSTM-CRF path is implemented and smoke-tested on a capped Q2 run; a larger-budget neural experiment is still needed before comparison against the CRF baseline"
+      "status": "done",
+      "notes": "BiLSTM-CRF path is implemented and validated by the full-data run under outputs/q2/run_20260413_144913; any further optimization is a separate slice"
     },
     {
       "key": "q2_bert_baseline",
@@ -119,8 +119,8 @@
       "key": "q2_bilstm_crf_experiment",
       "label": "Q2 BiLSTM-CRF experiment",
       "owner": "copilot-q2-bilstm-crf-experiment",
-      "status": "in_progress",
-      "notes": "Larger-budget BiLSTM-CRF experiment claimed on top of the implemented Q2 neural baseline"
+      "status": "done",
+      "notes": "Full-split BiLSTM-CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_144913; current test F1 0.714 trails the CRF baseline"
     },
     {
       "key": "q1_model_comparison",
@@ -146,7 +146,7 @@
   ],
   "priorities": [
     "Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.",
-    "Claim the next Q2 neural slice against the stabilized CRF baseline.",
+    "Finish the remaining larger-budget Q2 BiLSTM-CRF experiment and compare it against the stabilized CRF and BERT baselines.",
     "Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations."
   ],
   "handoff": {
@@ -159,7 +159,7 @@
     "next_recommended_actions": [
       "Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs",
       "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
-      "Claim BiLSTM-CRF or BERT as the next Q2 slice using outputs/q2/run_20260413_141702 as the baseline"
+      "Finish the in-progress BiLSTM-CRF experiment and compare its artifacts directly against outputs/q2/run_20260413_144742 and outputs/q2/run_20260413_141702"
     ],
     "entries": [
       {
@@ -280,6 +280,14 @@
         "scope": "Q2 BERT experiment",
         "outcome": "The larger-budget BERT run completed successfully and now stands as the strongest finished Q2 model, outperforming the full-data CRF baseline on both validation and test F1",
         "next": "Treat outputs/q2/run_20260413_144742 as the Q2 BERT reference point for report tables and for comparison against the pending BiLSTM-CRF experiment artifacts",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-bilstm-crf-experiment",
+        "date": "2026-04-13",
+        "scope": "Q2 BiLSTM-CRF experiment",
+        "outcome": "Full-data BiLSTM-CRF experiment completed with exported validation/test artifacts and a usable neural comparison point",
+        "next": "Claim Q2 BERT as the next slice, or claim a focused BiLSTM-CRF tuning slice if recurrent modeling still needs improvement",
         "blocker": "None"
       }
     ]
@@ -487,7 +495,7 @@
       "name": "copilot-q2-bilstm-crf",
       "date": "2026-04-13",
       "scope": "Implement and validate a self-contained Q2 BiLSTM-CRF baseline using the existing CoNLL data and Q2 evaluation/export flow",
-      "status": "review",
+      "status": "done",
       "owner": "copilot-q2-bilstm-crf",
       "related_area": "q2_bilstm_crf_baseline",
       "depends_on": [],
@@ -499,7 +507,8 @@
         "completed": [
           "Added an opt-in Q2 BiLSTM-CRF model path with token vocabulary building, padded sequence batching, neural CRF decoding, and early-stopping support on the existing CoNLL data/evaluation scaffold",
           "Added the pytorch-crf dependency, exposed BiLSTM-CRF hyperparameters in configs/q2.yaml, and extended environment export to record the CRF-layer package version",
-          "Validated a capped BiLSTM-CRF-only final-eval run on Q2 and confirmed metrics, prediction CSVs, and error analysis under outputs/q2/run_20260413_142615"
+          "Validated a capped BiLSTM-CRF-only final-eval run on Q2 and confirmed metrics, prediction CSVs, and error analysis under outputs/q2/run_20260413_142615",
+          "Validated the BiLSTM-CRF implementation on the full-data experiment under outputs/q2/run_20260413_144913, confirming the neural path runs end to end beyond the capped smoke test"
         ]
       },
       "decisions": [
@@ -507,7 +516,7 @@
       ],
       "blockers": [],
       "next_actions": [
-        "Run a larger-budget BiLSTM-CRF experiment and compare it directly against outputs/q2/run_20260413_141702; revisit optimization only if the larger run still collapses toward O-heavy tagging"
+        "Use the implemented BiLSTM-CRF path for future comparison or tuning work; any optimization should be claimed as a separate slice"
       ]
     },
     {
@@ -596,7 +605,7 @@
       "name": "copilot-q2-bilstm-crf-experiment",
       "date": "2026-04-13",
       "scope": "Run and evaluate a larger-budget Q2 BiLSTM-CRF experiment using the implemented neural baseline path",
-      "status": "in_progress",
+      "status": "done",
       "owner": "copilot-q2-bilstm-crf-experiment",
       "related_area": "q2_bilstm_crf_experiment",
       "depends_on": [],
@@ -604,15 +613,19 @@
         "started": [
           "Claimed a separate experiment slice after the Q2 BiLSTM-CRF implementation was validated on a capped run"
         ],
-        "in_progress": [
-          "Running a larger-budget BiLSTM-CRF experiment and comparing it against the full-data CRF baseline"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Ran the full-config Q2 BiLSTM-CRF experiment with final evaluation enabled on tomaarsen/conll2003",
+          "Exported metrics, error analysis, and prediction CSVs under outputs/q2/run_20260413_144913",
+          "Observed validation precision 0.829, recall 0.763, F1 0.794, accuracy 0.957 and test precision 0.767, recall 0.668, F1 0.714, accuracy 0.937"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "The full-data BiLSTM-CRF run improves drastically over the capped smoke test but still trails the CRF baseline by roughly 0.08 F1 on both validation and test"
+      ],
       "blockers": [],
       "next_actions": [
-        "Execute the larger-budget BiLSTM-CRF run and compare its outputs against outputs/q2/run_20260413_141702"
+        "Claim Q2 BERT as the next slice, or claim a focused BiLSTM-CRF tuning slice if the recurrent model still needs improvement"
       ]
     },
     {

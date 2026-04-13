@@ -1,6 +1,6 @@
 # Agent: copilot-q2-bilstm-crf
 
-Last updated: 2026-04-13 15:04
+Last updated: 2026-04-13 15:05
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: review
+- Status: done
 - Owner: copilot-q2-bilstm-crf
 - Related area: q2_bilstm_crf_baseline
 - Depends on: -
@@ -38,6 +38,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 - Added an opt-in Q2 BiLSTM-CRF model path with token vocabulary building, padded sequence batching, neural CRF decoding, and early-stopping support on the existing CoNLL data/evaluation scaffold
 - Added the pytorch-crf dependency, exposed BiLSTM-CRF hyperparameters in configs/q2.yaml, and extended environment export to record the CRF-layer package version
 - Validated a capped BiLSTM-CRF-only final-eval run on Q2 and confirmed metrics, prediction CSVs, and error analysis under outputs/q2/run_20260413_142615
+- Validated the BiLSTM-CRF implementation on the full-data experiment under outputs/q2/run_20260413_144913, confirming the neural path runs end to end beyond the capped smoke test
 
 ---
 
@@ -55,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Run a larger-budget BiLSTM-CRF experiment and compare it directly against outputs/q2/run_20260413_141702; revisit optimization only if the larger run still collapses toward O-heavy tagging
+1. Use the implemented BiLSTM-CRF path for future comparison or tuning work; any optimization should be claimed as a separate slice
