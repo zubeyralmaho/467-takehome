@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 23:55
+Last updated: 2026-04-13 23:57
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -15,14 +15,13 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 ## Pending Decisions
 
 - Whether to stop at the current clean compiled report or run optional larger-budget Q3/Q4/Q5 comparisons.
-- What final submission metadata should replace placeholders in report/main.tex before submission.
 - Whether optional GPT-style or other budget-aligned fine-tuning should be included beyond the current reference baselines.
 
 ---
 
 ## Next Recommended Actions
 
-1. Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.
+1. Do a final manual proofreading pass on the current compiled PDF before submission.
 2. Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.
 3. Keep docs/agents and report/README aligned with the current compiled report whenever future edits land.
 
@@ -414,3 +413,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: The clean compiled report appears structurally sound; the only concrete remaining submission issue found in the proofread pass is the placeholder student ID.
   Next: Provide the real student ID, update report/main.tex, and rerun Tectonic to refresh the final PDF.
   Blocker: The final student ID is not present in the workspace or memories.
+- Agent: copilot-report-metadata
+  Date: 2026-04-13
+  Scope: Report submission metadata
+  Outcome: The placeholder student ID has been replaced in report/main.tex and the compiled PDF now shows the final student ID on the title page.
+  Next: Use the rebuilt PDF as the submission baseline and only revisit the front matter if additional metadata changes are still required.
+  Blocker: None

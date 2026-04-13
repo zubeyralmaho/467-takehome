@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 23:55
+Last updated: 2026-04-13 23:57
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -66,15 +66,15 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report layout regression cleanup | copilot-report-layout-refresh | review | Removed the duplicated Q2 results sentence, tightened the remaining warning-producing report prose and tables, and revalidated a clean Tectonic build. |
 | Report comparison figures | copilot-report-figures | review | Added a reproducible figure generator for Q3/Q4/Q5, rendered report-local comparison figures from the stable summary artifacts, wired them into the drafted sections, and revalidated a clean Tectonic build. |
 | Report state sync refresh | copilot-report-state-sync | review | Tracker priorities, handoff guidance, and report README next steps now reflect the current clean compiled report and the settled canonical Q1/Q4/Q5 artifact paths. |
-| Tracker consistency refresh | copilot-tracker-refresh | review | Closed stale Q5 refresh states and synchronized the remaining tracker metadata with the current clean report and finished comparison artifacts. |
-| Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems beyond the remaining placeholder student ID in report/main.tex. |
-| Report submission metadata | copilot-report-metadata | in_progress | Replacing the placeholder student ID in report/main.tex, rebuilding the PDF, and refreshing any stale submission-metadata guidance. |
+| Tracker consistency refresh | copilot-tracker-refresh | review | Stale Q5 refresh states, top-level priorities, and handoff guidance were refreshed so docs/agents now matches the current clean-build report state and canonical comparison artifacts. |
+| Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems, and the title-page student ID placeholder has now been replaced in both source and compiled output. |
+| Report submission metadata | copilot-report-metadata | review | report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic. |
 
 ---
 
 ## Current Priorities
 
-1. Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.
+1. Do a final manual proofreading pass on the clean compiled PDF before submission.
 2. Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.
 3. Keep docs/agents and report/README aligned with the current compiled report whenever future edits land.
 

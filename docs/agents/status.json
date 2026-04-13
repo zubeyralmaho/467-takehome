@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 23:55"
+    "last_updated": "2026-04-13 23:57"
   },
   "areas": [
     {
@@ -400,25 +400,25 @@
       "label": "Tracker consistency refresh",
       "owner": "copilot-tracker-refresh",
       "status": "review",
-      "notes": "Closed stale Q5 refresh states and synchronized the remaining tracker metadata with the current clean report and finished comparison artifacts."
+      "notes": "Stale Q5 refresh states, top-level priorities, and handoff guidance were refreshed so docs/agents now matches the current clean-build report state and canonical comparison artifacts."
     },
     {
       "key": "report_proofread_pass",
       "label": "Report proofread pass",
       "owner": "copilot-report-proofread",
       "status": "review",
-      "notes": "A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems beyond the remaining placeholder student ID in report/main.tex."
+      "notes": "A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems, and the title-page student ID placeholder has now been replaced in both source and compiled output."
     },
     {
       "key": "report_submission_metadata",
       "label": "Report submission metadata",
       "owner": "copilot-report-metadata",
-      "status": "in_progress",
-      "notes": "Replacing the placeholder student ID in report/main.tex, rebuilding the PDF, and refreshing any stale submission-metadata guidance."
+      "status": "review",
+      "notes": "report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic."
     }
   ],
   "priorities": [
-    "Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.",
+    "Do a final manual proofreading pass on the clean compiled PDF before submission.",
     "Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.",
     "Keep docs/agents and report/README aligned with the current compiled report whenever future edits land."
   ],
@@ -426,11 +426,10 @@
     "current_blockers": [],
     "pending_decisions": [
       "Whether to stop at the current clean compiled report or run optional larger-budget Q3/Q4/Q5 comparisons.",
-      "What final submission metadata should replace placeholders in report/main.tex before submission.",
       "Whether optional GPT-style or other budget-aligned fine-tuning should be included beyond the current reference baselines."
     ],
     "next_recommended_actions": [
-      "Replace placeholder submission metadata in report/main.tex and do a final proofreading pass on the clean compiled PDF.",
+      "Do a final manual proofreading pass on the current compiled PDF before submission.",
       "Only reopen Q3, Q4, or Q5 if stronger budget-aligned evidence is actually required for the final submission.",
       "Keep docs/agents and report/README aligned with the current compiled report whenever future edits land."
     ],
@@ -946,6 +945,14 @@
         "outcome": "The clean compiled report appears structurally sound; the only concrete remaining submission issue found in the proofread pass is the placeholder student ID.",
         "next": "Provide the real student ID, update report/main.tex, and rerun Tectonic to refresh the final PDF.",
         "blocker": "The final student ID is not present in the workspace or memories."
+      },
+      {
+        "agent": "copilot-report-metadata",
+        "date": "2026-04-13",
+        "scope": "Report submission metadata",
+        "outcome": "The placeholder student ID has been replaced in report/main.tex and the compiled PDF now shows the final student ID on the title page.",
+        "next": "Use the rebuilt PDF as the submission baseline and only revisit the front matter if additional metadata changes are still required.",
+        "blocker": "None"
       }
     ]
   },
@@ -2477,8 +2484,8 @@
         ],
         "in_progress": [],
         "completed": [
-          "Updated the stale Q5 report-summary and Q5 report-draft area notes so they now point to the current three-model comparison state.",
-          "Moved the stale Q5 GPT-style summary and write-up refresh agents from in_progress to review with completed summaries that match the landed artifacts."
+          "Updated stale coordination guidance so the top-level priorities and handoff recommendations now match the current clean compiled report state.",
+          "Cleared the stale in-progress tracker state after the coordination refresh was effectively completed by the newer state-sync pass."
         ]
       },
       "decisions": [
@@ -2486,7 +2493,7 @@
       ],
       "blockers": [],
       "next_actions": [
-        "Only reopen tracker cleanup if later slices land without closing their in-progress state or if the top-level handoff drifts again."
+        "Only reopen tracker-consistency work if future report edits or new experiments create a fresh mismatch between docs/agents and the canonical report artifacts."
       ]
     },
     {
@@ -2519,7 +2526,7 @@
       "name": "copilot-report-metadata",
       "date": "2026-04-13",
       "scope": "Replace placeholder submission metadata and refresh the final PDF",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-report-metadata",
       "related_area": "report_submission_metadata",
       "depends_on": [],
@@ -2527,14 +2534,21 @@
         "started": [
           "Claimed a narrow submission-metadata slice after the final student ID was provided and the remaining concrete report issue became actionable."
         ],
-        "in_progress": [
-          "Updating report/main.tex with the final student ID, rebuilding the PDF, and clearing stale placeholder-metadata guidance."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Updated report/main.tex with the final student ID provided by the user.",
+          "Refreshed report/README.md so its suggested next steps no longer mention the placeholder submission metadata.",
+          "Rebuilt report/main.pdf successfully with Tectonic and verified that the title page now shows the final student ID.",
+          "Confirmed that report/main.tex and report/README.md remain error-free after the metadata update."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Limit this slice to the remaining concrete submission metadata fix and its immediate documentation fallout rather than reopening broader report prose."
+      ],
       "blockers": [],
-      "next_actions": []
+      "next_actions": [
+        "Only revisit submission metadata if the author name, date, or other final front-matter details still need to change before submission."
+      ]
     }
   ]
 }
