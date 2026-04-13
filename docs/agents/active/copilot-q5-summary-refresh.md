@@ -1,6 +1,6 @@
 # Agent: copilot-q5-summary-refresh
 
-Last updated: 2026-04-13 21:21
+Last updated: 2026-04-13 21:29
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q5-summary-refresh
 - Related area: q5_report_summary_refresh
 - Depends on: -
@@ -31,17 +31,19 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Update scripts/q5_report_summary.py so it can summarize the finished Q5 comparison rather than only the trigram baseline, then generate a refreshed output run.
+- None.
 
 ### Completed
 
-- None.
+- Generalized scripts/q5_report_summary.py so it can summarize one or more finished Q5 runs instead of only the original trigram baseline.
+- Added a consistency check so direct Q5 comparison summaries fail fast when candidate runs do not share the same split sizes, token counts, and dataset source.
+- Generated refreshed Q5 comparison summary artifacts under outputs/q5/run_20260413_212315 from the matched trigram and LSTM runs at outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945.
 
 ---
 
 ## Decisions
 
-- Keep this slice artifact-only and do not edit report/sections/q5.tex; a later write-up slice can consume the refreshed summary.
+- Use the matched 3000/400/400 trigram and LSTM pair for the direct Q5 comparison summary, while leaving the later smaller LSTM rerun as a separate reference rather than mixing budgets inside one artifact.
 
 ---
 
@@ -53,4 +55,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Generalize the Q5 summary builder to compare the n-gram and LSTM runs, validate it, and export a refreshed report-ready summary artifact.
+1. Claim a Q5 report-draft refresh slice if Question 5 write-up should now include the LSTM-versus-trigram comparison, or add GPT-2 only if a transformer baseline is still required.

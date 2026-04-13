@@ -1,3 +1,33 @@
 \section{Question 5: Language Modeling}
 
-Question 5 has not been drafted yet. The final section will summarize the n-gram, LSTM, and optional GPT-style language-modeling results when those runs are complete.
+\subsection{Dataset Description}
+
+Question 5 uses a capped WikiText-2 setup drawn from the raw \texttt{wikitext-2-raw-v1} split. The matched comparison artifact evaluates 3{,}000 training lines, 400 validation lines, and 400 test lines, which correspond to 258{,}079, 32{,}527, and 35{,}059 tokens after preprocessing. This budget is still much smaller than a full language-model benchmark, so the reported perplexities should be read as a controlled comparison between a classical baseline and a compact neural model rather than as final large-budget results.
+
+WikiText-2 remains appropriate because it contains longer-form Wikipedia prose rather than isolated short sentences. That makes it useful for testing both local collocations and longer-range continuation behavior. A later smaller LSTM rerun also exists elsewhere in \texttt{outputs/}, but the report section below intentionally focuses on the matched 3{,}000/400/400 comparison so that the trigram and LSTM results remain directly comparable.
+
+\subsection{Model and Preprocessing}
+
+Both Q5 models use the same lowercase word-level tokenization, the same minimum token-frequency threshold of 2, and the same \texttt{<unk>} handling so that validation and test perplexity are measured against a consistent vocabulary. The classical baseline is a trigram language model with add-k smoothing and \(\alpha = 0.1\), which provides a transparent count-based reference point for next-token prediction.
+
+The neural comparator is a compact two-layer word-level LSTM with 128-dimensional embeddings and hidden states, dropout 0.2, tied input-output weights, and teacher-forced next-token training. This is still a modest recurrent model rather than a state-of-the-art language model, but it is sufficient to test whether a learned hidden-state representation materially improves perplexity and generated-text fluency over the trigram baseline under the same capped dataset budget.
+
+\subsection{Results}
+
+Table~\ref{tab:q5_overall_results} reports the matched Q5 perplexity comparison. The trigram model reaches validation/test perplexity 1392.54/1388.72, while the LSTM reduces those values to 286.06/279.46. On this capped setup, that corresponds to a 79.5\% reduction in validation perplexity and a 79.9\% reduction in test perplexity relative to the classical baseline.
+
+\input{tables/q5_overall_results}
+
+This gap is large enough to support the main Q5 conclusion already: even a relatively small recurrent neural language model is far better than the trigram baseline at assigning probability mass to held-out WikiText-2 continuations. The trigram result still matters because it gives the report a classical reference point, but the LSTM is the strongest finished Q5 model so far.
+
+\subsection{Generated Text Samples}
+
+The exported generations are consistent with the perplexity comparison. The trigram model can maintain short-range lexical continuity for simple prompts, but it often stops early or drifts into topic fragments that are only locally plausible. Starting from the seed \texttt{the}, it generates the short fragment \textit{the support of the season started .}, which is locally acceptable but not coherent in a broader discourse sense.
+
+The LSTM continuations are still noisy, but they are longer and generally more structurally sustained under the same seed prompts. For example, its generated samples for \texttt{the}, \texttt{in the}, and \texttt{he was} all continue for roughly 26--27 tokens, compared with a trigram average of 17.7 tokens across the same prompts. The LSTM still exhibits repetition and topic drift, yet it preserves local grammatical structure for longer spans than the sparse n-gram model.
+
+\subsection{Discussion}
+
+The finished Q5 comparison now makes the count-based versus neural contrast explicit. The trigram model remains valuable as a classical reference, but its high perplexity and unstable generations show that short fixed-context counts are not enough to model Wikipedia-style prose well. The LSTM demonstrates that even a compact recurrent model can reuse hidden-state context to reduce perplexity dramatically.
+
+For the current report state, the LSTM should be presented as the best finished Q5 model and the trigram run should be kept as the strongest classical baseline. The next meaningful Q5 extension is not more n-gram work, but either a report-level qualitative comparison using the refreshed summary artifact or an optional GPT-2 style baseline if a transformer reference is still desired.

@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:21
+Last updated: 2026-04-13 21:29
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -251,4 +251,40 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q5 LSTM baseline
   Outcome: A stable Q5 LSTM baseline now exists under outputs/q5/run_20260413_211945 and beats the matched trigram baseline by a wide margin on capped WikiText-2 perplexity.
   Next: Use outputs/q5/run_20260413_211945 and outputs/q5/run_20260413_202258 as the base for Q5 comparison/reporting work, or only reopen Q5 modeling if a GPT-2 comparison is worth the extra budget.
+  Blocker: None
+- Agent: copilot-q5-lstm
+  Date: 2026-04-13
+  Scope: Q5 LSTM baseline
+  Outcome: A stable Q5 LSTM baseline now exists under outputs/q5/run_20260413_212022 with capped validation/test perplexity and generation exports.
+  Next: Use outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_212022 for a Q5 comparison/report slice, or rerun the LSTM baseline on a larger capped split if stronger evidence is needed.
+  Blocker: None
+- Agent: copilot-q5-writeup
+  Date: 2026-04-13
+  Scope: Q5 report draft
+  Outcome: The Q5 report section now documents the finished trigram baseline with a report-local perplexity table and baseline-only narrative ready for compilation
+  Next: Compile the report once a LaTeX toolchain is available, or extend q5.tex after the active LSTM slice finishes with stable metrics and generations
+  Blocker: No LaTeX toolchain is installed in the current workspace environment
+- Agent: copilot-q5-summary-refresh
+  Date: 2026-04-13
+  Scope: Q5 report summary refresh
+  Outcome: A report-ready Q5 comparison summary now exists under outputs/q5/run_20260413_212315 and captures the matched trigram-versus-LSTM comparison.
+  Next: Use outputs/q5/run_20260413_212315 to refresh q5.tex or other Q5 report artifacts; only reopen Q5 modeling if a GPT-2 baseline or a larger matched LSTM run is justified.
+  Blocker: None
+- Agent: copilot-report-conclusion
+  Date: 2026-04-13
+  Scope: Report conclusion draft
+  Outcome: report/sections/conclusion.tex now provides an interim synthesis across Q1/Q2/Q3/Q5, emphasizing that pretrained models lead the finished comparisons while Q4 remains unfinished.
+  Next: Revisit the conclusion after Q4 results stabilize and any final Q5 comparison is merged into the written report.
+  Blocker: No LaTeX build toolchain is installed locally, so validation is currently limited to file diagnostics.
+- Agent: copilot-q5-writeup-refresh
+  Date: 2026-04-13
+  Scope: Q5 report draft refresh
+  Outcome: The Q5 report section and local table now reflect the matched trigram-versus-LSTM comparison summarized under outputs/q5/run_20260413_212315.
+  Next: Use the refreshed q5.tex as the current Q5 report section, and only reopen it if a GPT-2 baseline or a larger matched LSTM comparison becomes available.
+  Blocker: None
+- Agent: copilot-q4-transformer
+  Date: 2026-04-13
+  Scope: Q4 pretrained transformer baseline
+  Outcome: A stable Q4 transformer baseline now exists under outputs/q4/run_20260413_212828 with capped validation/test BLEU and ChrF plus translation CSV exports.
+  Next: Reuse the Q4 package and artifact for a seq2seq+attention comparison slice or for a future Q4 report-summary/write-up slice.
   Blocker: None

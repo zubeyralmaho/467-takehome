@@ -1,0 +1,31 @@
+question: q4
+task: translation
+
+dataset:
+  name: bentrevett/multi30k
+  src_lang: en
+  tgt_lang: de
+  limit_train_samples: 2000
+  limit_validation_samples: 200
+  limit_test_samples: 200
+
+preprocess:
+  lowercase_source: false
+  lowercase_target: false
+
+models:
+  transformer:
+    enabled: true
+    model_name: Helsinki-NLP/opus-mt-en-de
+    batch_size: 8
+    max_input_length: 96
+    max_output_length: 96
+    num_beams: 4
+    length_penalty: 1.0
+    early_stopping: true
+
+evaluation:
+  metrics:
+    - bleu
+    - chrf
+  num_qualitative_examples: 3

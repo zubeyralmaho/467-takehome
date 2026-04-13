@@ -1,6 +1,6 @@
 # Agent: copilot-q5-lstm
 
-Last updated: 2026-04-13 21:21
+Last updated: 2026-04-13 21:29
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -10,7 +10,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 - Agent name: copilot-q5-lstm
 - Date: 2026-04-13
-- Scope: Q5 LSTM language-model baseline
+- Scope: Validate a Q5 LSTM language-model baseline
 
 ---
 
@@ -27,7 +27,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Started
 
-- Claimed a separate Q5 LSTM slice after the trigram baseline reached review and confirmed the existing Q5 scaffold already handles dataset loading, perplexity export, and generation rows.
+- Selected the first neural Q5 slice after the trigram baseline stabilized so Question 5 could move from a classical-only baseline to a direct classical-versus-neural setup.
 
 ### In Progress
 
@@ -35,15 +35,14 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Completed
 
-- Extended configs/q5.yaml plus the Q5 trainer/model exports so model.type=lstm runs through the same entrypoint, perplexity evaluator, and generation-export path as the n-gram baseline.
-- Implemented a self-contained word-level LSTM language model with fixed vocabulary, teacher-forced next-token training, perplexity evaluation, and temperature-based generation in src/q5_language_modeling/models/lstm_lm.py.
-- Validated the neural path on a 300/80/80 smoke run under outputs/q5/run_20260413_211901 and a matched 3000/400/400 run under outputs/q5/run_20260413_211945.
+- Validated the existing LSTM language-model path in src/q5_language_modeling/models/lstm_lm.py on a capped 1500-train/200-validation/200-test WikiText-2 run under outputs/q5/run_20260413_212022.
+- Confirmed the existing Q5 trainer/export path writes stable metrics and generation artifacts for model.type=lstm without additional code changes.
 
 ---
 
 ## Decisions
 
-- Keep the first neural Q5 slice to a compact word-level LSTM with tied weights so it stays feasible in the current environment while still giving a meaningful comparison against the trigram baseline.
+- Treat the repo's current LSTM implementation as the stable first neural Q5 baseline and build later comparison/report work on its capped artifact.
 
 ---
 
@@ -55,4 +54,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Claim a Q5 comparison/report-summary slice that compares outputs/q5/run_20260413_211945 against outputs/q5/run_20260413_202258, or add an optional GPT-2 slice if a transformer baseline is still required.
+1. Claim a Q5 comparison or report slice next if Question 5 should continue; only reopen the LSTM implementation itself if a larger-budget run or architecture change is justified.

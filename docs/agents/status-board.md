@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:21
+Last updated: 2026-04-13 21:29
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -14,10 +14,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 Text Classification | unassigned | in_progress | All finished Q1 model families now have matched 4k-train/2k-test comparison artifacts and a refreshed report summary; the remaining open work is report drafting |
 | Q2 Named Entity Recognition | unassigned | in_progress | All three full-data Q2 runs are complete, BERT is the strongest finished model, and a report-ready comparison summary now exists under outputs/q2/run_20260413_151034 |
 | Q3 Summarization | unassigned | in_progress | TextRank and a capped distilBART comparison now exist under outputs/q3/run_20260413_192426, and report/sections/q3.tex now reflects that direct comparison; only larger-budget Q3 work remains separate. |
-| Q4 Machine Translation | unassigned | todo | Seq2Seq + Transformer |
-| Q5 Language Modeling | unassigned | in_progress | Matched capped trigram and LSTM baselines now exist under outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945; GPT-2 or Q5 reporting remain separate follow-up slices. |
+| Q4 Machine Translation | unassigned | in_progress | A pretrained transformer translation baseline is now implemented and validated under outputs/q4/run_20260413_212828; a custom seq2seq+attention comparison and any Q4 reporting work remain separate slices. |
+| Q5 Language Modeling | unassigned | in_progress | The trigram baseline under outputs/q5/run_20260413_202258, a matched 3000/400/400 LSTM comparison artifact under outputs/q5/run_20260413_211945, and a later smaller LSTM rerun under outputs/q5/run_20260413_212022 now exist; refreshed Q5 comparison summary artifacts are ready under outputs/q5/run_20260413_212315. |
 | Evaluation and analysis | copilot-q1-eval | review | Shared Q1 evaluation now exports confusion-matrix data, CSVs, and PNG figures; broader reporting and comparison analysis remain separate slices |
-| Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q2 already has a drafted section, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available |
+| Report preparation | unassigned | in_progress | A minimal LaTeX scaffold now exists under report/, Q1/Q2/Q3/Q5 sections are drafted from stable artifacts, and report/README.md documents how to extend and compile the report once a LaTeX toolchain is available |
 | Project state sync | copilot-tracker | done | docs/agents state synced with the implemented Q1 baseline and scaffold |
 | Q2 CRF baseline | copilot-q2-crf | done | Self-contained CoNLL CRF baseline implemented and validated on a capped run; any larger-budget experiment can now be claimed as a separate slice |
 | Q2 CRF experiment | copilot-q2-crf | done | Full-split CRF experiment completed with exported validation/test artifacts under outputs/q2/run_20260413_141702 |
@@ -45,9 +45,12 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q3 BART baseline | copilot-q3-bart | review | Pretrained abstractive Q3 summarizer validated on CNN/DailyMail with a direct 20-validation/20-test comparison run under outputs/q3/run_20260413_192426, where distilBART outperformed TextRank on all exported lexical metrics. |
 | Q5 N-gram baseline | copilot-q5-ngram | review | Self-contained trigram add-k language model validated on capped WikiText-2 under outputs/q5/run_20260413_202258 with validation/test perplexity 1392.54/1388.72 plus exported generation samples. |
 | Q5 report summary | copilot-q5-report | review | Baseline-only Q5 summary artifacts were generated under outputs/q5/run_20260413_211754 from the finished trigram n-gram run and include perplexity plus generation-analysis exports |
-| Q5 LSTM baseline | copilot-q5-lstm | review | Self-contained word-level LSTM language model validated on capped WikiText-2 under outputs/q5/run_20260413_211945 with validation/test perplexity 286.06/279.46, substantially outperforming the matched trigram baseline on the same 3000/400/400 budget. |
-| Q5 report draft | copilot-q5-writeup | in_progress | Drafting the baseline-only Q5 report section from the stable trigram summary artifact while leaving the active LSTM modeling slice untouched |
-| Q5 report summary refresh | copilot-q5-summary-refresh | in_progress | Refreshing the Q5 summary artifacts to consume both the finished trigram and matched LSTM runs without overlapping future q5.tex drafting. |
+| Q5 LSTM baseline | copilot-q5-lstm | review | Existing LSTM language-model path validated on capped WikiText-2 under outputs/q5/run_20260413_212022 with validation/test perplexity 269.12/259.97 plus exported generation samples. |
+| Q5 report draft | copilot-q5-writeup | review | report/sections/q5.tex plus report/tables/q5_overall_results.tex now reflect the matched trigram-versus-LSTM comparison sourced from outputs/q5/run_20260413_212315, while the later smaller LSTM rerun remains a separate reference artifact. |
+| Q5 report summary refresh | copilot-q5-summary-refresh | review | Refreshed Q5 summary artifacts were generated under outputs/q5/run_20260413_212315 from the matched trigram and LSTM runs at outputs/q5/run_20260413_202258 and outputs/q5/run_20260413_211945, and the builder now rejects mismatched split budgets for direct comparisons. |
+| Q4 Transformer baseline | copilot-q4-transformer | review | Pretrained Helsinki-NLP/opus-mt-en-de baseline validated on capped Multi30k under outputs/q4/run_20260413_212828 with validation/test BLEU 0.4008/0.3572 and ChrF 0.6569/0.6380 plus exported translation predictions. |
+| Report conclusion draft | copilot-report-conclusion | review | report/sections/conclusion.tex now synthesizes the drafted Q1/Q2/Q3/Q5 findings while explicitly marking Q4 as unfinished and the conclusion as provisional |
+| Q5 report draft refresh | copilot-q5-writeup-refresh | review | Refreshed the Q5 report section, local table, and report README mapping from the matched trigram-versus-LSTM summary artifact under outputs/q5/run_20260413_212315 without reopening model-training ownership. |
 
 ---
 

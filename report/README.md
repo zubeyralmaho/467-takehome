@@ -5,9 +5,9 @@ This directory contains the LaTeX scaffold for the final take-home report.
 ## Current State
 
 - `main.tex` wires together the full report structure from `docs/11-report-structure.md`.
-- `sections/q1.tex` and `sections/q2.tex` are drafted from stable experiment artifacts.
+- `sections/q1.tex`, `sections/q2.tex`, `sections/q3.tex`, and `sections/q5.tex` are drafted from stable experiment artifacts.
 - `sections/q3.tex` now contains a direct capped comparison between TextRank and a pretrained DistilBART baseline.
-- `sections/q4.tex`, `sections/q5.tex`, and `sections/conclusion.tex` remain placeholders for later slices.
+- `sections/q4.tex` and `sections/conclusion.tex` remain placeholders for later slices.
 - `tables/` stores report-local LaTeX table snippets that can be included from section files.
 - `figures/` stores copied figure assets so the report does not depend on deep `outputs/` paths.
 - `references.bib` is currently an empty placeholder.
@@ -71,8 +71,10 @@ pdflatex main.tex
 ### Question 5
 
 - Trigram baseline run: `outputs/q5/run_20260413_202258`
-- Report summary artifact: `outputs/q5/run_20260413_211754`
-- `sections/q5.tex` is still a placeholder, but the baseline-only summary is now ready for a future Q5 write-up slice.
+- Matched LSTM comparison run: `outputs/q5/run_20260413_211945`
+- Refreshed Q5 summary artifact: `outputs/q5/run_20260413_212315`
+- Later smaller LSTM rerun: `outputs/q5/run_20260413_212022`
+- `sections/q5.tex` now uses the matched trigram-versus-LSTM comparison, while the later smaller LSTM rerun remains a separate reference rather than part of the direct report table.
 
 ## Editing Workflow
 
@@ -89,4 +91,4 @@ pdflatex main.tex
 - Fill `references.bib` when citations are added to the final prose.
 - Optionally rerun Q3 on a larger matched split if stronger summarization evidence is needed.
 - Draft `sections/q4.tex` after machine-translation outputs are available.
-- Replace the `sections/q5.tex` placeholder with baseline prose now that the trigram summary exists, or wait for an LSTM slice if Q5 should include a stronger neural comparison.
+- Only reopen `sections/q5.tex` if a GPT-2 style Q5 baseline or a larger matched LSTM comparison becomes available.
