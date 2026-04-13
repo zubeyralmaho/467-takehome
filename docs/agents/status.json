@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 21:57"
+    "last_updated": "2026-04-13 21:59"
   },
   "areas": [
     {
@@ -183,7 +183,7 @@
       "label": "Report build docs",
       "owner": "copilot-report-docs",
       "status": "review",
-      "notes": "report/README.md now documents the scaffold layout, compile prerequisites, section-to-artifact mapping, and the recommended report-writing workflow"
+      "notes": "report/README.md now documents the scaffold layout, verified Tectonic compile path, section-to-artifact mapping, and the recommended report-writing workflow."
     },
     {
       "key": "q1_large_budget_comparison",
@@ -359,6 +359,13 @@
       "owner": "copilot-report-layout",
       "status": "in_progress",
       "notes": "Reducing the remaining non-blocking overfull-box warnings in the compiled report without reopening finished content or active question-summary slices."
+    },
+    {
+      "key": "report_build_docs_refresh",
+      "label": "Report build docs refresh",
+      "owner": "copilot-report-docs-refresh",
+      "status": "review",
+      "notes": "report/README.md now reflects the verified Tectonic-based PDF build instead of the older unverified compile guidance."
     }
   ],
   "priorities": [
@@ -817,6 +824,14 @@
         "scope": "Q4 report draft refresh",
         "outcome": "Refreshed the Q4 report section, report-local table, README, and report framing from outputs/q4/run_20260413_215201.",
         "next": "Only reopen Q4 if a more budget-matched rerun or report-build issue requires another write-up pass.",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-report-docs-refresh",
+        "date": "2026-04-13",
+        "scope": "Report build docs refresh",
+        "outcome": "The report README now documents the verified Tectonic compile path and no longer states that PDF compilation is unverified.",
+        "next": "Re-run Tectonic after future report edits and only revisit the build docs if the preferred build workflow changes.",
         "blocker": "None"
       }
     ]
@@ -2169,6 +2184,33 @@
       "blockers": [],
       "next_actions": [
         "Adjust the affected tables or paragraphs, rebuild the PDF with Tectonic, and leave the warning delta in the handoff."
+      ]
+    },
+    {
+      "name": "copilot-report-docs-refresh",
+      "date": "2026-04-13",
+      "scope": "Refresh report build documentation after Tectonic validation",
+      "status": "review",
+      "owner": "copilot-report-docs-refresh",
+      "related_area": "report_build_docs_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a narrow build-doc refresh slice after the report compiled successfully with Tectonic but report/README.md still described compilation as unverified."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Reviewed the report build-validation state and identified that report/README.md still described compilation as unverified despite a successful Tectonic build.",
+          "Updated report/README.md so the compile prerequisites and commands now include the verified Tectonic path and the generated PDF state.",
+          "Validated the refreshed build documentation with editor diagnostics."
+        ]
+      },
+      "decisions": [
+        "Keep this slice documentation-only and avoid overlapping the active report layout cleanup or question-summary work."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Only refresh the build docs again if the preferred compile path changes or if the layout-cleanup slice introduces new build caveats."
       ]
     }
   ]

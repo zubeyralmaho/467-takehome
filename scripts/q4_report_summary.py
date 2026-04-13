@@ -258,7 +258,7 @@ def _build_findings(
         findings.append(
             (
                 f"Qualitatively, the transformer stays much more fluent, although its weakest exported test example still drifts into a longer, less reference-like paraphrase; "
-                f"the seq2seq baseline instead shows repetition and truncation, for example on {seq2seq_weak['sample_id']} where it predicts '{seq2seq_weak['predicted_translation']}'."
+                f"the seq2seq baseline instead still shows lexical drift and repetition, for example on {seq2seq_weak['sample_id']} where it predicts '{seq2seq_weak['predicted_translation']}'."
             )
         )
 

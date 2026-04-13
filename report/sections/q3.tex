@@ -10,7 +10,7 @@ Even with that limitation, CNN/DailyMail remains an appropriate benchmark for th
 
 The current Q3 pipeline performs shared article cleanup, truncates long inputs to 900 words, and evaluates all models with the same lexical metrics. The extractive baseline is a TF-IDF based TextRank summarizer \cite{mihalcea2004textrank}: sentences are treated as graph nodes, pairwise cosine similarities define weighted edges, and PageRank scores determine which three sentences are selected for the final summary. The configuration uses damping 0.85 and allows up to 40 candidate sentences per article.
 
-The abstractive baseline uses the pretrained DistilBART checkpoint `sshleifer/distilbart-cnn-12-6`, which is derived from BART-style sequence-to-sequence pretraining \cite{lewis2020bart}, without additional fine-tuning. Inputs are tokenized up to 512 tokens and decoded with beam search using output lengths between 20 and 80 tokens. This design keeps the comparison practical on the current environment while still testing the main assignment question: whether an abstractive model can produce more reference-like summaries than a purely extractive sentence selector.
+The abstractive baseline uses the pretrained DistilBART checkpoint \nolinkurl{sshleifer/distilbart-cnn-12-6}, which is derived from BART-style sequence-to-sequence pretraining \cite{lewis2020bart}, without additional fine-tuning. Inputs are tokenized up to 512 tokens and decoded with beam search using output lengths between 20 and 80 tokens. This design keeps the comparison practical on the current environment while still testing the main assignment question: whether an abstractive model can produce more reference-like summaries than a purely extractive sentence selector.
 
 \subsection{Results}
 

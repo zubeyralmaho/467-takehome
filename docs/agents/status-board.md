@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 21:57
+Last updated: 2026-04-13 21:59
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -35,7 +35,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Q1 DistilBERT experiment | copilot-q1-distilbert-experiment | done | Larger-budget DistilBERT experiment completed under outputs/q1/run_20260413_151402; validation/test macro-F1 0.875/0.879 on the 4k-train/2k-test run and no one-class collapse |
 | Q2 report draft | copilot-q2-writeup | review | A minimal report scaffold now exists and q2.tex is drafted from the completed Q2 summary artifacts, including report-local tables and the entity-F1 comparison figure |
 | Q1 BiLSTM experiment | copilot-q1-bilstm-experiment | review | Matched 4000-train/2000-test BiLSTM final-eval run completed under outputs/q1/run_20260413_151549 with validation/test macro-F1 0.7386/0.7011 for later Q1 comparison |
-| Report build docs | copilot-report-docs | review | report/README.md now documents the scaffold layout, compile prerequisites, section-to-artifact mapping, and the recommended report-writing workflow |
+| Report build docs | copilot-report-docs | review | report/README.md now documents the scaffold layout, verified Tectonic compile path, section-to-artifact mapping, and the recommended report-writing workflow. |
 | Q1 larger-budget comparison | copilot-q1-large-comparison | review | Matched 4k-train/2k-test Q1 comparison artifacts are complete under outputs/q1/run_20260413_152437, ranking DistilBERT ahead of TF-IDF + SVM, TF-IDF + LR, and BiLSTM on test macro-F1 |
 | Q1 report draft | copilot-q1-writeup | review | report/sections/q1.tex plus report-local Q1 tables and figure assets now reflect the stable 4k-train/2k-test Q1 artifacts; PDF compilation remains pending because no LaTeX toolchain is installed |
 | Q1 report summary refresh | copilot-q1-summary-refresh | review | Refreshed Q1 summary artifacts were generated under outputs/q1/run_20260413_185011 using the matched 4k-train/2k-test comparison and the finished preprocessing sweep |
@@ -61,6 +61,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report Q5 GPT refresh | copilot-report-q5-gpt-refresh | review | Q5 report framing, citations, and top-level report text now reflect the finished trigram-versus-LSTM-versus-distilGPT2 comparison without modifying active Q4 summary work. |
 | Q4 report draft refresh | copilot-q4-writeup-refresh | review | Q4 report section, report-local table, README, and report framing were refreshed from outputs/q4/run_20260413_215201 without reopening Q4 model training. |
 | Report layout cleanup | copilot-report-layout | in_progress | Reducing the remaining non-blocking overfull-box warnings in the compiled report without reopening finished content or active question-summary slices. |
+| Report build docs refresh | copilot-report-docs-refresh | review | report/README.md now reflects the verified Tectonic-based PDF build instead of the older unverified compile guidance. |
 
 ---
 

@@ -15,12 +15,16 @@ This directory contains the LaTeX scaffold for the final take-home report.
 
 ## Compile Prerequisites
 
-You need a LaTeX toolchain before the report can be compiled. Either of the following is fine:
+The report now compiles successfully in this workspace. The currently verified build path is:
+
+- `tectonic`
+
+Other LaTeX toolchains may also work, including:
 
 - `latexmk` with `pdflatex`
 - `pdflatex` plus `bibtex`
 
-At the time this scaffold was created, `pdflatex` was not available in the workspace environment, so PDF compilation was not verified here.
+The current workspace already contains a successfully generated `main.pdf` built from `main.tex` with Tectonic. Remaining issues are limited to a small number of non-blocking layout warnings that are being cleaned up separately.
 
 ## Compile Commands
 
@@ -28,10 +32,17 @@ From the repository root:
 
 ```bash
 cd report
+tectonic main.tex
+```
+
+If you prefer `latexmk` and a full TeX installation is available, use:
+
+```bash
+cd report
 latexmk -pdf main.tex
 ```
 
-If `latexmk` is not installed, use the manual sequence:
+If neither Tectonic nor `latexmk` is available, use the manual sequence:
 
 ```bash
 cd report
@@ -87,7 +98,7 @@ pdflatex main.tex
 2. Copy only the figures that the report should reference into `report/figures/`.
 3. Put reusable table snippets into `report/tables/` if a section will `\input{...}` them.
 4. Write narrative in `report/sections/*.tex` using the stable artifact outputs, not ad hoc terminal observations.
-5. Recompile after each question-level write-up slice when a LaTeX toolchain is available.
+5. Recompile after each question-level write-up slice, preferably with `tectonic main.tex` from `report/`.
 
 ## Suggested Next Steps
 

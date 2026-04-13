@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 21:57
+Last updated: 2026-04-13 21:59
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -359,4 +359,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q4 report draft refresh
   Outcome: Refreshed the Q4 report section, report-local table, README, and report framing from outputs/q4/run_20260413_215201.
   Next: Only reopen Q4 if a more budget-matched rerun or report-build issue requires another write-up pass.
+  Blocker: None
+- Agent: copilot-report-docs-refresh
+  Date: 2026-04-13
+  Scope: Report build docs refresh
+  Outcome: The report README now documents the verified Tectonic compile path and no longer states that PDF compilation is unverified.
+  Next: Re-run Tectonic after future report edits and only revisit the build docs if the preferred build workflow changes.
   Blocker: None

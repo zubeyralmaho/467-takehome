@@ -1,14 +1,14 @@
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{lccccc}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c}
 \toprule
 Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF \\
 \midrule
 Opus-MT Transformer & 100 & 0.4008 & 0.3572 & 0.6569 & 0.6380 \\
 Seq2Seq + Attn & 1000 & 0.0396 & 0.0416 & 0.1885 & 0.1949 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Q4 capped Multi30k comparison between the pretrained transformer reference and the classical seq2seq baseline.}
 \label{tab:q4_overall_results}
 \end{table}

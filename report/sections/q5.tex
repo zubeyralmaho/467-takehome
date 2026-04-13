@@ -2,7 +2,7 @@
 
 \subsection{Dataset Description}
 
-Question 5 uses a capped WikiText-2 setup drawn from the raw \texttt{wikitext-2-raw-v1} split \cite{merity2016wikitext}. The refreshed comparison evaluates 3{,}000 training lines, 400 validation lines, and 400 test lines, which correspond to 258{,}079, 32{,}527, and 35{,}059 tokens after preprocessing. This budget is still much smaller than a full language-model benchmark, so the reported perplexities should be read as a controlled comparison across a classical n-gram baseline, a compact recurrent neural baseline, and a practical pretrained transformer reference rather than as final large-budget results.
+Question 5 uses a capped WikiText-2 setup drawn from the raw \nolinkurl{wikitext-2-raw-v1} split \cite{merity2016wikitext}. The refreshed comparison evaluates 3{,}000 training lines, 400 validation lines, and 400 test lines, which correspond to 258{,}079, 32{,}527, and 35{,}059 tokens after preprocessing. This budget is still much smaller than a full language-model benchmark, so the reported perplexities should be read as a controlled comparison across a classical n-gram baseline, a compact recurrent neural baseline, and a practical pretrained transformer reference rather than as final large-budget results.
 
 WikiText-2 remains appropriate because it contains longer-form Wikipedia prose rather than isolated short sentences. That makes it useful for testing both local collocations and longer-range continuation behavior. A later smaller LSTM rerun also exists elsewhere in \texttt{outputs/}, but the report section below intentionally focuses on the matched 3{,}000/400/400 held-out split so that the three finished Q5 models can be compared on the same validation and test data.
 
@@ -12,7 +12,7 @@ The data-trained Q5 baselines use the same lowercase word-level tokenization, th
 
 The second comparator is a compact two-layer word-level LSTM \cite{hochreiter1997lstm} with 128-dimensional embeddings and hidden states, dropout 0.2, tied input-output weights, and teacher-forced next-token training. This is still a modest recurrent model rather than a state-of-the-art language model, but it is sufficient to test whether a learned hidden-state representation materially improves perplexity and generated-text fluency over the trigram baseline under the same capped dataset budget.
 
-The third model is a practical GPT-style reference using pretrained \texttt{distilgpt2}, representing the GPT-2 causal language-model family \cite{radford2019gpt2}. Unlike the trigram and LSTM models, this transformer is not trained from scratch on the capped Q5 split; instead, it is evaluated directly on the same held-out WikiText-2 lines and prompted with the same seeded generation prefixes. That makes it a useful reference point for how much additional modeling strength a pretrained causal transformer contributes beyond the data-limited baselines.
+The third model is a practical GPT-style reference using pretrained \nolinkurl{distilgpt2}, representing the GPT-2 causal language-model family \cite{radford2019gpt2}. Unlike the trigram and LSTM models, this transformer is not trained from scratch on the capped Q5 split; instead, it is evaluated directly on the same held-out WikiText-2 lines and prompted with the same seeded generation prefixes. That makes it a useful reference point for how much additional modeling strength a pretrained causal transformer contributes beyond the data-limited baselines.
 
 \subsection{Results}
 
