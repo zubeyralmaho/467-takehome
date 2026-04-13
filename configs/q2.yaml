@@ -1,0 +1,25 @@
+question: q2
+task: ner
+
+dataset:
+  name: conll2003
+  fallback_name: tomaarsen/conll2003
+  token_column: tokens
+  label_column: ner_tags
+  limit_train_samples: null
+  limit_validation_samples: null
+  limit_test_samples: null
+
+models:
+  crf:
+    enabled: true
+    algorithm: lbfgs
+    c1: 0.1
+    c2: 0.1
+    max_iterations: 100
+    all_possible_transitions: true
+
+evaluation:
+  metrics: [precision, recall, f1, accuracy]
+  num_error_examples: 5
+  top_confusions: 10

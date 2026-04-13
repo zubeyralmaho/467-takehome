@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.common.export import save_metrics, save_predictions
-from src.common.metrics import compute_classification_report, compute_metrics
+from src.common.evaluation import evaluate_predictions
+from src.common.export import save_confusion_matrix_csv, save_metrics, save_predictions
 from src.q1_classification.analysis import analyze_misclassifications, identify_error_patterns
 from src.q1_classification.dataset import prepare_datasets
 from src.q1_classification.models import BiLSTMClassifier, TFIDFClassifier
@@ -71,13 +71,12 @@ def _prediction_rows(texts, labels, predictions, confidences):
 def _evaluate_model(config, model, split_data: dict[str, list]) -> dict:
     predictions = model.predict(split_data["texts"])
     confidences = model.predict_confidence(split_data["texts"])
-    metrics = compute_metrics(
+    evaluation = evaluate_predictions(
         config.task,
         predictions=predictions,
         references=split_data["labels"],
         metrics=config.evaluation.metrics,
     )
-    report = compute_classification_report(split_data["labels"], predictions)
     misclassified = analyze_misclassifications(
         split_data["texts"],
         split_data["labels"],
@@ -86,8 +85,9 @@ def _evaluate_model(config, model, split_data: dict[str, list]) -> dict:
         n_examples=config.evaluation.num_misclassified_examples,
     )
     return {
-        "metrics": metrics,
-        "classification_report": report,
+        "metrics": evaluation["metrics"],
+        "classification_report": evaluation["classification_report"],
+        "confusion_matrix": evaluation["confusion_matrix"],
         "predictions": predictions.tolist(),
         "confidences": confidences,
         "misclassified_examples": misclassified,
@@ -108,16 +108,11 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
     analysis_output: dict[str, dict] = {}
 
     for model_name, model in models.items():
-        is_bilstm = BiLSTMClassifier is not None and isinstance(model, BiLSTMClassifier)
-        if is_bilstm:
-            model.fit(
-                datasets["train"]["texts"],
-                datasets["train"]["labels"],
-                validation_data=datasets["validation"],
-            )
-        else:
-            model.fit(datasets["train"]["texts"], datasets["train"]["labels"])
-
+        model.fit(
+            datasets["train"]["texts"],
+            datasets["train"]["labels"],
+            validation_data=datasets["validation"],
+        )
         metrics_output[model_name] = {}
         analysis_output[model_name] = {}
 
@@ -126,6 +121,7 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
             metrics_output[model_name][split_name] = {
                 "metrics": evaluation["metrics"],
                 "classification_report": evaluation["classification_report"],
+                "confusion_matrix": evaluation["confusion_matrix"],
             }
             analysis_output[model_name][split_name] = {
                 "misclassified_examples": evaluation["misclassified_examples"],
@@ -140,6 +136,10 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
                     evaluation["confidences"],
                 ),
                 run_path / "predictions" / f"{model_name}_{split_name}_predictions.csv",
+            )
+            save_confusion_matrix_csv(
+                evaluation["confusion_matrix"],
+                run_path / "confusion_matrices" / f"{model_name}_{split_name}_confusion_matrix.csv",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")

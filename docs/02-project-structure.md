@@ -107,7 +107,8 @@ CENG467_Midterm/
 |   |   |-- run_20260415_143022/    # Timestamped run
 |   |   |   |-- config.yaml         # Copy of used config
 |   |   |   |-- metrics.json        # Final metrics
-|   |   |   |-- predictions.csv     # Model predictions
+|   |   |   |-- predictions/        # Per-model prediction CSVs
+|   |   |   |-- confusion_matrices/ # Per-model confusion-matrix CSVs
 |   |   |   |-- model_best.pt       # Best model checkpoint
 |   |   |   +-- figures/            # Plots
 |   |   +-- ...

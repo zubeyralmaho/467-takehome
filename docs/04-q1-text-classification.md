@@ -287,10 +287,15 @@ outputs/q1/run_{timestamp}/
 |-- preprocessing_comparison.csv  # Tokenization/preprocessing impact table
 |-- metrics.json               # All model metrics
 |-- predictions/
-|   |-- tfidf_lr_preds.csv
-|   |-- tfidf_svm_preds.csv
-|   |-- bilstm_preds.csv
-|   +-- distilbert_preds.csv
+|   |-- tfidf_lr_validation_predictions.csv
+|   |-- tfidf_svm_validation_predictions.csv
+|   |-- bilstm_validation_predictions.csv
+|   +-- distilbert_validation_predictions.csv
+|-- confusion_matrices/
+|   |-- tfidf_lr_validation_confusion_matrix.csv
+|   |-- tfidf_svm_validation_confusion_matrix.csv
+|   |-- bilstm_validation_confusion_matrix.csv
+|   +-- distilbert_validation_confusion_matrix.csv
 |-- misclassification_analysis.json
 |-- figures/
 |   |-- confusion_matrix_*.png

@@ -56,6 +56,27 @@ def save_predictions(rows: Iterable[Mapping[str, object]], path: str | Path) -> 
         writer.writerows(rows)
 
 
+def save_confusion_matrix_csv(confusion_matrix: Mapping[str, Any], path: str | Path) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    label_names = [str(label) for label in confusion_matrix["label_names"]]
+    matrix = confusion_matrix["matrix"]
+    fieldnames = ["actual_label", *[f"predicted_{label}" for label in label_names], "total"]
+
+    with destination.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for actual_label, row in zip(label_names, matrix, strict=False):
+            writer.writerow(
+                {
+                    "actual_label": actual_label,
+                    **{f"predicted_{label}": int(value) for label, value in zip(label_names, row, strict=False)},
+                    "total": int(sum(row)),
+                }
+            )
+
+
 def save_config_copy(config: Config, run_dir: str | Path) -> None:
     config.save(Path(run_dir) / "config.yaml")
 

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 01:35"
+    "last_updated": "2026-04-13 14:15"
   },
   "areas": [
     {
@@ -15,14 +15,14 @@
       "label": "Q1 Text Classification",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "TF-IDF baselines and the BiLSTM path are implemented; DistilBERT remains the next unclaimed Q1 slice"
+      "notes": "TF-IDF baselines and the BiLSTM path are implemented; the DistilBERT slice is now claimed separately while preprocessing sweeps and any larger-budget neural runs remain unclaimed"
     },
     {
       "key": "q2_named_entity_recognition",
       "label": "Q2 Named Entity Recognition",
-      "owner": "copilot-q2-crf",
+      "owner": "unassigned",
       "status": "in_progress",
-      "notes": "CRF baseline slice claimed; CoNLL-2003 data flow and initial training pipeline in progress"
+      "notes": "Overall Q2 track is open; the CRF baseline implementation is done while BiLSTM-CRF, BERT, and larger-budget experiment slices remain unclaimed"
     },
     {
       "key": "q3_summarization",
@@ -49,8 +49,8 @@
       "key": "evaluation_and_analysis",
       "label": "Evaluation and analysis",
       "owner": "copilot-q1-eval",
-      "status": "in_progress",
-      "notes": "Q1 confusion-matrix and evaluation artifact export in progress; keep model-training ownership unchanged"
+      "status": "review",
+      "notes": "Shared Q1 evaluation now exports confusion-matrix data in metrics.json and per-split confusion_matrices CSVs; visualization figures remain a separate slice"
     },
     {
       "key": "report_preparation",
@@ -65,6 +65,27 @@
       "owner": "copilot-tracker",
       "status": "done",
       "notes": "docs/agents state synced with the implemented Q1 baseline and scaffold"
+    },
+    {
+      "key": "q2_crf_baseline",
+      "label": "Q2 CRF baseline",
+      "owner": "copilot-q2-crf",
+      "status": "done",
+      "notes": "Self-contained CoNLL CRF baseline implemented and validated on a capped run; any larger-budget experiment can now be claimed as a separate slice"
+    },
+    {
+      "key": "q2_crf_experiment",
+      "label": "Q2 CRF experiment",
+      "owner": "copilot-q2-crf",
+      "status": "in_progress",
+      "notes": "Larger-budget CRF experiment slice on top of the completed Q2 baseline scaffold"
+    },
+    {
+      "key": "q1_distilbert_baseline",
+      "label": "Q1 DistilBERT baseline",
+      "owner": "copilot-q1-distilbert",
+      "status": "in_progress",
+      "notes": "DistilBERT sequence-classification slice claimed; integrate a Hugging Face baseline into the existing Q1 training/export path"
     }
   ],
   "priorities": [
@@ -107,6 +128,22 @@
         "scope": "Q1 BiLSTM implementation",
         "outcome": "Added an opt-in BiLSTM path, fixed CLI override handling, and validated the end-to-end export flow on a small IMDb run",
         "next": "Claim DistilBERT as a separate Q1 slice and reuse the same metrics and prediction export path",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q1-eval",
+        "date": "2026-04-13",
+        "scope": "Shared Q1 evaluation artifact export",
+        "outcome": "Q1 runs now write structured confusion-matrix data into metrics.json and export per-split confusion_matrices CSV files without changing model-training ownership",
+        "next": "Consume the new artifacts in analysis/reporting work; if figure outputs are required, claim a separate visualization slice",
+        "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-crf",
+        "date": "2026-04-13",
+        "scope": "Q2 CRF baseline",
+        "outcome": "Self-contained Q2 CRF baseline is implemented, smoke-tested end to end, and exports metrics plus token-level prediction CSVs",
+        "next": "Claim a separate larger-budget CRF experiment slice, reuse configs/q2.yaml, and compare future neural Q2 models against the exported CRF artifacts",
         "blocker": "None"
       }
     ]
@@ -200,29 +237,36 @@
     {
       "name": "copilot-q2-crf",
       "date": "2026-04-13",
-      "scope": "Implement the Q2 CRF baseline slice on top of the shared scaffold",
-      "status": "in_progress",
+      "scope": "Implement the self-contained Q2 CRF baseline slice: CoNLL data loading, BIO preprocessing, token features, CRF model, and Q2 entrypoint",
+      "status": "done",
       "owner": "copilot-q2-crf",
-      "related_area": "q2_named_entity_recognition",
+      "related_area": "q2_crf_baseline",
       "depends_on": [],
       "summary": {
         "started": [
-          "Reviewed board, protocol, and Q2 NER design doc"
+          "Reviewed board, protocol, Q2 NER design doc, and shared/Q1 pipeline patterns"
         ],
         "in_progress": [],
-        "completed": []
+        "completed": [
+          "Verified that a standard-format CoNLL-2003 mirror loads with the current datasets version and preserves the expected BIO label set",
+          "Implemented a self-contained Q2 pipeline with CoNLL loading, BIO label materialization, token-level CRF features, seqeval-based metrics, and a Q2 CLI entrypoint",
+          "Validated a capped 500-train/200-validation CRF run on tomaarsen/conll2003 with precision 0.753, recall 0.600, F1 0.668, accuracy 0.934, and exported artifacts under outputs/q2/run_20260413_140953"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Use tomaarsen/conll2003 because the installed datasets 4.8.4 stack rejects the script-based conll2003 loader",
+        "Default the Q2 dataset to tomaarsen/conll2003 and keep a fallback from conll2003 for environments that reject dataset scripts"
+      ],
       "blockers": [],
       "next_actions": [
-        "Inspect shared and Q1 code patterns, then scaffold CoNLL data loading and CRF baseline"
+        "Claim a separate larger-budget Q2 CRF experiment slice and use the existing outputs as the baseline scaffold for later BiLSTM-CRF and BERT comparisons"
       ]
     },
     {
       "name": "copilot-q1-eval",
       "date": "2026-04-13",
       "scope": "Implement shared Q1 evaluation artifacts and exports without changing active model-training ownership",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q1-eval",
       "related_area": "evaluation_and_analysis",
       "depends_on": [],
@@ -230,15 +274,67 @@
         "started": [
           "Reviewed docs and current Q1 export flow"
         ],
+        "in_progress": [],
+        "completed": [
+          "Added a shared classification evaluation helper that returns metrics, classification reports, and confusion-matrix payloads",
+          "Extended Q1 training to persist confusion-matrix data in metrics.json for each evaluated split",
+          "Added per-split confusion_matrices CSV exports alongside the existing prediction and misclassification artifacts",
+          "Validated the new export path with a small final-eval IMDb run and confirmed validation plus test artifacts were written",
+          "Synced the Q1 and shared-infrastructure docs with the new confusion_matrices export layout"
+        ]
+      },
+      "decisions": [
+        "Kept this slice focused on exportable evaluation artifacts; confusion-matrix figure generation remains separate from the shared metrics/export path"
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Use the new metrics/confusion_matrices artifacts in review or reporting work, and claim visualization separately if PNG heatmaps are required"
+      ]
+    },
+    {
+      "name": "copilot-q2-crf-experiment",
+      "date": "2026-04-13",
+      "scope": "Run and evaluate a larger-budget Q2 CRF experiment using the existing self-contained baseline scaffold",
+      "status": "in_progress",
+      "owner": "copilot-q2-crf",
+      "related_area": "q2_crf_experiment",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed a separate experiment slice after the Q2 CRF baseline implementation was completed"
+        ],
         "in_progress": [
-          "Adding confusion-matrix and richer evaluation artifact support for Q1"
+          "Running a larger-budget CRF experiment and reviewing the resulting validation/test artifacts"
         ],
         "completed": []
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Implement shared evaluation artifact generation and wire it into the Q1 training flow"
+        "Execute the larger-budget run and compare its outputs against the earlier smoke test"
+      ]
+    },
+    {
+      "name": "copilot-q1-distilbert",
+      "date": "2026-04-13",
+      "scope": "Implement a self-contained Q1 DistilBERT baseline on top of the existing IMDb pipeline and Q1 export flow",
+      "status": "in_progress",
+      "owner": "copilot-q1-distilbert",
+      "related_area": "q1_distilbert_baseline",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed the board, Q1 design doc, current model interfaces, and environment dependencies"
+        ],
+        "in_progress": [
+          "Adding a DistilBERT classifier wrapper and wiring it into the existing Q1 training flow"
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Implement the minimal DistilBERT path, install missing transformer dependencies, and validate on a capped IMDb run"
       ]
     }
   ]

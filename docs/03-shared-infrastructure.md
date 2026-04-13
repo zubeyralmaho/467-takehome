@@ -384,6 +384,9 @@ def save_metrics(metrics: dict, path: str) -> None:
 def save_predictions(predictions, references, path: str) -> None:
     """Saves predictions as CSV."""
 
+def save_confusion_matrix_csv(confusion_matrix: dict, path: str) -> None:
+    """Saves a tabular confusion matrix export as CSV."""
+
 def save_config_copy(config: Config, run_dir: str) -> None:
     """Saves a copy of the used config to the run directory."""
 

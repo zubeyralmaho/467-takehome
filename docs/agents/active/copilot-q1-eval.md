@@ -1,6 +1,6 @@
 # Agent: copilot-q1-eval
 
-Last updated: 2026-04-13 01:35
+Last updated: 2026-04-13 14:15
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q1-eval
 - Related area: evaluation_and_analysis
 - Depends on: -
@@ -31,17 +31,21 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Adding confusion-matrix and richer evaluation artifact support for Q1
+- None.
 
 ### Completed
 
-- None.
+- Added a shared classification evaluation helper that returns metrics, classification reports, and confusion-matrix payloads
+- Extended Q1 training to persist confusion-matrix data in metrics.json for each evaluated split
+- Added per-split confusion_matrices CSV exports alongside the existing prediction and misclassification artifacts
+- Validated the new export path with a small final-eval IMDb run and confirmed validation plus test artifacts were written
+- Synced the Q1 and shared-infrastructure docs with the new confusion_matrices export layout
 
 ---
 
 ## Decisions
 
-- None.
+- Kept this slice focused on exportable evaluation artifacts; confusion-matrix figure generation remains separate from the shared metrics/export path
 
 ---
 
@@ -53,4 +57,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Implement shared evaluation artifact generation and wire it into the Q1 training flow
+1. Use the new metrics/confusion_matrices artifacts in review or reporting work, and claim visualization separately if PNG heatmaps are required

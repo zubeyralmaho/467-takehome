@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 01:35
+Last updated: 2026-04-13 14:15
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -47,4 +47,16 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Q1 BiLSTM implementation
   Outcome: Added an opt-in BiLSTM path, fixed CLI override handling, and validated the end-to-end export flow on a small IMDb run
   Next: Claim DistilBERT as a separate Q1 slice and reuse the same metrics and prediction export path
+  Blocker: None
+- Agent: copilot-q1-eval
+  Date: 2026-04-13
+  Scope: Shared Q1 evaluation artifact export
+  Outcome: Q1 runs now write structured confusion-matrix data into metrics.json and export per-split confusion_matrices CSV files without changing model-training ownership
+  Next: Consume the new artifacts in analysis/reporting work; if figure outputs are required, claim a separate visualization slice
+  Blocker: None
+- Agent: copilot-q2-crf
+  Date: 2026-04-13
+  Scope: Q2 CRF baseline
+  Outcome: Self-contained Q2 CRF baseline is implemented, smoke-tested end to end, and exports metrics plus token-level prediction CSVs
+  Next: Claim a separate larger-budget CRF experiment slice, reuse configs/q2.yaml, and compare future neural Q2 models against the exported CRF artifacts
   Blocker: None
