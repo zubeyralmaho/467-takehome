@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-13 23:57
+Last updated: 2026-04-14 00:10
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -69,6 +69,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Tracker consistency refresh | copilot-tracker-refresh | review | Stale Q5 refresh states, top-level priorities, and handoff guidance were refreshed so docs/agents now matches the current clean-build report state and canonical comparison artifacts. |
 | Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems, and the title-page student ID placeholder has now been replaced in both source and compiled output. |
 | Report submission metadata | copilot-report-metadata | review | report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic. |
+| Root README refresh | copilot-root-readme | in_progress | Refreshing the stale top-level README so it reflects the finished five-task project, the clean report build, and the current reproducible entrypoints instead of the older Q1-only state. |
 
 ---
 

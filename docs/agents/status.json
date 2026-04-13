@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 23:57"
+    "last_updated": "2026-04-14 00:10"
   },
   "areas": [
     {
@@ -415,6 +415,13 @@
       "owner": "copilot-report-metadata",
       "status": "review",
       "notes": "report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic."
+    },
+    {
+      "key": "root_readme_refresh",
+      "label": "Root README refresh",
+      "owner": "copilot-root-readme",
+      "status": "in_progress",
+      "notes": "Refreshing the stale top-level README so it reflects the finished five-task project, the clean report build, and the current reproducible entrypoints instead of the older Q1-only state."
     }
   ],
   "priorities": [
@@ -2548,6 +2555,29 @@
       "blockers": [],
       "next_actions": [
         "Only revisit submission metadata if the author name, date, or other final front-matter details still need to change before submission."
+      ]
+    },
+    {
+      "name": "copilot-root-readme",
+      "date": "2026-04-14",
+      "scope": "Refresh the stale top-level README for the final project state",
+      "status": "in_progress",
+      "owner": "copilot-root-readme",
+      "related_area": "root_readme_refresh",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Claimed the unowned repository documentation slice after a consistency audit showed that README.md still described only the earlier Q1 classification pipeline."
+        ],
+        "in_progress": [
+          "Updating the root README to cover all five tasks, the final report workflow, and the current CLI entrypoints without reopening model or report content."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Capture the current entrypoints and stable artifact/report commands, rewrite README.md, then validate the documentation and close the slice."
       ]
     }
   ]
