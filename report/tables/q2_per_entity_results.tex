@@ -1,0 +1,27 @@
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llcccc}
+\toprule
+Model & Entity & Precision & Recall & F1 & Support \\
+\midrule
+BERT & LOC & 0.9269 & 0.9269 & 0.9269 & 1668 \\
+Feature CRF & LOC & 0.8442 & 0.8249 & 0.8344 & 1668 \\
+BiLSTM-CRF & LOC & 0.7991 & 0.7680 & 0.7832 & 1668 \\
+\midrule
+BERT & MISC & 0.7693 & 0.8077 & 0.7880 & 702 \\
+Feature CRF & MISC & 0.7756 & 0.7436 & 0.7593 & 702 \\
+BiLSTM-CRF & MISC & 0.7157 & 0.6239 & 0.6667 & 702 \\
+\midrule
+BERT & ORG & 0.8873 & 0.8958 & 0.8916 & 1661 \\
+Feature CRF & ORG & 0.7711 & 0.6773 & 0.7212 & 1661 \\
+BiLSTM-CRF & ORG & 0.7359 & 0.6273 & 0.6773 & 1661 \\
+\midrule
+BERT & PER & 0.9552 & 0.9499 & 0.9526 & 1617 \\
+Feature CRF & PER & 0.8351 & 0.8454 & 0.8402 & 1617 \\
+BiLSTM-CRF & PER & 0.7873 & 0.6271 & 0.6981 & 1617 \\
+\bottomrule
+\end{tabular}
+\caption{Per-entity test metrics for the completed Q2 runs.}
+\label{tab:q2_per_entity_results}
+\end{table}

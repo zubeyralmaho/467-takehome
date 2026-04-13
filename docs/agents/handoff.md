@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-13 15:15
+Last updated: 2026-04-13 15:19
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -24,7 +24,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 
 1. Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs
 2. Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized
-3. Use outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the Q2 report reference artifacts; only reopen BiLSTM-CRF if a focused tuning slice is justified
+3. Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting, and only reopen BiLSTM-CRF if a focused tuning slice is justified
 
 ---
 
@@ -138,3 +138,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: A finished Q2 comparison run now aggregates CRF, BiLSTM-CRF, and BERT into overall and per-entity report-ready artifacts, with BERT leading every entity type on the test split
   Next: Reuse outputs/q2/run_20260413_151143 for Q2 report tables and discussion, or rerun the comparison builder later if a tuned BiLSTM-CRF experiment supersedes outputs/q2/run_20260413_144913
   Blocker: None
+- Agent: copilot-q2-writeup
+  Date: 2026-04-13
+  Scope: Q2 report draft
+  Outcome: A buildable report skeleton now exists and the Q2 section is drafted with tables, figure support, and narrative aligned to the finished experiment artifacts
+  Next: Draft the remaining report sections as separate slices and compile the report once pdflatex or an equivalent LaTeX toolchain is available
+  Blocker: pdflatex is not installed in the current environment, so full PDF compilation could not be verified

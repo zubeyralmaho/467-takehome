@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-13 15:15"
+    "last_updated": "2026-04-13 15:19"
   },
   "areas": [
     {
@@ -57,7 +57,7 @@
       "label": "Report preparation",
       "owner": "unassigned",
       "status": "in_progress",
-      "notes": "Initial LaTeX scaffold and section drafting have started; individual question write-up slices can proceed without blocking each other"
+      "notes": "A minimal LaTeX scaffold now exists under report/ and Q2 already has a drafted section; the remaining write-up work can proceed as separate question-level slices"
     },
     {
       "key": "project_state_sync",
@@ -168,8 +168,8 @@
       "key": "q2_report_draft",
       "label": "Q2 report draft",
       "owner": "copilot-q2-writeup",
-      "status": "in_progress",
-      "notes": "Drafting the LaTeX Q2 section and minimal report scaffold from completed Q2 summary artifacts without reopening model-comparison ownership"
+      "status": "review",
+      "notes": "A minimal report scaffold now exists and q2.tex is drafted from the completed Q2 summary artifacts, including report-local tables and the entity-F1 comparison figure"
     },
     {
       "key": "q1_bilstm_experiment",
@@ -181,7 +181,7 @@
   ],
   "priorities": [
     "Run larger-budget Q1 neural experiments and compare TF-IDF, BiLSTM, and DistilBERT on a stable export format.",
-    "Complete the in-progress Q2 comparison/reporting work using the finished CRF, BiLSTM-CRF, and BERT artifacts.",
+    "Use the finished Q2 artifacts and the new report scaffold to turn Q2 into final report prose, tables, and figures.",
     "Turn the exported Q1 and Q2 artifacts into report-ready analysis, tables, and visualizations."
   ],
   "handoff": {
@@ -194,7 +194,7 @@
     "next_recommended_actions": [
       "Run a larger-budget DistilBERT experiment and compare it directly against the exported TF-IDF and BiLSTM runs",
       "Run a larger-budget BiLSTM experiment once the Q1 neural experiment budget is finalized",
-      "Use outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the Q2 report reference artifacts; only reopen BiLSTM-CRF if a focused tuning slice is justified"
+      "Use report/ plus outputs/q2/run_20260413_151034 and outputs/q2/run_20260413_144742 as the base for Q2 report drafting, and only reopen BiLSTM-CRF if a focused tuning slice is justified"
     ],
     "entries": [
       {
@@ -340,6 +340,14 @@
         "outcome": "A finished Q2 comparison run now aggregates CRF, BiLSTM-CRF, and BERT into overall and per-entity report-ready artifacts, with BERT leading every entity type on the test split",
         "next": "Reuse outputs/q2/run_20260413_151143 for Q2 report tables and discussion, or rerun the comparison builder later if a tuned BiLSTM-CRF experiment supersedes outputs/q2/run_20260413_144913",
         "blocker": "None"
+      },
+      {
+        "agent": "copilot-q2-writeup",
+        "date": "2026-04-13",
+        "scope": "Q2 report draft",
+        "outcome": "A buildable report skeleton now exists and the Q2 section is drafted with tables, figure support, and narrative aligned to the finished experiment artifacts",
+        "next": "Draft the remaining report sections as separate slices and compile the report once pdflatex or an equivalent LaTeX toolchain is available",
+        "blocker": "pdflatex is not installed in the current environment, so full PDF compilation could not be verified"
       }
     ]
   },
@@ -840,7 +848,7 @@
       "name": "copilot-q2-writeup",
       "date": "2026-04-13",
       "scope": "Q2 report draft",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q2-writeup",
       "related_area": "q2_report_draft",
       "depends_on": [],
@@ -848,15 +856,18 @@
         "started": [
           "Claimed a narrow Q2 write-up slice after report-ready Q2 comparison artifacts were available and no report scaffold existed yet"
         ],
-        "in_progress": [
-          "Scaffolding the report directory and drafting q2.tex from the finished Q2 summary outputs"
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Created a minimal report/ LaTeX scaffold with main.tex, preamble.tex, placeholder section files, and report-local tables",
+          "Drafted report/sections/q2.tex from the finished Q2 artifacts and staged the entity-F1 comparison figure inside report/figures/q2"
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Kept the scaffold minimal and only fully drafted Q2 so other report sections can be claimed independently without conflict"
+      ],
       "blockers": [],
       "next_actions": [
-        "Create report/main.tex, preamble, section placeholders, and a filled Q2 LaTeX section aligned to the documented report structure"
+        "Use the existing report scaffold as the base for future Q1, Q3, Q4, Q5, and conclusion write-up slices; compile once a LaTeX engine is available"
       ]
     },
     {

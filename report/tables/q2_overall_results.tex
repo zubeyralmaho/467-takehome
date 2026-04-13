@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lccccccc}
+\toprule
+Model & Val. P & Val. R & Val. F1 & Test P & Test R & Test F1 & Test Acc. \\
+\midrule
+BERT & 0.9525 & 0.9509 & 0.9517 & 0.9028 & 0.9095 & 0.9062 & 0.9807 \\
+Feature CRF & 0.8939 & 0.8596 & 0.8765 & 0.8131 & 0.7773 & 0.7948 & 0.9572 \\
+BiLSTM-CRF & 0.8292 & 0.7625 & 0.7945 & 0.7674 & 0.6684 & 0.7145 & 0.9373 \\
+\bottomrule
+\end{tabular}
+\caption{Overall Q2 NER performance on the validation and test splits.}
+\label{tab:q2_overall_results}
+\end{table}
