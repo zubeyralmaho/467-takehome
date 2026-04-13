@@ -167,7 +167,7 @@ python -m src.q1_classification.main \
     --override seed=123
 
 # 5. Tum sorulari sirayla calistir
-for q in q1_classification q2_ner q3_summarization q4_translation q5_language_model; do
+for q in q1_classification q2_ner q3_summarization q4_machine_translation q5_language_modeling; do
     python -m src.${q}.main --config configs/$(echo $q | cut -d_ -f1).yaml
 done
 ```

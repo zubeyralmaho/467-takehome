@@ -21,6 +21,7 @@ This documentation comprehensively defines the technical architecture, data flow
 | 9 | [Evaluation Framework](09-evaluation-framework.md) | Metrics, reporting, comparison |
 | 10 | [Experiment & Reproducibility](10-experiment-config.md) | Seed, hyperparameter management, execution |
 | 11 | [LaTeX Report Structure](11-report-structure.md) | Report template, section plan |
+| 12 | [Notebook Alignment Plan](colab-plan.md) | Notebook vs repo/report drift audit, canonical boundaries, and agent-splittable refresh plan |
 
 ---
 
@@ -78,8 +79,8 @@ python -m src.q2_ner.main --config configs/q2.yaml
 python -m src.q3_summarization.main --config configs/q3.yaml
 
 # Q4 - Machine Translation
-python -m src.q4_translation.main --config configs/q4.yaml
+python -m src.q4_machine_translation.main --config configs/q4.yaml
 
 # Q5 - Language Modeling
-python -m src.q5_language_model.main --config configs/q5.yaml
+python -m src.q5_language_modeling.main --config configs/q5.yaml
 ```

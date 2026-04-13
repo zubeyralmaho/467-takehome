@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-14 00:12
+Last updated: 2026-04-14 00:44
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -70,6 +70,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems, and the title-page student ID placeholder has now been replaced in both source and compiled output. |
 | Report submission metadata | copilot-report-metadata | review | report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic. |
 | Root README refresh | copilot-root-readme | review | Refreshed the stale top-level README so it now reflects the finished five-task project, current CLI entrypoints, the clean Tectonic report workflow, and the report-local comparison figure regeneration path. |
+| Notebook alignment plan | copilot-notebook-plan | review | docs/colab-plan.md now documents the notebook drift audit, canonical boundaries, wave-based task plan, and copy-pasteable agent briefs for each notebook refresh slice. Surrounding docs were kept aligned with the current entrypoints. |
 
 ---
 

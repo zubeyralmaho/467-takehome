@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-14 00:12
+Last updated: 2026-04-14 00:44
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -424,4 +424,10 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Scope: Root README refresh
   Outcome: The top-level README now reflects the finished five-task repository, current run commands, and the clean report build workflow instead of the earlier Q1-only state.
   Next: Use README.md as the main landing page for setup and run commands, and only revisit it if the submission workflow or top-level project scope changes.
+  Blocker: None
+- Agent: copilot-notebook-plan
+  Date: 2026-04-14
+  Scope: Notebook alignment planning
+  Outcome: The notebook drift audit, canonical boundaries, and agent-splittable remediation plan are now documented in docs/colab-plan.md and indexed from docs/README.md.
+  Next: Treat docs/colab-plan.md as the planning source for notebook refresh work and claim the listed tasks individually rather than reopening notebook scope broadly.
   Blocker: None
