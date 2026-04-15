@@ -1,6 +1,6 @@
 # Agent: copilot-notebook-plan
 
-Last updated: 2026-04-14 00:44
+Last updated: 2026-04-14 14:18
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -35,7 +35,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Completed
 
-- Expanded docs/colab-plan.md with copy-pasteable agent briefs that include scope, primary files, non-goals, validation, and first action for each notebook refresh task.
+- Expanded docs/colab-plan.md with ready-to-run claim command templates in addition to the brief blocks for each notebook refresh task.
 
 ---
 
@@ -53,4 +53,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Use the brief blocks in docs/colab-plan.md directly when claiming the notebook refresh slices, starting with shared workflow refresh and the Q3/Q4/Q5 canonical rewrites.
+1. Use either the brief text or the command templates in docs/colab-plan.md when claiming the notebook refresh slices, starting with the shared workflow refresh and the Q3/Q4/Q5 canonical rewrites.

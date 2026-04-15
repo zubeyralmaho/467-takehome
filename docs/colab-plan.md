@@ -449,7 +449,208 @@ Validation: After a notebook run, the next summary/report-refresh actions are ex
 First action: Map the existing summary scripts and report_comparison_figures.py into the Q3/Q4/Q5 notebook workflows as explicit post-run steps.
 ```
 
-## 7. Önerilen Paralel Dalga Planı
+## 7. Claim Komut Şablonları
+
+Bu bölüm, task brief'lerini okuduktan sonra agent claim etmek için hazır komut iskeletleri verir.
+
+### Standart Claim Kalıbı
+
+```bash
+python scripts/agent_status.py set-area \
+	--key <task_key> \
+	--label "<Task Label>" \
+	--owner <agent_name> \
+	--status in_progress \
+	--notes "<Narrow scope and boundary>"
+
+python scripts/agent_status.py set-agent \
+	--name <agent_name> \
+	--scope "<Brief scope>" \
+	--status in_progress \
+	--owner <agent_name> \
+	--area <task_key> \
+	--started "<What was reviewed before coding>" \
+	--in-progress-item "<Current narrow execution step>" \
+	--next-action "<Immediate next concrete action>"
+```
+
+### Dalga 1 Hazır Claim Komutları
+
+#### `notebook_shared_workflow_refresh`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key notebook_shared_workflow_refresh \
+	--label "Notebook shared workflow refresh" \
+	--owner copilot-notebook-shared \
+	--status in_progress \
+	--notes "Refreshing the shared Colab/bootstrap/output workflow across all notebooks so the setup and run-capture logic no longer drifts from the current repo/report state."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-notebook-shared \
+	--scope "Normalize shared notebook setup, output-copy, and run-capture behavior" \
+	--status in_progress \
+	--owner copilot-notebook-shared \
+	--area notebook_shared_workflow_refresh \
+	--started "Reviewed docs/colab-plan.md and the common setup/output cells across the Q1-Q5 notebooks." \
+	--in-progress-item "Unifying the shared bootstrap and output-capture pattern without changing model logic." \
+	--next-action "Patch the common setup/output cells first, then validate notebook JSON structure."
+```
+
+#### `notebooks_readme_sync`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key notebooks_readme_sync \
+	--label "Notebooks README sync" \
+	--owner copilot-notebooks-readme \
+	--status in_progress \
+	--notes "Refreshing notebooks/README.md so it distinguishes canonical report-aligned notebook paths from exploratory ones and explains the missing report refresh steps."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-notebooks-readme \
+	--scope "Align notebooks/README.md with the documented notebook canonical boundaries" \
+	--status in_progress \
+	--owner copilot-notebooks-readme \
+	--area notebooks_readme_sync \
+	--started "Compared notebooks/README.md against docs/colab-plan.md and the current report artifact workflow." \
+	--in-progress-item "Rewriting notebook usage guidance so canonical and exploratory paths are explicit." \
+	--next-action "Update notebooks/README.md to reflect the current report-facing notebook workflow and validate the markdown."
+```
+
+### Dalga 2 Hazır Claim Komutları
+
+#### `q3_notebook_canonical_rewrite`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key q3_notebook_canonical_rewrite \
+	--label "Q3 notebook canonical rewrite" \
+	--owner copilot-q3-notebook-rewrite \
+	--status in_progress \
+	--notes "Rewriting the Q3 notebook so its default path matches the current capped TextRank-versus-DistilBART comparison used by the report instead of the older broader Colab plan."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-q3-notebook-rewrite \
+	--scope "Align the Q3 notebook default path with the current report comparison state" \
+	--status in_progress \
+	--owner copilot-q3-notebook-rewrite \
+	--area q3_notebook_canonical_rewrite \
+	--started "Reviewed report/README.md, configs/q3.yaml, and notebooks/Q3_Summarization.ipynb against the canonical Q3 artifact mapping." \
+	--in-progress-item "Replacing the older broad Lead-3-centered notebook framing with the current capped comparison path." \
+	--next-action "Adjust the Q3 notebook markdown and command cells so the default run reproduces the current report comparison state."
+```
+
+#### `q4_notebook_canonical_rewrite`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key q4_notebook_canonical_rewrite \
+	--label "Q4 notebook canonical rewrite" \
+	--owner copilot-q4-notebook-rewrite \
+	--status in_progress \
+	--notes "Rewriting the Q4 notebook so its default path matches the approved capped transformer-versus-seq2seq comparison used by the report rather than the older full-Multi30k plan."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-q4-notebook-rewrite \
+	--scope "Align the Q4 notebook default path with the approved capped Q4 comparison state" \
+	--status in_progress \
+	--owner copilot-q4-notebook-rewrite \
+	--area q4_notebook_canonical_rewrite \
+	--started "Compared notebooks/Q4_MachineTranslation.ipynb with report/README.md and the approved Q4 artifact chain." \
+	--in-progress-item "Removing the older uncapped/full-data default path from the canonical notebook flow." \
+	--next-action "Rewrite the Q4 notebook command and narrative cells so the default path reproduces the approved capped comparison."
+```
+
+#### `q5_notebook_canonical_rewrite`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key q5_notebook_canonical_rewrite \
+	--label "Q5 notebook canonical rewrite" \
+	--owner copilot-q5-notebook-rewrite \
+	--status in_progress \
+	--notes "Rewriting the Q5 notebook so its default path matches the matched 3000/400/400 trigram-LSTM-distilGPT2 comparison used by the report rather than the older full-data null-cap plan."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-q5-notebook-rewrite \
+	--scope "Align the Q5 notebook default path with the matched Q5 report comparison state" \
+	--status in_progress \
+	--owner copilot-q5-notebook-rewrite \
+	--area q5_notebook_canonical_rewrite \
+	--started "Compared notebooks/Q5_LanguageModeling.ipynb with report/README.md and the current Q5 artifact mapping." \
+	--in-progress-item "Replacing the full-data default path with the matched comparison path used by the report." \
+	--next-action "Rewrite the Q5 notebook markdown and command cells so the default run reproduces the matched 3000/400/400 comparison."
+```
+
+### Dalga 3 Hazır Claim Komutları
+
+#### `q1_notebook_report_alignment`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key q1_notebook_report_alignment \
+	--label "Q1 notebook report alignment" \
+	--owner copilot-q1-notebook-align \
+	--status in_progress \
+	--notes "Aligning the Q1 notebook with the current matched Q1 report state or clearly marking the heavier full-IMDb path as exploratory."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-q1-notebook-align \
+	--scope "Connect the Q1 notebook to the current matched Q1 report artifact chain" \
+	--status in_progress \
+	--owner copilot-q1-notebook-align \
+	--area q1_notebook_report_alignment \
+	--started "Reviewed notebooks/Q1_Classification.ipynb against the Q1 artifact mapping recorded in report/README.md." \
+	--in-progress-item "Separating canonical Q1 notebook behavior from the heavier exploratory full-IMDb path." \
+	--next-action "Rewrite Q1 notebook markdown and commands so the report-aligned path is explicit."
+```
+
+#### `q2_notebook_report_alignment`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key q2_notebook_report_alignment \
+	--label "Q2 notebook report alignment" \
+	--owner copilot-q2-notebook-align \
+	--status in_progress \
+	--notes "Removing stale expectation text from the Q2 notebook and connecting it to the current Q2 comparison and report-figure workflow."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-q2-notebook-align \
+	--scope "Refresh Q2 notebook narrative and connect it to the current Q2 report artifact chain" \
+	--status in_progress \
+	--owner copilot-q2-notebook-align \
+	--area q2_notebook_report_alignment \
+	--started "Reviewed notebooks/Q2_NER.ipynb against the finished Q2 report artifacts and figures." \
+	--in-progress-item "Removing stale BiLSTM-CRF expectations and documenting the current Q2 report-facing workflow." \
+	--next-action "Patch Q2 markdown and command cells so the notebook reflects the current Q2 comparison/report chain."
+```
+
+### Dalga 4 Hazır Claim Komutu
+
+#### `notebook_to_report_integration_hooks`
+
+```bash
+python scripts/agent_status.py set-area \
+	--key notebook_to_report_integration_hooks \
+	--label "Notebook to report integration hooks" \
+	--owner copilot-notebook-report-hooks \
+	--status in_progress \
+	--notes "Adding the missing Q3/Q4/Q5 summary-script and report-figure regeneration hooks so notebook runs connect cleanly to the current report refresh workflow."
+
+python scripts/agent_status.py set-agent \
+	--name copilot-notebook-report-hooks \
+	--scope "Add explicit post-run summary and figure-regeneration steps to the Q3/Q4/Q5 notebooks" \
+	--status in_progress \
+	--owner copilot-notebook-report-hooks \
+	--area notebook_to_report_integration_hooks \
+	--started "Reviewed the current Q3/Q4/Q5 summary scripts and report comparison figure workflow." \
+	--in-progress-item "Threading the existing summary and figure-refresh commands into the notebook flow as explicit next steps." \
+	--next-action "Add the missing post-run summary and figure regeneration hooks to the Q3/Q4/Q5 notebooks and update notebook guidance."
+```
+
+## 8. Önerilen Paralel Dalga Planı
 
 ### Dalga 1
 - `notebook_shared_workflow_refresh`
@@ -467,7 +668,7 @@ First action: Map the existing summary scripts and report_comparison_figures.py 
 ### Dalga 4
 - `notebook_to_report_integration_hooks`
 
-## 8. Minimum Kabul Kriteri
+## 9. Minimum Kabul Kriteri
 
 Notebook refresh işi tamamlandı sayılmamalıdır, eğer:
 

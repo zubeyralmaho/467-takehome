@@ -1,3 +1,4 @@
+bert-score>=0.3.13
 matplotlib>=3.9.0
 PyYAML>=6.0.2
 datasets>=3.0.0

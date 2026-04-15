@@ -46,4 +46,5 @@ evaluation:
     - rougeL
     - bleu
     - meteor
+    - bertscore
   num_qualitative_examples: 3

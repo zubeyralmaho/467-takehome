@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-14 00:44"
+    "last_updated": "2026-04-14 14:18"
   },
   "areas": [
     {
@@ -428,7 +428,14 @@
       "label": "Notebook alignment plan",
       "owner": "copilot-notebook-plan",
       "status": "review",
-      "notes": "docs/colab-plan.md now documents the notebook drift audit, canonical boundaries, wave-based task plan, and copy-pasteable agent briefs for each notebook refresh slice. Surrounding docs were kept aligned with the current entrypoints."
+      "notes": "docs/colab-plan.md now contains the notebook drift audit, canonical boundaries, wave-based task plan, copy-pasteable agent briefs, and ready-to-run claim command templates for each notebook refresh slice. Surrounding docs stay aligned with current entrypoints."
+    },
+    {
+      "key": "q5_notebook_canonical_rewrite",
+      "label": "Q5 notebook canonical rewrite",
+      "owner": "copilot-q5-notebook-rewrite",
+      "status": "review",
+      "notes": "The Q5 notebook default path now runs the matched 3000/400/400 trigram, LSTM, and distilGPT2 comparison used by the report, tracks concrete run directories instead of guessing the latest run, and ends by building the Q5 summary artifact plus refreshing the report figure."
     }
   ],
   "priorities": [
@@ -983,6 +990,14 @@
         "outcome": "The notebook drift audit, canonical boundaries, and agent-splittable remediation plan are now documented in docs/colab-plan.md and indexed from docs/README.md.",
         "next": "Treat docs/colab-plan.md as the planning source for notebook refresh work and claim the listed tasks individually rather than reopening notebook scope broadly.",
         "blocker": "None"
+      },
+      {
+        "agent": "copilot-q5-notebook-rewrite",
+        "date": "2026-04-14",
+        "scope": "Q5 notebook canonical rewrite",
+        "outcome": "notebooks/Q5_LanguageModeling.ipynb now defaults to the matched 3000/400/400 report comparison path and makes the Q5 summary plus figure refresh steps explicit.",
+        "next": "Run the notebook in Colab when needed; larger null-cap reruns should stay exploratory and use a separate summary artifact chain.",
+        "blocker": "Local execution was not attempted because the notebook still depends on google.colab and Drive mount cells."
       }
     ]
   },
@@ -2622,7 +2637,7 @@
         ],
         "in_progress": [],
         "completed": [
-          "Expanded docs/colab-plan.md with copy-pasteable agent briefs that include scope, primary files, non-goals, validation, and first action for each notebook refresh task."
+          "Expanded docs/colab-plan.md with ready-to-run claim command templates in addition to the brief blocks for each notebook refresh task."
         ]
       },
       "decisions": [
@@ -2630,7 +2645,35 @@
       ],
       "blockers": [],
       "next_actions": [
-        "Use the brief blocks in docs/colab-plan.md directly when claiming the notebook refresh slices, starting with shared workflow refresh and the Q3/Q4/Q5 canonical rewrites."
+        "Use either the brief text or the command templates in docs/colab-plan.md when claiming the notebook refresh slices, starting with the shared workflow refresh and the Q3/Q4/Q5 canonical rewrites."
+      ]
+    },
+    {
+      "name": "copilot-q5-notebook-rewrite",
+      "date": "2026-04-14",
+      "scope": "Align the Q5 notebook default path with the matched Q5 report comparison state",
+      "status": "review",
+      "owner": "copilot-q5-notebook-rewrite",
+      "related_area": "q5_notebook_canonical_rewrite",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Compared notebooks/Q5_LanguageModeling.ipynb with report/README.md and the current Q5 artifact mapping."
+        ],
+        "in_progress": [],
+        "completed": [
+          "Reframed notebooks/Q5_LanguageModeling.ipynb around the canonical 3000/400/400 trigram-LSTM-distilGPT2 comparison and marked larger null-cap reruns as exploratory.",
+          "Replaced the blind latest-run copy pattern with notebook helpers that capture explicit run and summary artifact directories from command output.",
+          "Updated the closing notebook step so it builds a fresh Q5 summary artifact with scripts/q5_report_summary.py and refreshes report/figures/q5/perplexity_comparison.png via scripts/report_comparison_figures.py.",
+          "Syntax-checked the new helper cell and the closing summary cell after the notebook rewrite."
+        ]
+      },
+      "decisions": [
+        "Keep this slice notebook-only and avoid reopening shared Colab bootstrap cleanup, model code, or report prose."
+      ],
+      "blockers": [],
+      "next_actions": [
+        "Reuse the same explicit run-tracking and summary-hook pattern when the Q3 and Q4 notebook rewrites are claimed."
       ]
     }
   ]

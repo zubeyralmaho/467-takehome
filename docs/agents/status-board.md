@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-14 00:44
+Last updated: 2026-04-14 14:18
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -70,7 +70,8 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Report proofread pass | copilot-report-proofread | review | A lightweight proofread of the clean compiled PDF found no obvious content or bibliography rendering problems, and the title-page student ID placeholder has now been replaced in both source and compiled output. |
 | Report submission metadata | copilot-report-metadata | review | report/main.tex now contains the final student ID and the report PDF was rebuilt successfully with Tectonic. |
 | Root README refresh | copilot-root-readme | review | Refreshed the stale top-level README so it now reflects the finished five-task project, current CLI entrypoints, the clean Tectonic report workflow, and the report-local comparison figure regeneration path. |
-| Notebook alignment plan | copilot-notebook-plan | review | docs/colab-plan.md now documents the notebook drift audit, canonical boundaries, wave-based task plan, and copy-pasteable agent briefs for each notebook refresh slice. Surrounding docs were kept aligned with the current entrypoints. |
+| Notebook alignment plan | copilot-notebook-plan | review | docs/colab-plan.md now contains the notebook drift audit, canonical boundaries, wave-based task plan, copy-pasteable agent briefs, and ready-to-run claim command templates for each notebook refresh slice. Surrounding docs stay aligned with current entrypoints. |
+| Q5 notebook canonical rewrite | copilot-q5-notebook-rewrite | review | The Q5 notebook default path now runs the matched 3000/400/400 trigram, LSTM, and distilGPT2 comparison used by the report, tracks concrete run directories instead of guessing the latest run, and ends by building the Q5 summary artifact plus refreshing the report figure. |
 
 ---
 

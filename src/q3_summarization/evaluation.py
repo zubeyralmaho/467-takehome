@@ -148,6 +148,16 @@ def _example_metrics(prediction: str, reference: str) -> dict[str, float]:
     }
 
 
+def _bertscore(predictions: list[str], references: list[str]) -> float:
+    try:
+        from bert_score import score as bert_score_fn
+    except ImportError:
+        raise ImportError("BERTScore requires the 'bert-score' package. Install via: pip install bert-score")
+
+    _, _, f1 = bert_score_fn(predictions, references, lang="en", verbose=False)
+    return float(f1.mean().item())
+
+
 def evaluate_predictions(predictions: list[str], references: list[str], metrics: list[str] | None = None) -> dict[str, object]:
     requested = list(metrics) if metrics else ["rouge1", "rouge2", "rougeL", "bleu", "meteor"]
     per_example = [_example_metrics(prediction, reference) for prediction, reference in zip(predictions, references, strict=False)]
@@ -166,6 +176,9 @@ def evaluate_predictions(predictions: list[str], references: list[str], metrics:
         available.update({"rouge1": 0.0, "rouge2": 0.0, "rougeL": 0.0, "meteor": 0.0})
     available["bleu"] = _corpus_bleu(predictions, references)
     available["rougeLsum"] = available["rougeL"]
+
+    if "bertscore" in requested:
+        available["bertscore"] = _bertscore(predictions, references)
 
     unsupported = [name for name in requested if name not in available]
     if unsupported:

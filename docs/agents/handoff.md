@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-14 00:44
+Last updated: 2026-04-14 14:18
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -431,3 +431,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: The notebook drift audit, canonical boundaries, and agent-splittable remediation plan are now documented in docs/colab-plan.md and indexed from docs/README.md.
   Next: Treat docs/colab-plan.md as the planning source for notebook refresh work and claim the listed tasks individually rather than reopening notebook scope broadly.
   Blocker: None
+- Agent: copilot-q5-notebook-rewrite
+  Date: 2026-04-14
+  Scope: Q5 notebook canonical rewrite
+  Outcome: notebooks/Q5_LanguageModeling.ipynb now defaults to the matched 3000/400/400 report comparison path and makes the Q5 summary plus figure refresh steps explicit.
+  Next: Run the notebook in Colab when needed; larger null-cap reruns should stay exploratory and use a separate summary artifact chain.
+  Blocker: Local execution was not attempted because the notebook still depends on google.colab and Drive mount cells.
