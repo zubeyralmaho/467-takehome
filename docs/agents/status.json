@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-15 22:16"
+    "last_updated": "2026-04-15 22:17"
   },
   "areas": [
     {
@@ -443,6 +443,13 @@
       "owner": "copilot-q4-notebook-rewrite",
       "status": "in_progress",
       "notes": "Finishing the Q4 notebook migration so its default path matches the approved capped transformer-versus-seq2seq comparison and removing the stale duplicate full-Multi30k block that still remains in the notebook JSON."
+    },
+    {
+      "key": "notebooks_readme_sync",
+      "label": "Notebooks README sync",
+      "owner": "copilot-notebooks-readme",
+      "status": "in_progress",
+      "notes": "Cleaning notebooks/README.md so it contains one canonical notebook workflow, removes the stale duplicate legacy block, and reflects the actual summary/report refresh commands."
     }
   ],
   "priorities": [
@@ -2702,6 +2709,29 @@
       "blockers": [],
       "next_actions": [
         "Rewrite the remaining Q4 notebook cells so they track explicit run directories, build the Q4 summary artifact, refresh the report figure, and remove the stale duplicate legacy block."
+      ]
+    },
+    {
+      "name": "copilot-notebooks-readme",
+      "date": "2026-04-15",
+      "scope": "Align notebooks/README.md with the current canonical notebook and report-refresh workflow",
+      "status": "in_progress",
+      "owner": "copilot-notebooks-readme",
+      "related_area": "notebooks_readme_sync",
+      "depends_on": [],
+      "summary": {
+        "started": [
+          "Reviewed notebooks/README.md after the notebook planning work and found that the canonical content is followed by a stale duplicate legacy block."
+        ],
+        "in_progress": [
+          "Verifying the real summary-script CLI usage before collapsing the README to one correct canonical workflow."
+        ],
+        "completed": []
+      },
+      "decisions": [],
+      "blockers": [],
+      "next_actions": [
+        "Audit the summary script entrypoints, then rewrite notebooks/README.md without the duplicate stale content."
       ]
     }
   ]
