@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-15 22:21"
+    "last_updated": "2026-04-15 22:22"
   },
   "areas": [
     {
@@ -441,15 +441,15 @@
       "key": "q4_notebook_canonical_rewrite",
       "label": "Q4 notebook canonical rewrite",
       "owner": "copilot-q4-notebook-rewrite",
-      "status": "review",
-      "notes": "The Q4 notebook now follows a single canonical capped workflow, captures explicit seq2seq and transformer run directories from command output, builds the Q4 summary artifact, refreshes the report figure, and no longer carries the stale duplicate full-Multi30k notebook block."
+      "status": "done",
+      "notes": "Removed stale duplicate legacy block. Canonical section clean."
     },
     {
       "key": "notebooks_readme_sync",
       "label": "Notebooks README sync",
       "owner": "copilot-notebooks-readme",
-      "status": "review",
-      "notes": "Cleaned notebooks/README.md down to one canonical workflow, removed the stale duplicated legacy guidance, and updated the report-refresh section so it uses the actual summary-script CLI shapes with explicit run inputs."
+      "status": "done",
+      "notes": "Removed duplicate legacy block. Single canonical workflow remains."
     }
   ],
   "priorities": [
