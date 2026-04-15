@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-15 22:17
+Last updated: 2026-04-15 22:21
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -72,8 +72,8 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Root README refresh | copilot-root-readme | review | Refreshed the stale top-level README so it now reflects the finished five-task project, current CLI entrypoints, the clean Tectonic report workflow, and the report-local comparison figure regeneration path. |
 | Notebook alignment plan | copilot-notebook-plan | review | docs/colab-plan.md now contains the notebook drift audit, canonical boundaries, wave-based task plan, copy-pasteable agent briefs, and ready-to-run claim command templates for each notebook refresh slice. Surrounding docs stay aligned with current entrypoints. |
 | Q5 notebook canonical rewrite | copilot-q5-notebook-rewrite | review | The Q5 notebook default path now runs the matched 3000/400/400 trigram, LSTM, and distilGPT2 comparison used by the report, tracks concrete run directories instead of guessing the latest run, and ends by building the Q5 summary artifact plus refreshing the report figure. |
-| Q4 notebook canonical rewrite | copilot-q4-notebook-rewrite | in_progress | Finishing the Q4 notebook migration so its default path matches the approved capped transformer-versus-seq2seq comparison and removing the stale duplicate full-Multi30k block that still remains in the notebook JSON. |
-| Notebooks README sync | copilot-notebooks-readme | in_progress | Cleaning notebooks/README.md so it contains one canonical notebook workflow, removes the stale duplicate legacy block, and reflects the actual summary/report refresh commands. |
+| Q4 notebook canonical rewrite | copilot-q4-notebook-rewrite | review | The Q4 notebook now follows a single canonical capped workflow, captures explicit seq2seq and transformer run directories from command output, builds the Q4 summary artifact, refreshes the report figure, and no longer carries the stale duplicate full-Multi30k notebook block. |
+| Notebooks README sync | copilot-notebooks-readme | review | Cleaned notebooks/README.md down to one canonical workflow, removed the stale duplicated legacy guidance, and updated the report-refresh section so it uses the actual summary-script CLI shapes with explicit run inputs. |
 
 ---
 

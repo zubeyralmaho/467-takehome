@@ -1,6 +1,6 @@
 # Agent: copilot-notebooks-readme
 
-Last updated: 2026-04-15 22:17
+Last updated: 2026-04-15 22:21
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-notebooks-readme
 - Related area: notebooks_readme_sync
 - Depends on: -
@@ -31,11 +31,14 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### In Progress
 
-- Verifying the real summary-script CLI usage before collapsing the README to one correct canonical workflow.
+- None.
 
 ### Completed
 
-- None.
+- Removed the stale duplicated README block and rewrote notebooks/README.md as a single canonical notebook guide.
+- Updated the notebook status table so it reflects the current migration state instead of claiming that every notebook is already equally canonical.
+- Corrected the report-refresh commands so q1/q2/q4/q5 summary scripts are shown with their real explicit input arguments.
+- Validated notebooks/README.md with editor diagnostics.
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Audit the summary script entrypoints, then rewrite notebooks/README.md without the duplicate stale content.
+1. Only revisit notebooks/README.md when the remaining notebook rewrite slices land and the current status table needs to be tightened again.

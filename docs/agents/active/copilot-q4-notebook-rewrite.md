@@ -1,6 +1,6 @@
 # Agent: copilot-q4-notebook-rewrite
 
-Last updated: 2026-04-15 22:17
+Last updated: 2026-04-15 22:21
 
 This file is generated from `../status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -16,7 +16,7 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Current Status
 
-- Status: in_progress
+- Status: review
 - Owner: copilot-q4-notebook-rewrite
 - Related area: q4_notebook_canonical_rewrite
 - Depends on: -
@@ -35,13 +35,16 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ### Completed
 
-- None.
+- Reworked the canonical Q4 notebook cells so they run the approved capped seq2seq and transformer comparison with explicit artifact-tracking helpers instead of the old latest-run heuristic.
+- Updated the report-refresh section so the notebook now builds a fresh Q4 summary artifact with scripts/q4_report_summary.py and refreshes the Q4 report figure with scripts/report_comparison_figures.py.
+- Removed the stale duplicate legacy Q4 notebook block that still encoded the older full-Multi30k path inside the notebook JSON.
+- Validated the new helper and summary cells with syntax checks and confirmed the notebook now exposes a single 19-cell workflow.
 
 ---
 
 ## Decisions
 
-- None.
+- Keep this slice notebook-only and do not reopen Q4 modeling, report prose, or broader shared notebook bootstrap cleanup.
 
 ---
 
@@ -53,4 +56,4 @@ This file is generated from `../status.json`. Edit the JSON or use `scripts/agen
 
 ## Next Actions
 
-1. Rewrite the remaining Q4 notebook cells so they track explicit run directories, build the Q4 summary artifact, refresh the report figure, and remove the stale duplicate legacy block.
+1. Reuse the same explicit run-tracking and summary-hook pattern when the Q3 notebook rewrite is claimed.

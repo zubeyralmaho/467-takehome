@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-15 22:17"
+    "last_updated": "2026-04-15 22:21"
   },
   "areas": [
     {
@@ -441,15 +441,15 @@
       "key": "q4_notebook_canonical_rewrite",
       "label": "Q4 notebook canonical rewrite",
       "owner": "copilot-q4-notebook-rewrite",
-      "status": "in_progress",
-      "notes": "Finishing the Q4 notebook migration so its default path matches the approved capped transformer-versus-seq2seq comparison and removing the stale duplicate full-Multi30k block that still remains in the notebook JSON."
+      "status": "review",
+      "notes": "The Q4 notebook now follows a single canonical capped workflow, captures explicit seq2seq and transformer run directories from command output, builds the Q4 summary artifact, refreshes the report figure, and no longer carries the stale duplicate full-Multi30k notebook block."
     },
     {
       "key": "notebooks_readme_sync",
       "label": "Notebooks README sync",
       "owner": "copilot-notebooks-readme",
-      "status": "in_progress",
-      "notes": "Cleaning notebooks/README.md so it contains one canonical notebook workflow, removes the stale duplicate legacy block, and reflects the actual summary/report refresh commands."
+      "status": "review",
+      "notes": "Cleaned notebooks/README.md down to one canonical workflow, removed the stale duplicated legacy guidance, and updated the report-refresh section so it uses the actual summary-script CLI shapes with explicit run inputs."
     }
   ],
   "priorities": [
@@ -1012,6 +1012,14 @@
         "outcome": "notebooks/Q5_LanguageModeling.ipynb now defaults to the matched 3000/400/400 report comparison path and makes the Q5 summary plus figure refresh steps explicit.",
         "next": "Run the notebook in Colab when needed; larger null-cap reruns should stay exploratory and use a separate summary artifact chain.",
         "blocker": "Local execution was not attempted because the notebook still depends on google.colab and Drive mount cells."
+      },
+      {
+        "agent": "copilot-q4-notebook-rewrite",
+        "date": "2026-04-15",
+        "scope": "Q4 notebook canonical rewrite",
+        "outcome": "The Q4 notebook now defaults to the approved capped seq2seq-versus-transformer comparison, directly builds the Q4 summary artifact, refreshes the report figure, and no longer contains the stale duplicate full-data workflow.",
+        "next": "Run the notebook in Colab when needed; keep larger-budget Multi30k experiments on a separate exploratory branch and summary chain.",
+        "blocker": "Local execution was not attempted because the notebook still targets Colab/Drive cells for its default workflow."
       }
     ]
   },
@@ -2694,7 +2702,7 @@
       "name": "copilot-q4-notebook-rewrite",
       "date": "2026-04-15",
       "scope": "Align the Q4 notebook default path with the approved Q4 report comparison state",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-q4-notebook-rewrite",
       "related_area": "q4_notebook_canonical_rewrite",
       "depends_on": [],
@@ -2703,19 +2711,26 @@
           "Compared notebooks/Q4_MachineTranslation.ipynb against report/README.md, outputs/q4 canonical configs, and scripts/q4_report_summary.py."
         ],
         "in_progress": [],
-        "completed": []
+        "completed": [
+          "Reworked the canonical Q4 notebook cells so they run the approved capped seq2seq and transformer comparison with explicit artifact-tracking helpers instead of the old latest-run heuristic.",
+          "Updated the report-refresh section so the notebook now builds a fresh Q4 summary artifact with scripts/q4_report_summary.py and refreshes the Q4 report figure with scripts/report_comparison_figures.py.",
+          "Removed the stale duplicate legacy Q4 notebook block that still encoded the older full-Multi30k path inside the notebook JSON.",
+          "Validated the new helper and summary cells with syntax checks and confirmed the notebook now exposes a single 19-cell workflow."
+        ]
       },
-      "decisions": [],
+      "decisions": [
+        "Keep this slice notebook-only and do not reopen Q4 modeling, report prose, or broader shared notebook bootstrap cleanup."
+      ],
       "blockers": [],
       "next_actions": [
-        "Rewrite the remaining Q4 notebook cells so they track explicit run directories, build the Q4 summary artifact, refresh the report figure, and remove the stale duplicate legacy block."
+        "Reuse the same explicit run-tracking and summary-hook pattern when the Q3 notebook rewrite is claimed."
       ]
     },
     {
       "name": "copilot-notebooks-readme",
       "date": "2026-04-15",
       "scope": "Align notebooks/README.md with the current canonical notebook and report-refresh workflow",
-      "status": "in_progress",
+      "status": "review",
       "owner": "copilot-notebooks-readme",
       "related_area": "notebooks_readme_sync",
       "depends_on": [],
@@ -2723,15 +2738,18 @@
         "started": [
           "Reviewed notebooks/README.md after the notebook planning work and found that the canonical content is followed by a stale duplicate legacy block."
         ],
-        "in_progress": [
-          "Verifying the real summary-script CLI usage before collapsing the README to one correct canonical workflow."
-        ],
-        "completed": []
+        "in_progress": [],
+        "completed": [
+          "Removed the stale duplicated README block and rewrote notebooks/README.md as a single canonical notebook guide.",
+          "Updated the notebook status table so it reflects the current migration state instead of claiming that every notebook is already equally canonical.",
+          "Corrected the report-refresh commands so q1/q2/q4/q5 summary scripts are shown with their real explicit input arguments.",
+          "Validated notebooks/README.md with editor diagnostics."
+        ]
       },
       "decisions": [],
       "blockers": [],
       "next_actions": [
-        "Audit the summary script entrypoints, then rewrite notebooks/README.md without the duplicate stale content."
+        "Only revisit notebooks/README.md when the remaining notebook rewrite slices land and the current status table needs to be tightened again."
       ]
     }
   ]

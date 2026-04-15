@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-04-15 22:17
+Last updated: 2026-04-15 22:21
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -437,3 +437,9 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
   Outcome: notebooks/Q5_LanguageModeling.ipynb now defaults to the matched 3000/400/400 report comparison path and makes the Q5 summary plus figure refresh steps explicit.
   Next: Run the notebook in Colab when needed; larger null-cap reruns should stay exploratory and use a separate summary artifact chain.
   Blocker: Local execution was not attempted because the notebook still depends on google.colab and Drive mount cells.
+- Agent: copilot-q4-notebook-rewrite
+  Date: 2026-04-15
+  Scope: Q4 notebook canonical rewrite
+  Outcome: The Q4 notebook now defaults to the approved capped seq2seq-versus-transformer comparison, directly builds the Q4 summary artifact, refreshes the report figure, and no longer contains the stale duplicate full-data workflow.
+  Next: Run the notebook in Colab when needed; keep larger-budget Multi30k experiments on a separate exploratory branch and summary chain.
+  Blocker: Local execution was not attempted because the notebook still targets Colab/Drive cells for its default workflow.
