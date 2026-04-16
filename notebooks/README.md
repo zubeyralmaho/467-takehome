@@ -23,7 +23,7 @@ Each notebook should be interpreted with this split:
 | `Q1_Classification.ipynb` | Matched 4K train / 2K test comparison | Partial alignment | `scripts/q1_report_summary.py` with explicit run paths |
 | `Q2_NER.ipynb` | Full CoNLL-2003 comparison | Mostly aligned, markdown cleanup/report hooks still matter | `scripts/q2_report_summary.py` with explicit run paths |
 | `Q3_Summarization.ipynb` | Capped direct TextRank vs DistilBART comparison | Needs canonical rewrite | `scripts/report_comparison_figures.py` after report-facing artifacts change |
-| `Q4_MachineTranslation.ipynb` | Approved capped transformer vs seq2seq comparison | Rewrite in progress | `scripts/q4_report_summary.py` with explicit run paths |
+| `Q4_MachineTranslation.ipynb` | Approved capped transformer vs seq2seq comparison | Canonical rewrite landed | `scripts/q4_report_summary.py` with explicit run paths |
 | `Q5_LanguageModeling.ipynb` | Matched 3000/400/400 trigram vs LSTM vs distilGPT2 comparison | Canonical rewrite landed | `scripts/q5_report_summary.py` with explicit run paths |
 
 ## Recommended Run Order

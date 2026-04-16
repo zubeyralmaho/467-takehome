@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-15 22:22"
+    "last_updated": "2026-04-15 22:24"
   },
   "areas": [
     {
@@ -449,7 +449,7 @@
       "label": "Notebooks README sync",
       "owner": "copilot-notebooks-readme",
       "status": "done",
-      "notes": "Removed duplicate legacy block. Single canonical workflow remains."
+      "notes": "Removed the stale duplicated legacy block, kept notebooks/README.md to one canonical workflow, corrected the summary-script command shapes, and aligned the notebook status table with the live Q4/Q5 rewrite state."
     }
   ],
   "priorities": [
@@ -2730,7 +2730,7 @@
       "name": "copilot-notebooks-readme",
       "date": "2026-04-15",
       "scope": "Align notebooks/README.md with the current canonical notebook and report-refresh workflow",
-      "status": "review",
+      "status": "done",
       "owner": "copilot-notebooks-readme",
       "related_area": "notebooks_readme_sync",
       "depends_on": [],
@@ -2743,6 +2743,7 @@
           "Removed the stale duplicated README block and rewrote notebooks/README.md as a single canonical notebook guide.",
           "Updated the notebook status table so it reflects the current migration state instead of claiming that every notebook is already equally canonical.",
           "Corrected the report-refresh commands so q1/q2/q4/q5 summary scripts are shown with their real explicit input arguments.",
+          "Refreshed the Q4 notebook row after the canonical rewrite landed so notebooks/README.md stays aligned with the live tracker state.",
           "Validated notebooks/README.md with editor diagnostics."
         ]
       },

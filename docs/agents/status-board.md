@@ -1,6 +1,6 @@
 # Agent Status Board
 
-Last updated: 2026-04-15 22:22
+Last updated: 2026-04-15 22:24
 
 This file is generated from `status.json`. Edit the JSON or use `scripts/agent_status.py`.
 
@@ -73,7 +73,7 @@ This file is generated from `status.json`. Edit the JSON or use `scripts/agent_s
 | Notebook alignment plan | copilot-notebook-plan | review | docs/colab-plan.md now contains the notebook drift audit, canonical boundaries, wave-based task plan, copy-pasteable agent briefs, and ready-to-run claim command templates for each notebook refresh slice. Surrounding docs stay aligned with current entrypoints. |
 | Q5 notebook canonical rewrite | copilot-q5-notebook-rewrite | review | The Q5 notebook default path now runs the matched 3000/400/400 trigram, LSTM, and distilGPT2 comparison used by the report, tracks concrete run directories instead of guessing the latest run, and ends by building the Q5 summary artifact plus refreshing the report figure. |
 | Q4 notebook canonical rewrite | copilot-q4-notebook-rewrite | done | Removed stale duplicate legacy block. Canonical section clean. |
-| Notebooks README sync | copilot-notebooks-readme | done | Removed duplicate legacy block. Single canonical workflow remains. |
+| Notebooks README sync | copilot-notebooks-readme | done | Removed the stale duplicated legacy block, kept notebooks/README.md to one canonical workflow, corrected the summary-script command shapes, and aligned the notebook status table with the live Q4/Q5 rewrite state. |
 
 ---
 
