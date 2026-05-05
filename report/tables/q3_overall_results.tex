@@ -1,16 +1,16 @@
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{llccccc}
+\begin{tabular}{llcccccc}
 \toprule
-Model & Split & ROUGE-1 & ROUGE-2 & ROUGE-L & BLEU & METEOR \\
+Model & Split & ROUGE-1 & ROUGE-2 & ROUGE-L & BLEU & METEOR & BERTScore \\
 \midrule
-TextRank & Validation & 0.3378 & 0.1344 & 0.2267 & 0.0962 & 0.3227 \\
-TextRank & Test & 0.3095 & 0.1042 & 0.2045 & 0.0674 & 0.3041 \\
-DistilBART & Validation & \textbf{0.4221} & \textbf{0.1978} & \textbf{0.2967} & \textbf{0.1782} & \textbf{0.3621} \\
-DistilBART & Test & \textbf{0.4218} & \textbf{0.1948} & \textbf{0.2833} & \textbf{0.1355} & \textbf{0.4254} \\
+TextRank & Validation & 0.3522 & 0.1458 & 0.2316 & 0.0982 & 0.3422 & 0.8679 \\
+TextRank & Test & 0.3301 & 0.1170 & 0.2194 & 0.0696 & 0.3233 & 0.8677 \\
+DistilBART & Validation & \textbf{0.4468} & \textbf{0.2235} & \textbf{0.3189} & \textbf{0.1831} & \textbf{0.4145} & \textbf{0.8858} \\
+DistilBART & Test & \textbf{0.4204} & \textbf{0.1865} & \textbf{0.2785} & \textbf{0.1234} & \textbf{0.4123} & \textbf{0.8831} \\
 \bottomrule
 \end{tabular}
-\caption{Matched Q3 comparison on the capped 20-validation/20-test TextRank-versus-DistilBART run. DistilBART outperforms TextRank on every exported metric on both splits.}
+\caption{Matched Q3 comparison on the capped 50-validation/50-test TextRank-versus-DistilBART run. DistilBART outperforms TextRank on every metric on both splits.}
 \label{tab:q3_overall_results}
 \end{table}

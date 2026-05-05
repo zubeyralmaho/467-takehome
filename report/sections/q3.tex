@@ -2,7 +2,7 @@
 
 \subsection{Dataset Description}
 
-Question 3 compares extractive and abstractive summarization on CNN/DailyMail \cite{see2017get}, a news summarization benchmark pairing long-form news articles with short highlight summaries written by editors. The architecture notes propose a 10{,}000/1{,}000/1{,}000 subset for efficient experimentation, but the currently stable head-to-head comparison is a capped run with 20 validation and 20 test examples so that both models can be evaluated on the same articles under the same export contract. The resulting numbers should therefore be read as a matched pilot comparison rather than a final large-budget benchmark.
+Question 3 compares extractive and abstractive summarization on CNN/DailyMail \cite{see2017get}, a news summarization benchmark pairing long-form news articles with short highlight summaries written by editors. The architecture notes propose a 10{,}000/1{,}000/1{,}000 subset for efficient experimentation, but the currently stable head-to-head comparison is a capped run with 50 validation and 50 test examples so that both models can be evaluated on the same articles under the same export contract. The resulting numbers should therefore be read as a matched pilot comparison rather than a final large-budget benchmark.
 
 Even with that limitation, CNN/DailyMail remains an appropriate benchmark for this comparison because the articles are substantially longer than the references and require both content selection and compression. This makes the task a natural contrast between a sentence-ranking baseline such as TextRank and a pretrained abstractive model that can rewrite source content into shorter, reference-style summaries.
 
@@ -14,7 +14,7 @@ The abstractive baseline uses a pretrained DistilBART CNN checkpoint from the Di
 
 \subsection{Results}
 
-Table~\ref{tab:q3_overall_results} summarizes the matched two-model comparison. On the test split, DistilBART reaches ROUGE-1 0.4218, ROUGE-2 0.1948, and ROUGE-L 0.2833. Its BLEU and METEOR scores are 0.1355 and 0.4254, while TextRank reaches 0.3095, 0.1042, 0.2045, 0.0674, and 0.3041 respectively. The abstractive model outperforms TextRank on every exported metric on both validation and test.
+Table~\ref{tab:q3_overall_results} summarizes the matched two-model comparison. On the test split, DistilBART reaches ROUGE-1 0.4204, ROUGE-2 0.1865, ROUGE-L 0.2785, BLEU 0.1234, METEOR 0.4123, and BERTScore 0.8831. TextRank reaches 0.3301, 0.1170, 0.2194, 0.0696, 0.3233, and 0.8677 respectively. The abstractive model outperforms TextRank on every metric on both validation and test.
 
 \input{tables/q3_overall_results}
 
@@ -27,7 +27,7 @@ Figure~\ref{fig:q3_test_metric_comparison} visualizes the same test-set ranking.
 	\label{fig:q3_test_metric_comparison}
 \end{figure}
 
-The largest absolute test improvements are in METEOR (+0.1213), ROUGE-1 (+0.1124), and ROUGE-2 (+0.0906). This pattern suggests that the abstractive model improves both content selection and phrase-level overlap, not only unigram recall. Because the split is still small, these numbers should not be over-generalized. Even so, the results remain consistent across both splits and are materially stronger than the earlier baseline-only Q3 section.
+The largest absolute test improvements are in METEOR (+0.0890), ROUGE-1 (+0.0903), and ROUGE-2 (+0.0695). BERTScore also favors DistilBART (0.8831 vs.\ 0.8677), confirming that the abstractive model produces semantically closer summaries even when the n-gram overlap gap is modest. Because the split is still capped at 50 examples, these numbers should not be over-generalized. Even so, the results are consistent across both splits and across all six metrics.
 
 \subsection{Qualitative Analysis}
 
@@ -39,4 +39,4 @@ The test split also shows that the abstractive model is not uniformly strong. In
 
 The current Q3 evidence now supports a clear preliminary conclusion: on this task, a pretrained abstractive baseline is stronger than the extractive TextRank baseline under the same capped evaluation protocol. TextRank remains useful as a cheap and interpretable baseline, and it can preserve source facts when important content is already concentrated in the lead sentences. However, it is weaker at compression and at matching the short editor-style summaries used as references in CNN/DailyMail.
 
-This is still not the final word on Question 3 because the comparison is based on a 20/20 capped split and zero-shot pretrained inference rather than a larger matched benchmark or task-specific fine-tuning. Even so, the section is no longer extractive-only: there is now a stable direct comparison, and the current best Q3 baseline is the pretrained DistilBART model rather than TextRank.
+This is still not the final word on Question 3 because the comparison is based on a 50/50 capped split and zero-shot pretrained inference rather than a larger matched benchmark or task-specific fine-tuning. Even so, the section now provides a complete metric picture across ROUGE, BLEU, METEOR, and BERTScore, and the current best Q3 baseline is the pretrained DistilBART model rather than TextRank.

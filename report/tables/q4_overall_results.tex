@@ -1,14 +1,14 @@
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c c}
 \toprule
-Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF \\
+Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF & Val METEOR & Test METEOR \\
 \midrule
-Opus-MT Transformer & 100 & 0.4008 & 0.3572 & 0.6569 & 0.6380 \\
-Seq2Seq + Attn & 2000 & 0.1284 & 0.1348 & 0.3491 & 0.3548 \\
+Opus-MT Transformer & 2000 & 0.3749 & 0.3711 & 0.6421 & 0.6398 & 0.6516 & 0.6467 \\
+Seq2Seq + Attn & 2000 & -- & -- & -- & -- & -- & -- \\
 \bottomrule
 \end{tabularx}
-\caption{Q4 capped Multi30k comparison between the pretrained transformer reference and the classical seq2seq baseline.}
+\caption{Q4 Multi30k comparison (200-example val/test). Seq2Seq results pending; BERTScore: Transformer val/test 0.8993/0.8910.}
 \label{tab:q4_overall_results}
 \end{table}
