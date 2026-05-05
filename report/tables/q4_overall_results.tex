@@ -1,14 +1,17 @@
 \begin{table}[H]
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c c c c}
 \toprule
-Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF & Val METEOR & Test METEOR & Val BERTScore & Test BERTScore \\
+Model & Train & \multicolumn{2}{c}{BLEU} & \multicolumn{2}{c}{ChrF} & \multicolumn{2}{c}{METEOR} & \multicolumn{2}{c}{BERTScore} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
+ & & Val & Test & Val & Test & Val & Test & Val & Test \\
 \midrule
-Opus-MT Transformer & 2000 & \textbf{0.3749} & \textbf{0.3711} & \textbf{0.6421} & \textbf{0.6398} & \textbf{0.6516} & \textbf{0.6467} & \textbf{0.8993} & \textbf{0.8910} \\
-Seq2Seq + Attn      & 2000 & 0.1110 & 0.1364 & 0.3293 & 0.3448 & 0.3290 & 0.3544 & 0.7269 & 0.7351 \\
+Opus-MT Transformer & 2000 & \textbf{0.375} & \textbf{0.371} & \textbf{0.642} & \textbf{0.640} & \textbf{0.652} & \textbf{0.647} & \textbf{0.899} & \textbf{0.891} \\
+Seq2Seq + Attn      & 2000 & 0.111 & 0.136 & 0.329 & 0.345 & 0.329 & 0.354 & 0.727 & 0.735 \\
 \bottomrule
 \end{tabularx}
-\caption{Q4 Multi30k EN$\to$DE comparison on the matched 200-example val/test split. Both models trained or evaluated on 2000 training examples. Transformer (Opus-MT) is a pretrained reference; Seq2Seq is trained from scratch.}
+\caption{Q4 Multi30k EN$\to$DE comparison on the matched 200-example val/test split. Both models use 2000 training examples. Transformer (Opus-MT) is a pretrained reference; Seq2Seq is trained from scratch.}
 \label{tab:q4_overall_results}
 \end{table}
