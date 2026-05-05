@@ -1,14 +1,14 @@
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c c}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c c c c}
 \toprule
-Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF & Val METEOR & Test METEOR \\
+Model & Train & Val BLEU & Test BLEU & Val ChrF & Test ChrF & Val METEOR & Test METEOR & Val BERTScore & Test BERTScore \\
 \midrule
-Opus-MT Transformer & 2000 & 0.3749 & 0.3711 & 0.6421 & 0.6398 & 0.6516 & 0.6467 \\
-Seq2Seq + Attn & 2000 & -- & -- & -- & -- & -- & -- \\
+Opus-MT Transformer & 2000 & \textbf{0.3749} & \textbf{0.3711} & \textbf{0.6421} & \textbf{0.6398} & \textbf{0.6516} & \textbf{0.6467} & \textbf{0.8993} & \textbf{0.8910} \\
+Seq2Seq + Attn      & 2000 & 0.1110 & 0.1364 & 0.3293 & 0.3448 & 0.3290 & 0.3544 & 0.7269 & 0.7351 \\
 \bottomrule
 \end{tabularx}
-\caption{Q4 Multi30k comparison (200-example val/test). Seq2Seq results pending; BERTScore: Transformer val/test 0.8993/0.8910.}
+\caption{Q4 Multi30k EN$\to$DE comparison on the matched 200-example val/test split. Both models trained or evaluated on 2000 training examples. Transformer (Opus-MT) is a pretrained reference; Seq2Seq is trained from scratch.}
 \label{tab:q4_overall_results}
 \end{table}

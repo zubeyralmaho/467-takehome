@@ -2,7 +2,7 @@
 
 \subsection{Dataset Description}
 
-Question 4 uses the English-to-German Multi30k translation benchmark \cite{elliott2016multi30k}. In this project, the dataset is accessed through its Hugging Face mirror and treated as a short-caption translation task. That makes it a useful benchmark for testing whether a model can produce fluent target-language sentences while preserving compact visual descriptions from the source caption. The current Q4 evidence now includes two finished systems evaluated on the same capped 100-example validation and 100-example test splits: a pretrained transformer reference and a custom seq2seq-plus-attention baseline.
+Question 4 uses the English-to-German Multi30k translation benchmark \cite{elliott2016multi30k}. In this project, the dataset is accessed through its Hugging Face mirror and treated as a short-caption translation task. That makes it a useful benchmark for testing whether a model can produce fluent target-language sentences while preserving compact visual descriptions from the source caption. The current Q4 evidence now includes two finished systems evaluated on the same matched 200-example validation and 200-example test splits: a pretrained transformer reference and a custom seq2seq-plus-attention baseline.
 
 The comparison is direct at evaluation time but not perfectly budget-matched at training time. The transformer run keeps a 100-example train slice only for artifact-contract consistency and does not perform task-specific fine-tuning, whereas the seq2seq model is trained from scratch on 2000 capped training examples. This distinction matters for interpretation, so the section should be read as a practical pretrained-versus-classical comparison rather than a matched from-scratch study.
 
@@ -12,20 +12,20 @@ The stronger system uses a pretrained Opus-MT English-to-German checkpoint from 
 
 The classical comparator is a compact GRU encoder-decoder with additive attention \cite{bahdanau2015nmt}. It uses 128-dimensional token embeddings and hidden states, a single recurrent layer, teacher forcing during training, and a maximum decoded length of 32 tokens. Unlike the transformer reference, this seq2seq model is trained from scratch on a lowercased 2000-example training split. It must therefore learn translation behavior directly from the capped Multi30k data.
 
-Evaluation uses BLEU and ChrF on both validation and test. BLEU gives a familiar n-gram precision view of translation quality, while ChrF is more tolerant of inflectional and morphological variation and is often informative for German output. Together, the two metrics provide a lightweight but credible baseline suite for the current stage of Q4.
+Evaluation uses BLEU, ChrF, METEOR, and BERTScore on both validation and test. BLEU gives a familiar n-gram precision view of translation quality, ChrF is more tolerant of inflectional and morphological variation, METEOR accounts for word order and partial matching, and BERTScore captures semantic similarity through contextual embeddings. Together, the four metrics provide a credible multi-faceted evaluation for the current Q4 comparison.
 
 \subsection{Results}
 
-Table~\ref{tab:q4_overall_results} summarizes the finished comparison. The pretrained transformer reaches validation/test BLEU 0.4008/0.3572 and validation/test ChrF 0.6569/0.6380, while the stronger seq2seq reference run reaches 0.1284/0.1348 BLEU and 0.3491/0.3548 ChrF. On the shared validation/test evaluation, the transformer therefore leads the seq2seq model by 0.2724/0.2224 BLEU and 0.3078/0.2832 ChrF.
+Table~\ref{tab:q4_overall_results} summarizes the finished comparison. The pretrained transformer reaches validation/test BLEU 0.3749/0.3711, ChrF 0.6421/0.6398, METEOR 0.6516/0.6467, and BERTScore 0.8993/0.8910. The seq2seq baseline reaches BLEU 0.1110/0.1364, ChrF 0.3293/0.3448, METEOR 0.3290/0.3544, and BERTScore 0.7269/0.7351. On the shared evaluation the transformer therefore leads by roughly 0.26 BLEU, 0.29 ChrF, 0.29 METEOR, and 0.16 BERTScore on the test split.
 
 \input{tables/q4_overall_results}
 
-Figure~\ref{fig:q4_test_metric_comparison} makes the same comparison easier to scan visually. The transformer leads the classical seq2seq model on both exported test metrics, and the gap is large enough that the model ranking is unambiguous even on the capped evaluation split.
+Figure~\ref{fig:q4_test_metric_comparison} makes the same comparison easier to scan visually. The transformer leads the classical seq2seq model on all four test metrics, and the gap is large enough that the model ranking is unambiguous even on the capped evaluation split.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.88\textwidth]{figures/q4/test_metric_comparison.png}
-	\caption{Q4 test-set BLEU and ChrF comparison for the stronger seq2seq baseline and the pretrained transformer reference.}
+	\caption{Q4 test-set metric comparison for the Seq2Seq baseline and the pretrained Opus-MT transformer.}
 	\label{fig:q4_test_metric_comparison}
 \end{figure}
 
