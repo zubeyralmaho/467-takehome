@@ -20,7 +20,8 @@ except ImportError:
     IOB2 = None
 
 from src.common.export import save_metrics, save_predictions
-from src.q2_ner.analysis import analyze_sequence_errors, summarize_label_confusions
+from src.common.visualization import plot_category_distribution, plot_training_history
+from src.q2_ner.analysis import analyze_sequence_errors, summarize_label_confusions, summarize_token_error_distribution
 from src.q2_ner.dataset import prepare_datasets
 from src.q2_ner.models import BERTNERModel, BiLSTMCRFTagger, FeatureBasedCRF
 
@@ -183,6 +184,7 @@ def _evaluate_model(config, model, split_data: dict[str, list]) -> dict:
             predictions,
             top_n=getattr(config.evaluation, "top_confusions", 10),
         ),
+        "token_error_distribution": summarize_token_error_distribution(split_data["labels"], predictions),
     }
 
 
@@ -225,7 +227,14 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
             analysis_output["models"][model_name][split_name] = {
                 "error_examples": evaluation["error_examples"],
                 "label_confusions": evaluation["label_confusions"],
+                "token_error_distribution": evaluation["token_error_distribution"],
             }
+
+            plot_category_distribution(
+                evaluation["token_error_distribution"],
+                run_path / "figures" / f"{model_name}_{split_name}_token_error_distribution.png",
+                title=f"Q2 {model_name} {split_name} token error distribution",
+            )
 
             save_predictions(
                 _prediction_rows(
@@ -235,6 +244,16 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
                     evaluation["token_confidences"],
                 ),
                 run_path / "predictions" / f"{model_name}_{split_name}_predictions.csv",
+            )
+
+        history = getattr(model, "training_history", None)
+        if history:
+            metrics_output["models"][model_name]["training_history"] = history
+            save_metrics(history, run_path / "training_history" / f"{model_name}_history.json")
+            plot_training_history(
+                history,
+                run_path / "figures" / f"{model_name}_training_curve.png",
+                title=f"Q2 {model_name} training history",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")

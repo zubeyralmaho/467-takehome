@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from copy import deepcopy
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Sequence
 
 import numpy as np
@@ -163,6 +164,8 @@ class BiLSTMClassifier:
         max_seq_length: int = 256,
         weight_decay: float = 0.0,
         monitor_metric: str = "macro_f1",
+        pretrained_embeddings_path: str | None = None,
+        freeze_embeddings: bool = False,
         num_workers: int = 0,
         device: str = "auto",
         seed: int = 42,
@@ -180,12 +183,51 @@ class BiLSTMClassifier:
         self.max_seq_length = max_seq_length
         self.weight_decay = weight_decay
         self.monitor_metric = monitor_metric
+        self.pretrained_embeddings_path = pretrained_embeddings_path
+        self.freeze_embeddings = freeze_embeddings
         self.num_workers = num_workers
         self.seed = seed
         self.device = self._resolve_device(device)
 
         self.vocabulary: Vocabulary | None = None
         self.model: _BiLSTMNetwork | None = None
+        self.training_history: list[dict[str, float | int | None]] = []
+
+    def _load_pretrained_embeddings(self, vocabulary: Vocabulary) -> torch.Tensor | None:
+        if not self.pretrained_embeddings_path:
+            return None
+
+        path = Path(self.pretrained_embeddings_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Pretrained embedding file not found: {path}")
+
+        embedding_matrix = torch.randn(len(vocabulary.id_to_token), self.embedding_dim) * 0.02
+        embedding_matrix[vocabulary.pad_id].zero_()
+        covered = 0
+
+        with path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                parts = line.strip().split()
+                if len(parts) <= 2:
+                    continue
+
+                token = parts[0]
+                if token not in vocabulary.token_to_id:
+                    continue
+
+                values = parts[1:]
+                if len(values) != self.embedding_dim:
+                    continue
+
+                vector = torch.tensor([float(value) for value in values], dtype=torch.float32)
+                embedding_matrix[vocabulary.token_to_id[token]] = vector
+                covered += 1
+
+        if covered == 0:
+            raise ValueError(
+                "No vocabulary tokens matched the pretrained embeddings. Check tokenization and embedding dimension."
+            )
+        return embedding_matrix
 
     @staticmethod
     def _resolve_device(device: str) -> torch.device:
@@ -238,6 +280,7 @@ class BiLSTMClassifier:
     def fit(self, texts: Sequence[str], labels: Sequence[int], validation_data: dict[str, list] | None = None) -> None:
         labels = [int(label) for label in labels]
         num_classes = max(labels) + 1
+        self.training_history = []
         self.vocabulary = Vocabulary.build(
             texts=texts,
             max_vocab_size=self.max_vocab_size,
@@ -252,6 +295,11 @@ class BiLSTMClassifier:
             num_classes=num_classes,
             pad_id=self.vocabulary.pad_id,
         ).to(self.device)
+
+        pretrained_embedding_weights = self._load_pretrained_embeddings(self.vocabulary)
+        if pretrained_embedding_weights is not None:
+            self.model.embedding.weight.data.copy_(pretrained_embedding_weights.to(self.device))
+            self.model.embedding.weight.requires_grad = not self.freeze_embeddings
 
         optimizer = torch.optim.Adam(
             self.model.parameters(),
@@ -276,6 +324,8 @@ class BiLSTMClassifier:
 
         for _ in range(self.max_epochs):
             self.model.train()
+            epoch_loss = 0.0
+            epoch_examples = 0
             for batch in train_loader:
                 input_ids = batch["input_ids"].to(self.device)
                 lengths = batch["lengths"]
@@ -291,8 +341,21 @@ class BiLSTMClassifier:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
                 optimizer.step()
 
+                batch_size = int(batch_labels.size(0))
+                epoch_loss += float(loss.item()) * batch_size
+                epoch_examples += batch_size
+
+            mean_train_loss = epoch_loss / max(epoch_examples, 1)
+
             if validation_loader is None:
                 best_state = deepcopy(self.model.state_dict())
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_macro_f1": None,
+                    }
+                )
                 continue
 
             predictions, _, references = self._predict_with_references(validation_loader)
@@ -302,9 +365,23 @@ class BiLSTMClassifier:
                 best_score = validation_score
                 best_state = deepcopy(self.model.state_dict())
                 epochs_without_improvement = 0
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_macro_f1": validation_score,
+                    }
+                )
                 continue
 
             epochs_without_improvement += 1
+            self.training_history.append(
+                {
+                    "epoch": len(self.training_history) + 1,
+                    "train_loss": mean_train_loss,
+                    "val_macro_f1": validation_score,
+                }
+            )
             if epochs_without_improvement >= self.early_stopping_patience:
                 break
 

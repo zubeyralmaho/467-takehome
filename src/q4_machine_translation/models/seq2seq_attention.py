@@ -213,14 +213,17 @@ class Decoder(nn.Module):
         hidden: torch.Tensor,
         encoder_outputs: torch.Tensor,
         mask: torch.Tensor,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
+        return_attention: bool = False,
+    ) -> tuple[torch.Tensor, torch.Tensor] | tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         embedded = self.dropout(self.embedding(input_token.unsqueeze(1)))
-        _, context = self.attention(hidden[-1], encoder_outputs, mask)
+        attention_weights, context = self.attention(hidden[-1], encoder_outputs, mask)
         rnn_input = torch.cat([embedded, context.unsqueeze(1)], dim=2)
         output, hidden = self.rnn(rnn_input, hidden)
         logits = self.output_projection(
             torch.cat([output.squeeze(1), context, embedded.squeeze(1)], dim=1)
         )
+        if return_attention:
+            return logits, hidden, attention_weights
         return logits, hidden
 
 
@@ -268,16 +271,29 @@ class _Seq2SeqAttentionNetwork(nn.Module):
         eos_id: int,
         max_length: int,
         forbidden_token_ids: Sequence[int] | None = None,
-    ) -> torch.Tensor:
+        return_attentions: bool = False,
+    ) -> torch.Tensor | tuple[torch.Tensor, list[torch.Tensor]]:
         encoder_outputs, hidden = self.encoder(src_ids, src_lengths)
         mask = self._mask(src_ids)
 
         input_token = torch.full((src_ids.size(0),), bos_id, dtype=torch.long, device=src_ids.device)
         predictions: list[torch.Tensor] = []
+        attention_steps: list[torch.Tensor] = []
         finished = torch.zeros(src_ids.size(0), dtype=torch.bool, device=src_ids.device)
 
         for _ in range(max_length):
-            step_logits, hidden = self.decoder(input_token, hidden, encoder_outputs, mask)
+            decoder_output = self.decoder(
+                input_token,
+                hidden,
+                encoder_outputs,
+                mask,
+                return_attention=return_attentions,
+            )
+            if return_attentions:
+                step_logits, hidden, attention_weights = decoder_output
+                attention_steps.append(attention_weights.detach().cpu())
+            else:
+                step_logits, hidden = decoder_output
             if forbidden_token_ids:
                 step_logits = step_logits.clone()
                 for token_id in forbidden_token_ids:
@@ -290,8 +306,15 @@ class _Seq2SeqAttentionNetwork(nn.Module):
                 break
 
         if not predictions:
-            return torch.empty((src_ids.size(0), 0), dtype=torch.long, device=src_ids.device)
-        return torch.stack(predictions, dim=1)
+            empty_predictions = torch.empty((src_ids.size(0), 0), dtype=torch.long, device=src_ids.device)
+            if return_attentions:
+                return empty_predictions, []
+            return empty_predictions
+
+        decoded = torch.stack(predictions, dim=1)
+        if return_attentions:
+            return decoded, attention_steps
+        return decoded
 
 
 class Seq2SeqAttentionMT:
@@ -336,6 +359,7 @@ class Seq2SeqAttentionMT:
         self.source_vocabulary: Vocabulary | None = None
         self.target_vocabulary: Vocabulary | None = None
         self.model: _Seq2SeqAttentionNetwork | None = None
+        self.training_history: list[dict[str, float | int]] = []
 
     @staticmethod
     def _resolve_device(device: str) -> torch.device:
@@ -394,6 +418,7 @@ class Seq2SeqAttentionMT:
         )
 
     def fit(self, sources: Sequence[str], targets: Sequence[str], validation_data: dict[str, list[str]] | None = None) -> None:
+        self.training_history = []
         source_tokens = [self._tokenize(text) for text in sources]
         target_tokens = [self._tokenize(text) for text in targets]
         self.source_vocabulary = Vocabulary.build(
@@ -453,6 +478,8 @@ class Seq2SeqAttentionMT:
 
         for _ in range(self.max_epochs):
             self.model.train()
+            epoch_loss = 0.0
+            epoch_tokens = 0
             for batch in train_loader:
                 src_ids = batch["src_ids"].to(self.device)
                 src_lengths = batch["src_lengths"]
@@ -467,9 +494,20 @@ class Seq2SeqAttentionMT:
                 normalized_loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.gradient_clip)
                 optimizer.step()
+                epoch_loss += float(loss.item())
+                epoch_tokens += token_count
+
+            mean_train_loss = epoch_loss / max(epoch_tokens, 1)
 
             if validation_loader is None:
                 best_state = deepcopy(self.model.state_dict())
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_loss": mean_train_loss,
+                    }
+                )
                 continue
 
             validation_loss = self._validation_loss(validation_loader, criterion)
@@ -477,9 +515,23 @@ class Seq2SeqAttentionMT:
                 best_loss = validation_loss
                 best_state = deepcopy(self.model.state_dict())
                 epochs_without_improvement = 0
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_loss": validation_loss,
+                    }
+                )
                 continue
 
             epochs_without_improvement += 1
+            self.training_history.append(
+                {
+                    "epoch": len(self.training_history) + 1,
+                    "train_loss": mean_train_loss,
+                    "val_loss": validation_loss,
+                }
+            )
             if epochs_without_improvement >= self.early_stopping_patience:
                 break
 
@@ -533,3 +585,45 @@ class Seq2SeqAttentionMT:
                     predictions.append(self._detokenize(target_vocabulary.decode(row)))
 
         return predictions
+
+    def explain_attention(self, text: str, max_length: int | None = None) -> dict[str, object]:
+        model, source_vocabulary, target_vocabulary = self._require_fitted()
+        model.eval()
+
+        source_tokens = self._tokenize(text)
+        src_tensor = torch.tensor(source_vocabulary.encode(source_tokens), dtype=torch.long)
+        src_lengths = torch.tensor([src_tensor.size(0)], dtype=torch.long)
+        src_ids = pad_sequence([src_tensor], batch_first=True, padding_value=source_vocabulary.pad_id).to(self.device)
+
+        with torch.no_grad():
+            decoded_output = model.greedy_decode(
+                src_ids,
+                src_lengths,
+                bos_id=target_vocabulary.bos_id,
+                eos_id=target_vocabulary.eos_id,
+                max_length=max_length or self.max_output_length,
+                forbidden_token_ids=[
+                    target_vocabulary.pad_id,
+                    target_vocabulary.bos_id,
+                    target_vocabulary.unk_id,
+                ],
+                return_attentions=True,
+            )
+
+        decoded_ids, attention_steps = decoded_output
+        decoded_token_ids = decoded_ids[0].cpu().tolist()
+        target_tokens = target_vocabulary.decode(decoded_token_ids)
+        source_with_markers = [BOS_TOKEN, *source_tokens, EOS_TOKEN]
+
+        attention_matrix: list[list[float]] = []
+        for step_index, step_attention in enumerate(attention_steps[: len(target_tokens)]):
+            distribution = step_attention[0].tolist()
+            valid_distribution = distribution[: len(source_with_markers)]
+            attention_matrix.append([float(value) for value in valid_distribution])
+
+        return {
+            "source_tokens": source_with_markers,
+            "target_tokens": target_tokens,
+            "attention": attention_matrix,
+            "prediction": self._detokenize(target_tokens),
+        }

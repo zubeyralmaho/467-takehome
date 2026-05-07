@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.common.evaluation import evaluate_predictions
 from src.common.export import save_confusion_matrix_csv, save_metrics, save_predictions
+from src.common.visualization import plot_training_history
 from src.q1_classification.analysis import analyze_misclassifications, identify_error_patterns
 from src.q1_classification.dataset import prepare_datasets
 from src.q1_classification.models import BiLSTMClassifier, DistilBERTClassifier, TFIDFClassifier
@@ -46,6 +47,8 @@ def _build_models(config) -> dict[str, object]:
             max_seq_length=model_config.max_seq_length,
             weight_decay=getattr(model_config, "weight_decay", 0.0),
             monitor_metric=getattr(model_config, "monitor_metric", "macro_f1"),
+            pretrained_embeddings_path=getattr(model_config, "pretrained_embeddings_path", None),
+            freeze_embeddings=getattr(model_config, "freeze_embeddings", False),
             num_workers=getattr(model_config, "num_workers", 0),
             device=config.device,
             seed=config.seed,
@@ -170,6 +173,16 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict:
             save_confusion_matrix_csv(
                 evaluation["confusion_matrix"],
                 run_path / "confusion_matrices" / f"{model_name}_{split_name}_confusion_matrix.csv",
+            )
+
+        history = getattr(model, "training_history", None)
+        if history:
+            metrics_output[model_name]["training_history"] = history
+            save_metrics(history, run_path / "training_history" / f"{model_name}_history.json")
+            plot_training_history(
+                history,
+                run_path / "figures" / f"{model_name}_training_curve.png",
+                title=f"Q1 {model_name} training history",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")

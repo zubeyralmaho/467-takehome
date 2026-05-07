@@ -191,6 +191,7 @@ class LSTMLanguageModel:
 
         self.vocabulary: Vocabulary | None = None
         self.model: _LSTMNetwork | None = None
+        self.training_history: list[dict[str, float | int | None]] = []
 
     @staticmethod
     def _resolve_device(device: str) -> torch.device:
@@ -231,6 +232,8 @@ class LSTMLanguageModel:
         if not token_sequences:
             raise ValueError("At least one training sequence is required for the LSTM language model.")
 
+        self.training_history = []
+
         self.vocabulary = Vocabulary.build(
             token_sequences=token_sequences,
             max_vocab_size=self.max_vocab_size,
@@ -269,6 +272,8 @@ class LSTMLanguageModel:
 
         for _ in range(self.max_epochs):
             self.model.train()
+            epoch_loss = 0.0
+            epoch_tokens = 0
             for batch in train_loader:
                 input_ids = batch["input_ids"].to(self.device)
                 targets = batch["targets"].to(self.device)
@@ -280,8 +285,23 @@ class LSTMLanguageModel:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.gradient_clip)
                 optimizer.step()
 
+                valid_token_count = int((targets != self.vocabulary.pad_id).sum().item())
+                epoch_loss += float(loss.item()) * max(valid_token_count, 1)
+                epoch_tokens += valid_token_count
+
+            mean_train_loss = epoch_loss / max(epoch_tokens, 1)
+            current_lr = float(optimizer.param_groups[0]["lr"])
+
             if validation_loader is None:
                 best_state = deepcopy(self.model.state_dict())
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_perplexity": None,
+                        "learning_rate": current_lr,
+                    }
+                )
                 continue
 
             validation_perplexity = self._perplexity_from_loader(validation_loader)
@@ -291,9 +311,25 @@ class LSTMLanguageModel:
                 best_perplexity = validation_perplexity
                 best_state = deepcopy(self.model.state_dict())
                 epochs_without_improvement = 0
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": mean_train_loss,
+                        "val_perplexity": validation_perplexity,
+                        "learning_rate": current_lr,
+                    }
+                )
                 continue
 
             epochs_without_improvement += 1
+            self.training_history.append(
+                {
+                    "epoch": len(self.training_history) + 1,
+                    "train_loss": mean_train_loss,
+                    "val_perplexity": validation_perplexity,
+                    "learning_rate": current_lr,
+                }
+            )
             if epochs_without_improvement >= self.early_stopping_patience:
                 break
 

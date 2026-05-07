@@ -117,6 +117,7 @@ class DistilBERTClassifier:
 
         self.tokenizer = None
         self.model = None
+        self.training_history: list[dict[str, float | int | None]] = []
 
     @staticmethod
     def _ensure_transformers_available() -> None:
@@ -176,6 +177,7 @@ class DistilBERTClassifier:
     def fit(self, texts: Sequence[str], labels: Sequence[int], validation_data: dict[str, list] | None = None) -> None:
         labels = [int(label) for label in labels]
         num_classes = max(labels) + 1
+        self.training_history = []
 
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModelForSequenceClassification.from_pretrained(
@@ -210,6 +212,8 @@ class DistilBERTClassifier:
         for _ in range(self.max_epochs):
             self.model.train()
             optimizer.zero_grad(set_to_none=True)
+            epoch_loss = 0.0
+            epoch_batches = 0
             for step, batch in enumerate(train_loader, start=1):
                 input_ids = batch["input_ids"].to(self.device)
                 attention_mask = batch["attention_mask"].to(self.device)
@@ -224,6 +228,8 @@ class DistilBERTClassifier:
                         attention_mask=attention_mask,
                         labels=batch_labels,
                     )
+                    epoch_loss += float(outputs.loss.item())
+                    epoch_batches += 1
                     loss = outputs.loss / self.gradient_accumulation_steps
 
                 scaler.scale(loss).backward()
@@ -239,6 +245,13 @@ class DistilBERTClassifier:
 
             if validation_loader is None:
                 best_state = deepcopy(self.model.state_dict())
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": epoch_loss / max(epoch_batches, 1),
+                        "val_macro_f1": None,
+                    }
+                )
                 continue
 
             predictions, _, references = self._predict_with_references(validation_loader)
@@ -248,9 +261,23 @@ class DistilBERTClassifier:
                 best_score = validation_score
                 best_state = deepcopy(self.model.state_dict())
                 epochs_without_improvement = 0
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": epoch_loss / max(epoch_batches, 1),
+                        "val_macro_f1": validation_score,
+                    }
+                )
                 continue
 
             epochs_without_improvement += 1
+            self.training_history.append(
+                {
+                    "epoch": len(self.training_history) + 1,
+                    "train_loss": epoch_loss / max(epoch_batches, 1),
+                    "val_macro_f1": validation_score,
+                }
+            )
             if epochs_without_improvement >= self.early_stopping_patience:
                 break
 

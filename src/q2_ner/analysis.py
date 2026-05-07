@@ -132,3 +132,43 @@ def summarize_label_confusions(
         }
         for (true_label, predicted_label), count in confusion_counts.most_common(top_n)
     ]
+
+
+def summarize_token_error_distribution(
+    references: Sequence[Sequence[str]],
+    predictions: Sequence[Sequence[str]],
+) -> dict[str, int]:
+    distribution: Counter[str] = Counter(
+        {
+            "false_positive": 0,
+            "false_negative": 0,
+            "entity_type_error": 0,
+            "boundary_or_tag_error": 0,
+            "other": 0,
+        }
+    )
+
+    for true_labels, predicted_labels in zip(references, predictions, strict=False):
+        for true_label, predicted_label in zip(true_labels, predicted_labels, strict=False):
+            if true_label == predicted_label:
+                continue
+
+            true_prefix, true_type = _parse_label(true_label)
+            pred_prefix, pred_type = _parse_label(predicted_label)
+
+            if true_label == "O" and predicted_label != "O":
+                distribution["false_positive"] += 1
+                continue
+            if true_label != "O" and predicted_label == "O":
+                distribution["false_negative"] += 1
+                continue
+            if true_type is not None and pred_type is not None and true_type != pred_type:
+                distribution["entity_type_error"] += 1
+                continue
+            if true_prefix != pred_prefix:
+                distribution["boundary_or_tag_error"] += 1
+                continue
+
+            distribution["other"] += 1
+
+    return dict(distribution)

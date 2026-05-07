@@ -212,6 +212,7 @@ class BiLSTMCRFTagger:
         self.pad_label_id = self.label_to_id.get("O", 0)
         self.vocabulary: Vocabulary | None = None
         self.model: _BiLSTMCRFNetwork | None = None
+        self.training_history: list[dict[str, float | int | None]] = []
 
     @staticmethod
     def _resolve_device(device: str) -> torch.device:
@@ -266,6 +267,7 @@ class BiLSTMCRFTagger:
         label_sequences: Sequence[Sequence[str]],
         validation_data: dict[str, list] | None = None,
     ) -> None:
+        self.training_history = []
         self.vocabulary = Vocabulary.build(
             token_sequences=token_sequences,
             max_vocab_size=self.max_vocab_size,
@@ -290,6 +292,8 @@ class BiLSTMCRFTagger:
 
         for _ in range(self.max_epochs):
             self.model.train()
+            epoch_loss = 0.0
+            epoch_batches = 0
             for batch in train_loader:
                 input_ids = batch["input_ids"].to(self.device)
                 lengths = batch["lengths"]
@@ -304,9 +308,18 @@ class BiLSTMCRFTagger:
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=5.0)
                 optimizer.step()
+                epoch_loss += float(loss.item())
+                epoch_batches += 1
 
             if validation_data is None:
                 best_state = deepcopy(self.model.state_dict())
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": epoch_loss / max(epoch_batches, 1),
+                        "val_f1": None,
+                    }
+                )
                 continue
 
             predictions = self.predict(validation_data["tokens"])
@@ -316,9 +329,23 @@ class BiLSTMCRFTagger:
                 best_score = validation_score
                 best_state = deepcopy(self.model.state_dict())
                 epochs_without_improvement = 0
+                self.training_history.append(
+                    {
+                        "epoch": len(self.training_history) + 1,
+                        "train_loss": epoch_loss / max(epoch_batches, 1),
+                        "val_f1": validation_score,
+                    }
+                )
                 continue
 
             epochs_without_improvement += 1
+            self.training_history.append(
+                {
+                    "epoch": len(self.training_history) + 1,
+                    "train_loss": epoch_loss / max(epoch_batches, 1),
+                    "val_f1": validation_score,
+                }
+            )
             if epochs_without_improvement >= self.early_stopping_patience:
                 break
 

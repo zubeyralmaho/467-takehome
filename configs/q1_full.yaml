@@ -45,6 +45,8 @@ models:
     max_vocab_size: 50000
     min_frequency: 2
     max_seq_length: 256
+    pretrained_embeddings_path: null
+    freeze_embeddings: false
     num_workers: 0
     monitor_metric: macro_f1
 

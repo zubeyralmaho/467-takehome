@@ -6,6 +6,8 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, Mapping
 
+import numpy as np
+
 try:
     import matplotlib
 
@@ -176,6 +178,108 @@ def plot_grouped_metric_comparison(
     axis.grid(axis="y", linestyle="--", linewidth=0.6, alpha=0.4)
     axis.set_axisbelow(True)
     axis.legend()
+
+    figure.tight_layout()
+    figure.savefig(destination, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_training_history(
+    history: Sequence[Mapping[str, Any]],
+    output_path: str | Path,
+    title: str | None = None,
+) -> None:
+    _require_matplotlib()
+
+    if not history:
+        return
+
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    keys = [
+        key
+        for key in history[0].keys()
+        if key != "epoch" and any(row.get(key) is not None for row in history)
+    ]
+    if not keys:
+        return
+
+    epochs = [int(row.get("epoch", index + 1)) for index, row in enumerate(history)]
+    figure, axis = plt.subplots(figsize=(8, 5))
+
+    for key in keys:
+        values = [float(row[key]) for row in history if row.get(key) is not None]
+        value_epochs = [epochs[index] for index, row in enumerate(history) if row.get(key) is not None]
+        axis.plot(value_epochs, values, marker="o", linewidth=1.8, label=key.replace("_", " ").title())
+
+    axis.set_xlabel("Epoch")
+    axis.set_ylabel("Value")
+    axis.set_title(title or "Training history")
+    axis.grid(axis="y", linestyle="--", linewidth=0.6, alpha=0.4)
+    axis.set_axisbelow(True)
+    axis.legend()
+
+    figure.tight_layout()
+    figure.savefig(destination, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_category_distribution(
+    counts: Mapping[str, int],
+    output_path: str | Path,
+    title: str | None = None,
+) -> None:
+    _require_matplotlib()
+
+    if not counts:
+        return
+
+    labels = [str(label) for label, value in counts.items() if int(value) > 0]
+    values = [int(value) for value in counts.values() if int(value) > 0]
+    if not values:
+        return
+
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    figure, axis = plt.subplots(figsize=(7, 5))
+    axis.pie(values, labels=labels, autopct="%1.1f%%", startangle=90)
+    axis.set_title(title or "Category distribution")
+    axis.axis("equal")
+
+    figure.tight_layout()
+    figure.savefig(destination, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_attention_heatmap(
+    attention_matrix: Sequence[Sequence[float]],
+    source_tokens: Sequence[str],
+    target_tokens: Sequence[str],
+    output_path: str | Path,
+    title: str | None = None,
+) -> None:
+    _require_matplotlib()
+
+    if not attention_matrix or not source_tokens or not target_tokens:
+        return
+
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    matrix = np.array(attention_matrix, dtype=float)
+    figure_width = max(8, len(source_tokens) * 0.45)
+    figure_height = max(4, len(target_tokens) * 0.45)
+    figure, axis = plt.subplots(figsize=(figure_width, figure_height))
+    image = axis.imshow(matrix, cmap="magma", aspect="auto")
+    figure.colorbar(image, ax=axis, fraction=0.04, pad=0.02)
+
+    axis.set_xticks(range(len(source_tokens)), labels=list(source_tokens), rotation=45, ha="right")
+    axis.set_yticks(range(len(target_tokens)), labels=list(target_tokens))
+    axis.set_xlabel("Source tokens")
+    axis.set_ylabel("Target tokens")
+    axis.set_title(title or "Attention heatmap")
 
     figure.tight_layout()
     figure.savefig(destination, dpi=180, bbox_inches="tight")

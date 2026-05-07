@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from src.common.export import save_metrics, save_predictions
+from src.common.visualization import plot_training_history
 from src.q5_language_modeling.analysis import generate_samples
 from src.q5_language_modeling.dataset import prepare_datasets
 from src.q5_language_modeling.evaluation import evaluate_language_model
@@ -122,6 +123,16 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
 
     for split_name in split_names:
         metrics_output["models"][model_name][split_name] = evaluate_language_model(model, datasets[split_name])
+
+    history = getattr(model, "training_history", None)
+    if history:
+        metrics_output["models"][model_name]["training_history"] = history
+        save_metrics(history, run_path / "training_history" / f"{model_name}_history.json")
+        plot_training_history(
+            history,
+            run_path / "figures" / f"{model_name}_training_curve.png",
+            title=f"Q5 {model_name} training history",
+        )
 
     generation_rows = generate_samples(
         model,

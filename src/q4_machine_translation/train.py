@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from src.common.export import save_metrics, save_predictions
+from src.common.visualization import plot_attention_heatmap, plot_training_history
 from src.q4_machine_translation.analysis import qualitative_translation_examples
 from src.q4_machine_translation.dataset import prepare_datasets
 from src.q4_machine_translation.evaluation import evaluate_predictions
@@ -139,6 +140,28 @@ def run_training(config, run_dir: str, final_eval: bool = False) -> dict[str, ob
             save_predictions(
                 _prediction_rows(datasets[split_name], evaluation["predictions"], evaluation["per_example"]),
                 run_path / "predictions" / f"{model_name}_{split_name}_translations.csv",
+            )
+
+        history = getattr(model, "training_history", None)
+        if history:
+            metrics_output["models"][model_name]["training_history"] = history
+            save_metrics(history, run_path / "training_history" / f"{model_name}_history.json")
+            plot_training_history(
+                history,
+                run_path / "figures" / f"{model_name}_training_curve.png",
+                title=f"Q4 {model_name} training history",
+            )
+
+        if model_name == "seq2seq" and datasets["test"]["sources"]:
+            attention_example = model.explain_attention(datasets["test"]["sources"][0])
+            qualitative_output["models"][model_name]["attention_example"] = attention_example
+            save_metrics(attention_example, run_path / "analysis" / f"{model_name}_attention_example.json")
+            plot_attention_heatmap(
+                attention_example["attention"],
+                attention_example["source_tokens"],
+                attention_example["target_tokens"],
+                run_path / "figures" / f"{model_name}_attention_heatmap.png",
+                title="Q4 Seq2Seq attention heatmap",
             )
 
     save_metrics(metrics_output, run_path / "metrics.json")
