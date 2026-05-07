@@ -1,0 +1,52 @@
+question: q3
+task: summarization
+
+dataset:
+  name: cnn_dailymail
+  version: 3.0.0
+  article_column: article
+  summary_column: highlights
+  id_column: id
+  limit_train_samples: null
+  limit_validation_samples: null
+  limit_test_samples: null
+
+preprocess:
+  max_article_words: 1200
+  min_sentence_words: 4
+
+models:
+  textrank:
+    enabled: true
+    similarity_method: tfidf
+    damping: 0.85
+    num_sentences: 3
+    max_sentences: 40
+
+  bart:
+    enabled: true
+    model_name: facebook/bart-large-cnn
+    batch_size: 1
+    max_input_length: 1024
+    max_output_length: 160
+    max_new_tokens: 130
+    min_output_length: 56
+    num_beams: 4
+    length_penalty: 2.0
+    no_repeat_ngram_size: 3
+    early_stopping: true
+    use_fp16: true
+
+  lead3:
+    enabled: false
+    num_sentences: 3
+
+evaluation:
+  metrics:
+    - rouge1
+    - rouge2
+    - rougeL
+    - bleu
+    - meteor
+    - bertscore
+  num_qualitative_examples: 3

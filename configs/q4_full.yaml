@@ -1,0 +1,51 @@
+question: q4
+task: translation
+
+dataset:
+  name: bentrevett/multi30k
+  src_lang: en
+  tgt_lang: de
+  limit_train_samples: null
+  limit_validation_samples: null
+  limit_test_samples: null
+
+preprocess:
+  lowercase_source: false
+  lowercase_target: false
+
+models:
+  seq2seq:
+    enabled: true
+    embedding_dim: 256
+    hidden_dim: 512
+    num_layers: 1
+    dropout: 0.3
+    batch_size: 32
+    learning_rate: 0.0005
+    weight_decay: 0.0
+    max_epochs: 20
+    early_stopping_patience: 3
+    teacher_forcing_ratio: 0.5
+    max_vocab_size: 12000
+    min_token_frequency: 2
+    max_output_length: 64
+    gradient_clip: 1.0
+    num_workers: 0
+
+  transformer:
+    enabled: false
+    model_name: Helsinki-NLP/opus-mt-en-de
+    batch_size: 8
+    max_input_length: 96
+    max_output_length: 96
+    num_beams: 4
+    length_penalty: 1.0
+    early_stopping: true
+
+evaluation:
+  metrics:
+    - bleu
+    - chrf
+    - meteor
+    - bertscore
+  num_qualitative_examples: 3

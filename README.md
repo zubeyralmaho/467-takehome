@@ -47,6 +47,16 @@ python -m src.q4_machine_translation.main --config configs/q4.yaml --final-eval
 python -m src.q5_language_modeling.main --config configs/q5.yaml --final-eval
 ```
 
+Full-dataset scale-up presets (new):
+
+```bash
+python -m src.q1_classification.main --config configs/q1_full.yaml --final-eval
+python -m src.q2_ner.main --config configs/q2_full.yaml --final-eval
+python -m src.q3_summarization.main --config configs/q3_full.yaml --final-eval
+python -m src.q4_machine_translation.main --config configs/q4_full.yaml --final-eval
+python -m src.q5_language_modeling.main --config configs/q5_full.yaml --final-eval
+```
+
 Use repeated `--override` flags to enable or adjust specific models, dataset caps, or decoding/training parameters without editing YAML files directly.
 
 ## Report Workflow

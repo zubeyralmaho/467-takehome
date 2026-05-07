@@ -1,0 +1,56 @@
+question: q5
+task: language_modeling
+
+dataset:
+  name: wikitext
+  version: wikitext-2-raw-v1
+  text_column: text
+  limit_train_samples: null
+  limit_validation_samples: null
+  limit_test_samples: null
+
+preprocess:
+  lowercase: true
+  min_tokens_per_line: 2
+
+model:
+  type: lstm
+  n: 3
+  smoothing: add_k
+  alpha: 0.1
+  min_token_frequency: 2
+  max_vocab_size: 30000
+  embedding_dim: 400
+  hidden_dim: 400
+  num_layers: 2
+  dropout: 0.3
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0
+  max_epochs: 25
+  early_stopping_patience: 4
+  max_seq_length: 35
+  tie_weights: true
+  gradient_clip: 0.25
+  lr_scheduler_enabled: true
+  lr_scheduler_factor: 0.25
+  lr_scheduler_patience: 1
+  lr_scheduler_min_lr: 0.000001
+  num_workers: 0
+  model_name: distilgpt2
+  max_input_length: 256
+  eval_batch_size: 8
+  top_k: 50
+
+generation:
+  max_length: 25
+  temperature: 1.0
+  num_samples: 3
+  seed_texts:
+    - the
+    - in the
+    - he was
+
+evaluation:
+  metrics:
+    - perplexity

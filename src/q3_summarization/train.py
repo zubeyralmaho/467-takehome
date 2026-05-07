@@ -30,11 +30,13 @@ def _build_models(config) -> dict[str, object]:
             batch_size=getattr(model_config, "batch_size", 2),
             max_input_length=getattr(model_config, "max_input_length", 1024),
             max_output_length=getattr(model_config, "max_output_length", 142),
+            max_new_tokens=getattr(model_config, "max_new_tokens", None),
             min_output_length=getattr(model_config, "min_output_length", 56),
             num_beams=getattr(model_config, "num_beams", 4),
             length_penalty=getattr(model_config, "length_penalty", 2.0),
             no_repeat_ngram_size=getattr(model_config, "no_repeat_ngram_size", 3),
             early_stopping=getattr(model_config, "early_stopping", True),
+            use_fp16=getattr(model_config, "use_fp16", False),
             device=config.device,
         )
 

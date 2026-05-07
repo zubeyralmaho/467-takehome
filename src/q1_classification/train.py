@@ -70,6 +70,8 @@ def _build_models(config) -> dict[str, object]:
             ),
             max_seq_length=model_config.max_seq_length,
             warmup_ratio=getattr(model_config, "warmup_ratio", 0.1),
+            gradient_accumulation_steps=getattr(model_config, "gradient_accumulation_steps", 1),
+            use_fp16=getattr(model_config, "use_fp16", False),
             monitor_metric=getattr(model_config, "monitor_metric", "macro_f1"),
             num_workers=getattr(model_config, "num_workers", 0),
             device=config.device,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from contextlib import nullcontext
 from typing import Sequence
 
 import torch
@@ -22,11 +23,13 @@ class BARTSummarizer:
         batch_size: int = 2,
         max_input_length: int = 1024,
         max_output_length: int = 142,
+        max_new_tokens: int | None = None,
         min_output_length: int = 56,
         num_beams: int = 4,
         length_penalty: float = 2.0,
         no_repeat_ngram_size: int = 3,
         early_stopping: bool = True,
+        use_fp16: bool = False,
         device: str = "auto",
     ):
         self._ensure_transformers_available()
@@ -35,11 +38,13 @@ class BARTSummarizer:
         self.batch_size = int(batch_size)
         self.max_input_length = int(max_input_length)
         self.max_output_length = int(max_output_length)
+        self.max_new_tokens = None if max_new_tokens is None else int(max_new_tokens)
         self.min_output_length = int(min_output_length)
         self.num_beams = int(num_beams)
         self.length_penalty = float(length_penalty)
         self.no_repeat_ngram_size = int(no_repeat_ngram_size)
         self.early_stopping = bool(early_stopping)
+        self.use_fp16 = bool(use_fp16)
         self.device = self._resolve_device(device)
 
         self.tokenizer = None
@@ -68,7 +73,10 @@ class BARTSummarizer:
     def _ensure_loaded(self) -> tuple[object, object]:
         if self.model is None or self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, use_fast=True)
-            self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name).to(self.device)
+            load_kwargs = {}
+            if self.use_fp16 and self.device.type == "cuda":
+                load_kwargs["torch_dtype"] = torch.float16
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name, **load_kwargs).to(self.device)
             if getattr(self.tokenizer, "pad_token_id", None) is None and getattr(self.tokenizer, "eos_token_id", None) is not None:
                 self.tokenizer.pad_token = self.tokenizer.eos_token
         return self.model, self.tokenizer
@@ -97,18 +105,27 @@ class BARTSummarizer:
                 encoded = {key: value.to(self.device) for key, value in encoded.items()}
 
                 generation_kwargs = {
-                    "max_length": self.max_output_length,
                     "min_length": min(self.min_output_length, self.max_output_length - 1),
                     "num_beams": self.num_beams,
                     "length_penalty": self.length_penalty,
                     "no_repeat_ngram_size": self.no_repeat_ngram_size,
                     "early_stopping": self.early_stopping,
                 }
+                if self.max_new_tokens is not None:
+                    generation_kwargs["max_new_tokens"] = self.max_new_tokens
+                else:
+                    generation_kwargs["max_length"] = self.max_output_length
                 forced_bos_token_id = getattr(model.generation_config, "forced_bos_token_id", None)
                 if forced_bos_token_id is not None:
                     generation_kwargs["forced_bos_token_id"] = forced_bos_token_id
 
-                generated = model.generate(**encoded, **generation_kwargs)
+                autocast_context = (
+                    torch.cuda.amp.autocast(enabled=True)
+                    if self.use_fp16 and self.device.type == "cuda"
+                    else nullcontext()
+                )
+                with autocast_context:
+                    generated = model.generate(**encoded, **generation_kwargs)
                 summaries.extend(
                     tokenizer.batch_decode(
                         generated,

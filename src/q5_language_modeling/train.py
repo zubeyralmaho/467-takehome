@@ -47,6 +47,10 @@ def _build_model(config) -> tuple[str, object, dict[str, object]]:
             min_token_frequency=getattr(config.model, "min_token_frequency", 2),
             tie_weights=getattr(config.model, "tie_weights", True),
             gradient_clip=getattr(config.model, "gradient_clip", 1.0),
+            lr_scheduler_enabled=getattr(config.model, "lr_scheduler_enabled", False),
+            lr_scheduler_factor=getattr(config.model, "lr_scheduler_factor", 0.25),
+            lr_scheduler_patience=getattr(config.model, "lr_scheduler_patience", 1),
+            lr_scheduler_min_lr=getattr(config.model, "lr_scheduler_min_lr", 1e-6),
             num_workers=getattr(config.model, "num_workers", 0),
             device=config.device,
             seed=config.seed,
@@ -66,6 +70,10 @@ def _build_model(config) -> tuple[str, object, dict[str, object]]:
             "min_token_frequency": model.min_token_frequency,
             "tie_weights": model.tie_weights,
             "gradient_clip": model.gradient_clip,
+            "lr_scheduler_enabled": model.lr_scheduler_enabled,
+            "lr_scheduler_factor": model.lr_scheduler_factor,
+            "lr_scheduler_patience": model.lr_scheduler_patience,
+            "lr_scheduler_min_lr": model.lr_scheduler_min_lr,
         }
         return "lstm", model, model_config
 

@@ -94,6 +94,8 @@ def _build_models(config, label_names: list[str]) -> dict[str, object]:
             early_stopping_patience=getattr(model_config, "early_stopping_patience", 2),
             max_seq_length=model_config.max_seq_length,
             warmup_ratio=getattr(model_config, "warmup_ratio", 0.1),
+            gradient_accumulation_steps=getattr(model_config, "gradient_accumulation_steps", 1),
+            use_fp16=getattr(model_config, "use_fp16", False),
             monitor_metric=getattr(model_config, "monitor_metric", "f1"),
             num_workers=getattr(model_config, "num_workers", 0),
             device=config.device,

@@ -159,6 +159,10 @@ class LSTMLanguageModel:
         min_token_frequency: int = 2,
         tie_weights: bool = True,
         gradient_clip: float = 1.0,
+        lr_scheduler_enabled: bool = False,
+        lr_scheduler_factor: float = 0.25,
+        lr_scheduler_patience: int = 1,
+        lr_scheduler_min_lr: float = 1e-6,
         num_workers: int = 0,
         device: str = "auto",
         seed: int = 42,
@@ -177,6 +181,10 @@ class LSTMLanguageModel:
         self.min_token_frequency = int(min_token_frequency)
         self.tie_weights = bool(tie_weights)
         self.gradient_clip = float(gradient_clip)
+        self.lr_scheduler_enabled = bool(lr_scheduler_enabled)
+        self.lr_scheduler_factor = float(lr_scheduler_factor)
+        self.lr_scheduler_patience = int(lr_scheduler_patience)
+        self.lr_scheduler_min_lr = float(lr_scheduler_min_lr)
         self.num_workers = int(num_workers)
         self.seed = int(seed)
         self.device = self._resolve_device(device)
@@ -244,6 +252,15 @@ class LSTMLanguageModel:
             validation_loader = self._create_dataloader(validation_data, self.vocabulary, shuffle=False)
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
+        scheduler = None
+        if self.lr_scheduler_enabled and validation_loader is not None:
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                optimizer,
+                mode="min",
+                factor=self.lr_scheduler_factor,
+                patience=self.lr_scheduler_patience,
+                min_lr=self.lr_scheduler_min_lr,
+            )
         train_criterion = nn.CrossEntropyLoss(ignore_index=self.vocabulary.pad_id)
 
         best_state = deepcopy(self.model.state_dict())
@@ -268,6 +285,8 @@ class LSTMLanguageModel:
                 continue
 
             validation_perplexity = self._perplexity_from_loader(validation_loader)
+            if scheduler is not None:
+                scheduler.step(validation_perplexity)
             if validation_perplexity + 1e-6 < best_perplexity:
                 best_perplexity = validation_perplexity
                 best_state = deepcopy(self.model.state_dict())

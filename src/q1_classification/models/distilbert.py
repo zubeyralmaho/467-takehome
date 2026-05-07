@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Sequence
@@ -90,6 +91,8 @@ class DistilBERTClassifier:
         early_stopping_patience: int = 2,
         max_seq_length: int = 256,
         warmup_ratio: float = 0.1,
+        gradient_accumulation_steps: int = 1,
+        use_fp16: bool = False,
         monitor_metric: str = "macro_f1",
         num_workers: int = 0,
         device: str = "auto",
@@ -105,6 +108,8 @@ class DistilBERTClassifier:
         self.early_stopping_patience = early_stopping_patience
         self.max_seq_length = max_seq_length
         self.warmup_ratio = warmup_ratio
+        self.gradient_accumulation_steps = max(int(gradient_accumulation_steps), 1)
+        self.use_fp16 = bool(use_fp16)
         self.monitor_metric = monitor_metric
         self.num_workers = num_workers
         self.seed = seed
@@ -188,13 +193,15 @@ class DistilBERTClassifier:
                 shuffle=False,
             )
 
-        total_steps = max(len(train_loader) * self.max_epochs, 1)
+        updates_per_epoch = max(math.ceil(len(train_loader) / self.gradient_accumulation_steps), 1)
+        total_steps = max(updates_per_epoch * self.max_epochs, 1)
         warmup_steps = int(total_steps * self.warmup_ratio)
         scheduler = get_linear_schedule_with_warmup(
             optimizer,
             num_warmup_steps=warmup_steps,
             num_training_steps=total_steps,
         )
+        scaler = torch.cuda.amp.GradScaler(enabled=self.use_fp16 and self.device.type == "cuda")
 
         best_state = deepcopy(self.model.state_dict())
         best_score = float("-inf")
@@ -202,7 +209,8 @@ class DistilBERTClassifier:
 
         for _ in range(self.max_epochs):
             self.model.train()
-            for batch in train_loader:
+            optimizer.zero_grad(set_to_none=True)
+            for step, batch in enumerate(train_loader, start=1):
                 input_ids = batch["input_ids"].to(self.device)
                 attention_mask = batch["attention_mask"].to(self.device)
                 batch_labels = batch["labels"]
@@ -210,16 +218,24 @@ class DistilBERTClassifier:
                     continue
                 batch_labels = batch_labels.to(self.device)
 
-                optimizer.zero_grad(set_to_none=True)
-                outputs = self.model(
-                    input_ids=input_ids,
-                    attention_mask=attention_mask,
-                    labels=batch_labels,
-                )
-                outputs.loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
-                optimizer.step()
-                scheduler.step()
+                with torch.cuda.amp.autocast(enabled=self.use_fp16 and self.device.type == "cuda"):
+                    outputs = self.model(
+                        input_ids=input_ids,
+                        attention_mask=attention_mask,
+                        labels=batch_labels,
+                    )
+                    loss = outputs.loss / self.gradient_accumulation_steps
+
+                scaler.scale(loss).backward()
+
+                should_step = (step % self.gradient_accumulation_steps == 0) or (step == len(train_loader))
+                if should_step:
+                    scaler.unscale_(optimizer)
+                    torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+                    scaler.step(optimizer)
+                    scaler.update()
+                    scheduler.step()
+                    optimizer.zero_grad(set_to_none=True)
 
             if validation_loader is None:
                 best_state = deepcopy(self.model.state_dict())
