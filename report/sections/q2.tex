@@ -16,10 +16,10 @@ The BERT model uses \texttt{bert-base-cased} because capitalization is informati
 The classical baseline is a linear-chain CRF \cite{lafferty2001crf} trained with the \texttt{lbfgs} optimizer, \(c_1 = 0.1\), \(c_2 = 0.1\), 100 maximum iterations, and all transitions enabled. This model relies entirely on the engineered token and context features described above.
 
 \paragraph{BiLSTM-CRF.}
-The hybrid neural baseline uses 100-dimensional token embeddings, a single bidirectional LSTM layer with hidden size 128, dropout 0.3, batch size 32, and AdamW optimization with learning rate 0.001. The model was trained for up to eight epochs with early stopping on validation F1. The CRF output layer preserves global transition constraints during decoding.
+The hybrid neural baseline uses 300-dimensional token embeddings, a single bidirectional LSTM layer with hidden size 256, dropout 0.35, batch size 32, and AdamW optimization with learning rate 0.001. The model is trained for up to 12 epochs with early stopping on validation F1. The CRF output layer preserves global transition constraints during decoding.
 
 \paragraph{BERT Token Classification.}
-The transformer baseline fine-tunes \nolinkurl{bert-base-cased} \cite{devlin2019bert} with maximum sequence length 128, batch size 8, learning rate \(5 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, and early stopping patience 2. The strongest full-data run completed after two epochs and clearly outperformed the non-transformer baselines.
+The transformer baseline fine-tunes \nolinkurl{bert-base-cased} \cite{devlin2019bert} with maximum sequence length 128, batch size 16, learning rate \(3 \times 10^{-5}\), weight decay 0.01, warmup ratio 0.1, gradient accumulation, mixed-precision training, and early stopping patience 2. The strongest full-data run clearly outperformed the non-transformer baselines.
 
 \subsection{Results}
 
@@ -48,6 +48,6 @@ The per-entity table supports this interpretation. Under BERT, MISC remains the 
 
 \subsection{Discussion}
 
-The final ranking for Question 2 is clear: BERT is the strongest model, the feature-based CRF is the strongest non-transformer baseline, and BiLSTM-CRF is the weakest of the completed full-data runs. This outcome highlights two practical points. First, pretrained contextual representations are substantially more valuable than either engineered local features or a randomly initialized recurrent encoder on this task. Second, a well-configured classical CRF can still outperform a neural hybrid model when the latter is not tuned enough to convert representation power into better sequence decisions.
+The final ranking for Question 2 is clear: BERT is the strongest model, the feature-based CRF is the strongest non-transformer baseline, and BiLSTM-CRF is the weakest of the completed full-data runs. This outcome highlights two practical points. First, pretrained contextual representations are substantially more valuable than either engineered local features or a randomly initialized recurrent encoder on this task. Second, a well-configured classical CRF can still outperform a neural hybrid model when the latter does not convert additional representation capacity into better boundary decisions.
 
-From a report perspective, the BERT run should anchor the main Q2 claim, while the CRF result should be presented as a surprisingly strong and interpretable baseline. BiLSTM-CRF is still useful as a comparison point because it demonstrates that adding recurrence and a CRF layer alone is not sufficient to close the gap to transformer-based contextualization. If additional Q2 effort becomes available later, the most justified follow-up is a focused BiLSTM-CRF tuning slice or a deeper MISC-specific error analysis rather than another baseline implementation.
+For the final report claim, the BERT run should anchor the main Q2 result, the CRF should be presented as a strong and interpretable baseline, and BiLSTM-CRF should be treated as evidence that recurrence plus structured decoding alone is not enough to close the gap to transformer-based contextualization.

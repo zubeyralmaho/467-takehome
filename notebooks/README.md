@@ -7,7 +7,7 @@ Canonical truth still lives in:
 - `src/` and `configs/` for model behavior
 - `outputs/q*/run_*` for experiment artifacts
 - `report/README.md` for the report-facing artifact mapping
-- `docs/colab-plan.md` for the current notebook drift audit and refresh plan
+- this README for current notebook status and follow-up commands
 
 ## Canonical vs Exploratory
 
@@ -93,4 +93,4 @@ python scripts/report_comparison_figures.py
 
 - If a notebook still contains a heavier legacy path, treat that path as exploratory unless the notebook explicitly says otherwise.
 - Prefer named run variables inside notebook cells over blind `sorted(...)[-1]` selection.
-- If notebook behavior and `report/README.md` disagree, trust `report/README.md` and `docs/colab-plan.md` until the notebook refresh slices are complete.
+- If notebook behavior and `report/README.md` disagree, trust `report/README.md` and the artifact-backed workflow documented here.

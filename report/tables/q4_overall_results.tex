@@ -1,17 +1,14 @@
 \begin{table}[H]
 \centering
 \small
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c c c c}
+\begin{tabular}{lcccc}
 \toprule
-Model & Train & \multicolumn{2}{c}{BLEU} & \multicolumn{2}{c}{ChrF} & \multicolumn{2}{c}{METEOR} & \multicolumn{2}{c}{BERTScore} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
- & & Val & Test & Val & Test & Val & Test & Val & Test \\
+Split & BLEU & ChrF & METEOR & BERTScore \\
 \midrule
-Opus-MT Transformer & 2000 & \textbf{0.375} & \textbf{0.371} & \textbf{0.642} & \textbf{0.640} & \textbf{0.652} & \textbf{0.647} & \textbf{0.899} & \textbf{0.891} \\
-Seq2Seq + Attn      & 2000 & 0.111 & 0.136 & 0.329 & 0.345 & 0.329 & 0.354 & 0.727 & 0.735 \\
+Validation & 0.2680 & 0.5137 & 0.5367 & 0.8286 \\
+Test & \textbf{0.2725} & \textbf{0.5214} & \textbf{0.5431} & \textbf{0.8291} \\
 \bottomrule
-\end{tabularx}
-\caption{Q4 Multi30k EN$\to$DE comparison on the matched 200-example val/test split. Both models use 2000 training examples. Transformer (Opus-MT) is a pretrained reference; Seq2Seq is trained from scratch.}
+\end{tabular}
+\caption{Full-data Q4 Seq2Seq+Attention results on Multi30k EN$\to$DE with 29{,}000 training examples, 1{,}014 validation examples, and 1{,}000 test examples.}
 \label{tab:q4_overall_results}
 \end{table}

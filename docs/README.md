@@ -21,19 +21,10 @@ This documentation comprehensively defines the technical architecture, data flow
 | 9 | [Evaluation Framework](09-evaluation-framework.md) | Metrics, reporting, comparison |
 | 10 | [Experiment & Reproducibility](10-experiment-config.md) | Seed, hyperparameter management, execution |
 | 11 | [LaTeX Report Structure](11-report-structure.md) | Report template, section plan |
-| 12 | [Notebook Alignment Plan](colab-plan.md) | Notebook vs repo/report drift audit, canonical boundaries, and agent-splittable refresh plan |
 
 ---
 
-## Operational Tracking
-
-For live AI agent coordination, use the `agents/` subfolder:
-
-- [Agent Workspace](agents/README.md) - Collaboration rules and workflow
-- [Parallel Protocol](agents/protocol.md) - Short operating rules for multi-agent execution
-- [Agent State](agents/status.json) - Machine-readable single source of truth
-- [Status Board](agents/status-board.md) - High-level project snapshot
-- [Handoff](agents/handoff.md) - Shared blockers and next actions
+Notebook execution guidance is maintained in `notebooks/README.md`.
 
 ---
 
@@ -58,8 +49,6 @@ README.md (this file)
     |       +-- 08-q5-language-modeling.md -----+
     |
     +-- 11-report-structure.md (covers all questions)
-    |
-    +-- agents/ (live agent coordination and status tracking)
 ```
 
 ---

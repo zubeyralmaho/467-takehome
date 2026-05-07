@@ -134,17 +134,8 @@ CENG467_Midterm/
 |   |-- 01-project-overview.md
 |   |-- ...
 |   |-- 11-report-structure.md
-|   +-- agents/                    # Live AI agent tracking workspace
-|       |-- README.md              # Rules and workflow for agent updates
-|       |-- protocol.md            # Short multi-agent parallel work protocol
-|       |-- status.json            # Canonical machine-readable project state
-|       |-- status-board.md        # Project-level status snapshot
-|       |-- handoff.md             # Cross-agent blockers and next actions
-|       |-- agent-template.md      # Template for per-agent logs
-|       +-- active/                # One file per active agent
 |
-|-- scripts/                       # Operational utilities
-|   +-- agent_status.py            # Syncs JSON state into markdown views
+|-- scripts/                       # Reporting and experiment utilities
 |
 |-- requirements.txt                # pip dependencies
 |-- environment.yml                 # conda environment (alternative)

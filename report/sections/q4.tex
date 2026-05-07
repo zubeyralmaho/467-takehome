@@ -2,43 +2,48 @@
 
 \subsection{Dataset Description}
 
-Question 4 uses the English-to-German Multi30k translation benchmark \cite{elliott2016multi30k}. In this project, the dataset is accessed through its Hugging Face mirror and treated as a short-caption translation task. That makes it a useful benchmark for testing whether a model can produce fluent target-language sentences while preserving compact visual descriptions from the source caption. The current Q4 evidence now includes two finished systems evaluated on the same matched 200-example validation and 200-example test splits: a pretrained transformer reference and a custom seq2seq-plus-attention baseline.
-
-The comparison is direct at evaluation time but not perfectly budget-matched at training time. The transformer run keeps a 100-example train slice only for artifact-contract consistency and does not perform task-specific fine-tuning, whereas the seq2seq model is trained from scratch on 2000 capped training examples. This distinction matters for interpretation, so the section should be read as a practical pretrained-versus-classical comparison rather than a matched from-scratch study.
+Question 4 uses the English-to-German Multi30k translation benchmark \cite{elliott2016multi30k}. In the final run used here, the dataset is taken from its Hugging Face mirror and evaluated on the full exported split sizes: 29{,}000 training examples, 1{,}014 validation examples, and 1{,}000 test examples. This makes Q4 a full-data short-caption translation study rather than a tiny matched-slice comparison.
 
 \subsection{Preprocessing and Model}
 
-The stronger system uses a pretrained Opus-MT English-to-German checkpoint from Helsinki-NLP \cite{tiedemann2020opusmt}. It is built on a transformer-style translation stack \cite{vaswani2017attention}. Source and target casing are preserved, inputs and decoded outputs are capped at 96 tokens, and generation uses beam search with 4 beams and length penalty 1.0. Instead of fine-tuning on Multi30k, this pipeline evaluates the checkpoint directly as a strong practical reference.
+The finished Q4 model is a custom encoder-decoder with additive attention \cite{bahdanau2015nmt}. It uses a bidirectional GRU encoder, a GRU decoder, 256-dimensional token embeddings, hidden size 512, dropout 0.3, batch size 32, learning rate \(5 \times 10^{-4}\), gradient clipping at 1.0, teacher forcing ratio 0.5, and a maximum decoded length of 64 tokens. Source and target casing are preserved, and the vocabularies are capped at 12{,}000 tokens with minimum frequency 2.
 
-The classical comparator is a compact GRU encoder-decoder with additive attention \cite{bahdanau2015nmt}. It uses 128-dimensional token embeddings and hidden states, a single recurrent layer, teacher forcing during training, and a maximum decoded length of 32 tokens. Unlike the transformer reference, this seq2seq model is trained from scratch on a lowercased 2000-example training split. It must therefore learn translation behavior directly from the capped Multi30k data.
-
-Evaluation uses BLEU, ChrF, METEOR, and BERTScore on both validation and test. BLEU gives a familiar n-gram precision view of translation quality, ChrF is more tolerant of inflectional and morphological variation, METEOR accounts for word order and partial matching, and BERTScore captures semantic similarity through contextual embeddings. Together, the four metrics provide a credible multi-faceted evaluation for the current Q4 comparison.
+Evaluation uses BLEU, ChrF, METEOR, and BERTScore on both validation and test. BLEU gives a familiar n-gram precision view of translation quality, ChrF is more tolerant of inflectional and morphological variation, METEOR accounts for word order and partial matching, and BERTScore captures semantic similarity through contextual embeddings. Together, the four metrics provide a credible multi-faceted evaluation for the full-data seq2seq run.
 
 \subsection{Results}
 
-Table~\ref{tab:q4_overall_results} summarizes the finished comparison. The pretrained transformer reaches validation/test BLEU 0.3749/0.3711, ChrF 0.6421/0.6398, METEOR 0.6516/0.6467, and BERTScore 0.8993/0.8910. The seq2seq baseline reaches BLEU 0.1110/0.1364, ChrF 0.3293/0.3448, METEOR 0.3290/0.3544, and BERTScore 0.7269/0.7351. On the shared evaluation the transformer therefore leads by roughly 0.26 BLEU, 0.29 ChrF, 0.29 METEOR, and 0.16 BERTScore on the test split.
+Table~\ref{tab:q4_overall_results} summarizes the final full-data seq2seq results. The model reaches validation/test BLEU 0.2680/0.2725, ChrF 0.5137/0.5214, METEOR 0.5367/0.5431, and BERTScore 0.8286/0.8291. These values are strong enough to show that the model has learned meaningful caption translation behavior, even though the absolute output quality is still visibly uneven on harder examples.
 
 \input{tables/q4_overall_results}
 
-Figure~\ref{fig:q4_test_metric_comparison} makes the same comparison easier to scan visually. The transformer leads the classical seq2seq model on all four test metrics, and the gap is large enough that the model ranking is unambiguous even on the capped evaluation split.
+Figure~\ref{fig:q4_seq2seq_training_curve} shows a clean optimization trajectory: training loss drops from 4.07 to 1.22, while validation loss improves rapidly and reaches its best point around epoch 5 before flattening. The final exported history stops after 8 epochs, which is consistent with early stopping on the held-out split.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.88\textwidth]{figures/q4/test_metric_comparison.png}
-	\caption{Q4 test-set metric comparison for the Seq2Seq baseline and the pretrained Opus-MT transformer.}
-	\label{fig:q4_test_metric_comparison}
+	\includegraphics[width=0.82\textwidth]{figures/q4/seq2seq_training_curve.png}
+	\caption{Per-epoch training and validation loss for the full-data Q4 seq2seq model.}
+	\label{fig:q4_seq2seq_training_curve}
 \end{figure}
 
-The size of this gap still makes the main takeaway straightforward: under the current capped setup, the from-scratch seq2seq baseline improves materially with more training budget but is still not competitive with a strong pretrained translation checkpoint. At the same time, the comparison should not be oversold as a perfectly aligned training-budget experiment, because the transformer benefits from large-scale pretraining rather than the capped Multi30k train split.
+The key takeaway from the metrics is that scaling the seq2seq baseline to the full Multi30k training split produces a materially stronger model than the earlier capped run. BLEU moves into the high-0.26/0.27 range and all four metrics are closely aligned between validation and test, which suggests that the exported run is stable rather than a validation-only spike.
 
 \subsection{Qualitative Analysis}
 
-The qualitative examples reinforce the metric gap. On test example \texttt{test\_63}, the transformer exactly matches the reference translation for \textit{Two men playing guitar in front of a large audience.}, which is the ideal behavior for a short caption translation task. Even its weaker exported example, \texttt{test\_8}, remains understandable: it rewrites the running-man caption as a longer relative-clause construction that is less concise and less reference-like than the gold translation, but it still preserves most of the core meaning.
+The qualitative examples show both the strengths and remaining weaknesses of the full-data seq2seq system. On validation example \texttt{validation\_1000}, the model exactly matches the reference translation, \textit{Eine Gruppe von Menschen läuft.} On test example \texttt{test\_988}, it again produces an exact translation: \textit{Ein Mann mit Sonnenbrille fährt auf einem Roller.} These examples show that the model handles short, common caption patterns well when the lexical mapping is familiar.
 
-The seq2seq outputs show why the classical baseline still remains far behind despite the stronger run. Its best exported test example, \texttt{test\_48}, captures much of the source meaning in \textit{ein älterer mann spielt saxophon. ein videospiel.}, but it still introduces an incorrect content word and awkward sentence structure. Its weakest exported example, \texttt{test\_94}, drifts badly into \textit{drei chefköche, darunter auf dem rücken zu zu}, which is grammatical only in fragments and no longer faithful to the source sports caption. In other words, the seq2seq model now recovers more partial meaning than the weaker earlier run, but it still fails to sustain fluent, source-faithful translation consistently.
+Harder examples still fail noticeably. On validation example \texttt{validation\_760}, the model degenerates into \textit{Personen fahren und und dem Gehsteig die die}, which loses most of the source meaning and repeats function words. On test example \texttt{test\_476}, the source sentence \textit{A rock concert is taking place.} collapses into \textit{Ein Bergsteiger macht}, which is fluent only in fragments and semantically incorrect. These failures show that the model still struggles with rarer compositions and longer-range target planning.
+
+The exported attention artifact adds a useful interpretability view. Figure~\ref{fig:q4_attention_heatmap} shows that the model learns sensible alignments for core content words such as \textit{A man} \(\rightarrow\) \textit{Ein Mann} and \textit{orange hat} \(\rightarrow\) \textit{orangefarbenen Hut}. The same attention example also exposes a residual decoding weakness: the final prediction, \textit{Ein Mann mit einem orangefarbenen Hut etwas.}, is close to the source meaning but still drops the phrase corresponding to \textit{staring at}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/q4/seq2seq_attention_heatmap.png}
+	\caption{Attention heatmap for one exported Q4 translation example.}
+	\label{fig:q4_attention_heatmap}
+\end{figure}
 
 \subsection{Discussion}
 
-The Q4 evidence supports a clear conclusion. The pretrained transformer is the strongest translation system by a wide margin and should be treated as the primary Q4 result, while the seq2seq model serves as the classical reference point that shows how difficult translation remains for small from-scratch models on limited data.
+The Q4 evidence supports a narrower but cleaner conclusion than the earlier capped comparison. With full-data training, the custom seq2seq-plus-attention model learns a usable translation mapping for short caption data and produces exact or near-exact outputs on easy examples. It is therefore no longer just a failure baseline; it is a real, interpretable translation system with stable held-out metrics.
 
-The remaining caveat is experimental alignment. Because the transformer is evaluated as a pretrained system rather than fine-tuned on Multi30k, this section should be interpreted as a pretrained-reference comparison, not a strictly matched training-budget contest. The current evidence still answers the assignment question clearly: pretraining dominates the classical seq2seq baseline under the evaluated setup. A follow-up fairness study should fine-tune the transformer on the same train split and report parameter and compute budgets side-by-side.
+At the same time, the qualitative failures make it clear that the model is not yet robust across the full caption distribution. The final report claim for Q4 should therefore emphasize competent full-data seq2seq learning, visible attention alignment, and remaining brittleness on harder source sentences. A natural next step would be a full-data pretrained or fine-tuned transformer run on the same splits so that the recurrent baseline can be compared against a stronger reference under matched evaluation conditions.

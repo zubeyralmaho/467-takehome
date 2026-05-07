@@ -82,8 +82,8 @@ The detailed report-to-artifact mapping lives in `report/README.md`.
 - `src/`: shared infrastructure and question-specific pipelines
 - `outputs/`: timestamped experiment runs and summary artifacts
 - `report/`: LaTeX report source, local tables, figures, and bibliography
-- `scripts/`: artifact summary, comparison, plotting, and agent-state utilities
-- `docs/`: project notes plus the live multi-agent coordination workspace
+- `scripts/`: artifact summary, comparison, plotting, and reporting utilities
+- `docs/`: architecture notes and supporting project documentation
 
 ## Current Status
 

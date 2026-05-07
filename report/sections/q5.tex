@@ -2,45 +2,41 @@
 
 \subsection{Dataset Description}
 
-Question 5 uses a capped WikiText-2 setup drawn from the raw \nolinkurl{wikitext-2-raw-v1} split \cite{merity2016wikitext}. The refreshed comparison evaluates 3{,}000 training lines, 400 validation lines, and 400 test lines, which correspond to 258{,}079, 32{,}527, and 35{,}059 tokens after preprocessing. This budget is still much smaller than a full language-model benchmark, so the reported perplexities should be read as a controlled comparison across a classical n-gram baseline, a compact recurrent neural baseline, and a practical pretrained transformer reference rather than as final large-budget results.
+Question 5 uses the raw \nolinkurl{wikitext-2-raw-v1} split from WikiText-2 \cite{merity2016wikitext}. The final full-data run used here evaluates 23{,}645 training lines, 2{,}460 validation lines, and 2{,}861 test lines, corresponding to 2{,}051{,}788, 213{,}885, and 241{,}181 tokens after preprocessing. This is therefore a substantially larger and more realistic language-modeling setup than the earlier capped comparison.
 
-WikiText-2 remains appropriate because it contains longer-form Wikipedia prose rather than isolated short sentences. That makes it useful for testing both local collocations and longer-range continuation behavior. A later smaller LSTM rerun also exists elsewhere in the saved experiment outputs. This section focuses on the matched 3{,}000/400/400 held-out split so that the three finished Q5 models can be compared on the same validation and test data.
+WikiText-2 remains appropriate because it contains longer-form Wikipedia prose rather than isolated short sentences. That makes it useful for testing both local collocations and longer-range continuation behavior. The final aligned Q5 section below focuses on the strongest finished full-data trainable model in the new output bundle: the word-level LSTM language model.
 
 \subsection{Model and Preprocessing}
 
-The data-trained Q5 baselines use the same lowercase word-level tokenization, the same minimum token-frequency threshold of 2, and the same unknown-token handling so that validation and test perplexity are measured against a consistent vocabulary. The classical baseline is a trigram language model with add-k smoothing and \(\alpha = 0.1\), which provides a transparent count-based reference point for next-token prediction.
+The full-data run uses lowercase word-level tokenization, a minimum token-frequency threshold of 2, vocabulary capping at 30{,}000 tokens, and a maximum BPTT sequence length of 35. The model itself is a two-layer LSTM \cite{hochreiter1997lstm} with 400-dimensional embeddings, hidden size 400, dropout 0.3, tied input-output weights, batch size 32, and AdamW optimization with learning rate \(10^{-3}\). Gradient clipping is set to 0.25.
 
-The second comparator is a compact two-layer word-level LSTM \cite{hochreiter1997lstm} with 128-dimensional embeddings and hidden states, dropout 0.2, tied input-output weights, and teacher-forced next-token training. It is still a modest recurrent model rather than a state-of-the-art language model. Even so, it is sufficient to test whether a learned hidden-state representation materially improves perplexity and generated-text fluency over the trigram baseline under the same capped dataset budget.
-
-The third model is a practical GPT-style reference using pretrained \nolinkurl{distilgpt2}, a compact member of the GPT-2 causal language-model family \cite{radford2019gpt2}. Unlike the trigram and LSTM models, this transformer is not trained from scratch on the capped Q5 split. Instead, it is evaluated directly on the same held-out WikiText-2 lines and prompted with the same seeded generation prefixes. That makes it a useful reference point for how much additional modeling strength a pretrained causal transformer contributes beyond the data-limited baselines.
+This run also enables a ReduceLROnPlateau scheduler. Validation perplexity is monitored for early stopping, and the learning rate drops by a factor of 0.25 when progress stalls. That scheduler behavior matters for interpretation because the run continues improving steadily for many epochs before flattening.
 
 \subsection{Results}
 
-Table~\ref{tab:q5_overall_results} reports the refreshed Q5 perplexity comparison. The trigram model reaches validation/test perplexity 1392.54/1388.72, the LSTM reduces those values to 286.06/279.46, and the pretrained distilGPT-2 reference further lowers them to 109.78/106.44.
+Table~\ref{tab:q5_overall_results} reports the final full-data LSTM result. The model reaches validation perplexity 162.79 and test perplexity 151.87, with the best validation point reached at epoch 14.
 
 \input{tables/q5_overall_results}
 
-Figure~\ref{fig:q5_perplexity_comparison} shows the same ordering on a log-scaled y-axis so that the trigram, LSTM, and distilGPT-2 bars remain readable in a single chart. The pretrained transformer remains the strongest model on both validation and test, while the LSTM sits well below the classical trigram baseline but still well above distilGPT-2.
+Figure~\ref{fig:q5_lstm_training_curve} shows a smooth optimization trajectory. Validation perplexity falls sharply from 289.39 at epoch 1 to 162.79 at epoch 14, after which it plateaus and then worsens slightly. The scheduler reacts to that plateau by lowering the learning rate from 0.001 to 0.00025 at epoch 17, but the best held-out result had already been reached by then.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{figures/q5/perplexity_comparison.png}
-	\caption{Q5 validation and test perplexity comparison on a log-scaled y-axis.}
-	\label{fig:q5_perplexity_comparison}
+	\includegraphics[width=0.82\textwidth]{figures/q5/lstm_training_curve.png}
+	\caption{Per-epoch training loss and validation perplexity for the full-data Q5 LSTM run.}
+	\label{fig:q5_lstm_training_curve}
 \end{figure}
 
-Two comparisons matter here. First, the LSTM cuts validation perplexity by 79.5\% and test perplexity by 79.9\% relative to the trigram baseline, which shows that even a compact recurrent language model is far better than sparse count-based context matching on held-out WikiText-2 continuations. Second, distilGPT-2 lowers validation perplexity by a further 61.6\% and test perplexity by 61.9\% relative to the matched LSTM result, making the pretrained transformer the strongest finished Q5 model.
+The main result is that the full-data LSTM is no longer a toy baseline. A test perplexity of 151.87 on raw WikiText-2 is still far from state-of-the-art transformer language modeling, but it is strong enough to show that the model has learned reusable sequential structure rather than only memorizing local bigram-like patterns.
 
 \subsection{Generated Text Samples}
 
-The exported generations are consistent with the perplexity comparison. The trigram model can maintain short-range lexical continuity for simple prompts, but it often stops early or drifts into topic fragments that are only locally plausible. Starting from the seed \texttt{the}, it generates the short fragment \textit{the support of the season started .}, which is locally acceptable but not coherent in a broader discourse sense.
+The exported generations are consistent with the perplexity curve: the model has learned local syntax and short-range discourse continuation, but its semantic control remains weak. For the prompt ``in the,'' it generates \textit{in the early 1980s , the then use of video numbers are taken 30 million people regarding any more modern state moments .} The start of the sentence is plausible and syntactically recognizable, but later tokens drift into semantically incoherent phrasing.
 
-The LSTM continuations are still noisy, but they are longer and generally more structurally sustained under the same seed prompts. Its generated samples for the prompts ``the,'' ``in the,'' and ``he was'' continue for roughly 26--27 tokens, compared with a trigram average of 17.7 tokens across the same prompts. The LSTM still exhibits repetition and topic drift, yet it preserves local grammatical structure for longer spans than the sparse n-gram model.
-
-The distilGPT-2 generations are slightly shorter on average than the LSTM samples (24.3 vs. 26.7 tokens), but they are noticeably smoother locally. For example, the prompt ``he was'' continues as \textit{he was a little bit too late and it was time to try new things with my husband.}, which is still imperfect and not guaranteed to remain on-topic, yet it is substantially more fluent than the corresponding LSTM and trigram outputs.
+The other prompts show the same pattern. The seed ``the'' produces a continuation with recognizable function-word structure and topical fragments around books, championships, and teams, but no coherent sentence-level plan. The seed ``he was'' yields a longer continuation with article-noun and clause-like structure, yet the phrase sequence remains semantically unstable. In other words, the model has learned how English Wikipedia-style text tends to sound locally, even though it still struggles to maintain meaning over longer spans.
 
 \subsection{Discussion}
 
-The finished Q5 comparison now makes the progression from classical to neural to pretrained-transformer modeling explicit. The trigram model remains valuable as a classical reference, but its high perplexity and unstable generations show that short fixed-context counts are not enough to model Wikipedia-style prose well. The LSTM then shows that even a compact recurrent model can reuse hidden-state context to reduce perplexity dramatically.
+The finished Q5 section now shows that a properly trained full-data LSTM can become a credible language-model baseline on WikiText-2. Its validation curve is smooth, the best checkpoint is easy to identify, and the final held-out perplexity is much better than the earlier smaller-budget recurrent runs.
 
-For the current report state, the trigram run is the classical baseline, the LSTM is the compact neural comparator, and distilGPT-2 is the strongest pretrained reference. Because distilGPT-2 is not fine-tuned on the capped WikiText-2 split, this comparison should be interpreted as a capability benchmark rather than a fully budget-matched training contest. The most meaningful follow-up is explicit transformer fine-tuning on the same split with reported parameter and compute budgets, rather than additional n-gram work.
+At the same time, the generated samples show why this is still a baseline rather than a final model: local fluency improves much faster than semantic consistency. The most defensible Q5 claim is therefore that recurrent language modeling benefits strongly from full-data training and scheduling, but that a stronger pretrained causal transformer would still be the natural next comparison if a full-data reference run is added later.

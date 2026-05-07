@@ -3,13 +3,11 @@
 \small
 \begin{tabular}{lccc}
 \toprule
-Model & Validation Perplexity & Test Perplexity & Source Run \\
+Model & Best Validation Perplexity & Test Perplexity & Best Epoch \\
 \midrule
-distilGPT-2 & 109.78 & 106.44 & run\_20260413\_213856 \\
-LSTM & 286.06 & 279.46 & run\_20260413\_211945 \\
-Trigram add-k & 1392.54 & 1388.72 & run\_20260413\_202258 \\
+LSTM & 162.79 & 151.87 & 14 \\
 \bottomrule
 \end{tabular}
-\caption{Matched Q5 perplexity comparison across the finished trigram, LSTM, and GPT-style baselines on the capped WikiText-2 split.}
+\caption{Full-data Q5 LSTM performance on WikiText-2 raw with 23{,}645 training lines, 2{,}460 validation lines, and 2{,}861 test lines.}
 \label{tab:q5_overall_results}
 \end{table}

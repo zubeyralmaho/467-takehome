@@ -5,3 +5,8 @@ __pycache__/
 outputs/
 data/cache/
 *.pyc
+
+# Local-only planning and coordination artifacts
+docs/agents/
+docs/colab-plan.md
+scripts/agent_status.py
